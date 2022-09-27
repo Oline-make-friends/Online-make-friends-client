@@ -16,23 +16,14 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../redux/apiRequest";
-import app from "../../firebase";
+import {signInWithGoogle} from "../../firebase";
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const signInWithGoogle = () => {
-    app.auth
-      .signInWithPopup()
-      .then((res) => {
-        console.log(res.user);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  };
+  
 
   const logIn = (e) => {
     e.preventDefault();
@@ -109,7 +100,7 @@ export default function Login() {
                   >
                     <Link href="/Register">Sign up</Link>
                   </Button>
-                  <Button onClick={signInWithGoogle}>
+                  <Button onClick={() =>{signInWithGoogle(dispatch, navigate, toast)}}>
                     Sign in with google
                   </Button>
                 </Stack>
