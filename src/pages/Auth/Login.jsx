@@ -11,19 +11,22 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  Center
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../redux/apiRequest";
-import {signInWithGoogle} from "../../firebase";
+import { signInWithGoogle } from "../../firebase";
+import { FcGoogle } from 'react-icons/fc';
+
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
 
   const logIn = (e) => {
     e.preventDefault();
@@ -92,17 +95,25 @@ export default function Login() {
                     Sign in
                   </Button>
                   <Button
-                    bg={"blue.400"}
-                    color={"white"}
-                    _hover={{
-                      bg: "blue.500",
-                    }}
+                    onClick={() => { signInWithGoogle(dispatch, navigate, toast) }}
+                    w={'full'}
+                    maxW={'md'}
+                    variant={'outline'}
+                    leftIcon={<FcGoogle />}>
+                    <Center>
+                      <Text>Sign in with Google</Text>
+                    </Center>
+                  </Button>
+                  <Stack
+                    direction={{ base: "column", sm: "row" }}
+                    align={"start"}
+                    justify={"space-between"}
                   >
-                    <Link href="/Register">Sign up</Link>
-                  </Button>
-                  <Button onClick={() =>{signInWithGoogle(dispatch, navigate, toast)}}>
-                    Sign in with google
-                  </Button>
+                    <Link color={"blue.400"} href="/Register">
+                      Sign up
+                    </Link>
+                  </Stack>
+
                 </Stack>
               </Stack>
             </form>

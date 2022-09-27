@@ -1,22 +1,8 @@
-/************ Custom Font ************/
-@font-face {
-  font-family: Centra;
-  src: url('./assets/font/CentraNo2-Bold.ttf');
-  font-weight: 700;
-}
 
-@font-face {
-  font-family: Centra;
-  src: url('./assets/font/CentraNo2-Medium.ttf');
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: Centra;
-  src: url('./assets/font/CentraNo2-Book.ttf');
-  font-weight: 400;
-}
 
 .App {
   background-image: url(./assets/img/banner-bg.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }

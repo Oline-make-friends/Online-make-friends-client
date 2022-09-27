@@ -8,9 +8,16 @@ import RequireAuth from "./components/Auth/RequireAuth";
 import Profile from "./pages/Profile/Profile";
 import ResetPS from "./pages/Auth/ResetPS";
 import Header from "./components/Header/Header";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const location = useLocation();
+  const setHeader = (path) =>{
+    if(path === "/" || path === "/Register" || path === "/ResetPS"){
+      return ""
+    }
+    else return <Header/>
+  }
   return (
     <div
       className="App"
@@ -19,8 +26,8 @@ function App() {
         flexDirection: "column",
       }}
     >
-      {location.pathname === "/" ? "" : <Header />}
-
+      {/* {location.pathname === "/" || "/Register" ? "" : <Header />} */}
+      {setHeader(location.pathname)}
       <Routes>
         <Route element={<RequireAuth />}>
           <Route path="/profile" element={<Profile />} />
@@ -29,7 +36,8 @@ function App() {
         <Route path="/Register" element={<Register />} />
         <Route path="/ResetPS" element={<ResetPS />} />
       </Routes>
-      <ToastContainer autoClose="1000" />
+      <ToastContainer position="top-center"
+      autoClose="1000" />
     </div>
   );
 }
