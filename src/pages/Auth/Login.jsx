@@ -11,22 +11,20 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Center
+  Center,
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../redux/apiRequest";
 import { signInWithGoogle } from "../../firebase";
-import { FcGoogle } from 'react-icons/fc';
-
+import { FcGoogle } from "react-icons/fc";
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
 
   const logIn = (e) => {
     e.preventDefault();
@@ -38,7 +36,7 @@ export default function Login() {
   };
   return (
     <div className="bg">
-      <Flex minH={"100vh"} align={"center"} justify={"center"}>
+      <Flex minH={"100vh"} align={"center"} justify={"center"} color="black">
         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
           <Stack align={"center"}>
             <Heading fontSize={"4xl"} color="white">
@@ -55,6 +53,23 @@ export default function Login() {
             boxShadow={"lg"}
             p={8}
           >
+            <Flex alignItems="center" justifyContent="center">
+              <Button
+                onClick={() => {
+                  signInWithGoogle(dispatch, navigate, toast);
+                }}
+                w="50px"
+                h="50px"
+                maxW={"md"}
+                variant={"outline"}
+                backgroundColor="blue.50"
+              >
+                <Center>
+                  <FcGoogle />
+                </Center>
+              </Button>
+            </Flex>
+            <hr style={{ margin: "10px" }}></hr>
             <form onSubmit={logIn}>
               <Stack spacing={4}>
                 <FormControl id="email">
@@ -94,16 +109,7 @@ export default function Login() {
                   >
                     Sign in
                   </Button>
-                  <Button
-                    onClick={() => { signInWithGoogle(dispatch, navigate, toast) }}
-                    w={'full'}
-                    maxW={'md'}
-                    variant={'outline'}
-                    leftIcon={<FcGoogle />}>
-                    <Center>
-                      <Text>Sign in with Google</Text>
-                    </Center>
-                  </Button>
+
                   <Stack
                     direction={{ base: "column", sm: "row" }}
                     align={"start"}
@@ -113,7 +119,6 @@ export default function Login() {
                       Sign up
                     </Link>
                   </Stack>
-
                 </Stack>
               </Stack>
             </form>

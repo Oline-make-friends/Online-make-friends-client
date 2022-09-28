@@ -5,7 +5,6 @@ import {
   FormLabel,
   Input,
   InputGroup,
-  HStack,
   InputRightElement,
   Stack,
   Button,
@@ -22,7 +21,13 @@ export default function Register() {
 
   return (
     <div>
-      <Flex minH={"100vh"} align={"center"} justify={"center"} className="bg">
+      <Flex
+        minH={"100vh"}
+        align={"center"}
+        justify={"center"}
+        className="bg"
+        color="black"
+      >
         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
           <Stack align={"center"}>
             <Heading fontSize={"4xl"} textAlign={"center"} color="white">
@@ -39,20 +44,13 @@ export default function Register() {
             p={8}
           >
             <Stack spacing={4}>
-              <HStack>
-                <Box>
-                  <FormControl id="firstName" isRequired>
-                    <FormLabel>First Name</FormLabel>
-                    <Input type="text" />
-                  </FormControl>
-                </Box>
-                <Box>
-                  <FormControl id="lastName">
-                    <FormLabel>Last Name</FormLabel>
-                    <Input type="text" />
-                  </FormControl>
-                </Box>
-              </HStack>
+              <Box>
+                <FormControl id="fullName" isRequired>
+                  <FormLabel>Full name</FormLabel>
+                  <Input type="text" />
+                </FormControl>
+              </Box>
+
               <FormControl id="email" isRequired>
                 <FormLabel>Email address</FormLabel>
                 <Input type="email" />

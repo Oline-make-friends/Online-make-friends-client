@@ -15,7 +15,7 @@ import {
 export default function ResetPS() {
   return (
     <div className="bg">
-      <Flex minH={"100vh"} align={"center"} justify={"center"}>
+      <Flex minH={"100vh"} align={"center"} justify={"center"} color="black">
         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
           <Stack align={"center"}>
             <Heading fontSize={"4xl"} color="white">

@@ -8,16 +8,15 @@ import RequireAuth from "./components/Auth/RequireAuth";
 import Profile from "./pages/Profile/Profile";
 import ResetPS from "./pages/Auth/ResetPS";
 import Header from "./components/Header/Header";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const location = useLocation();
-  const setHeader = (path) =>{
-    if(path === "/" || path === "/Register" || path === "/ResetPS"){
-      return ""
-    }
-    else return <Header/>
-  }
+  const setHeader = (path) => {
+    if (path === "/" || path === "/Register" || path === "/ResetPS") {
+      return "";
+    } else return <Header />;
+  };
   return (
     <div
       className="App"
@@ -29,15 +28,13 @@ function App() {
       {/* {location.pathname === "/" || "/Register" ? "" : <Header />} */}
       {setHeader(location.pathname)}
       <Routes>
-        <Route element={<RequireAuth />}>
-          <Route path="/profile" element={<Profile />} />
-        </Route>
+        <Route element={<RequireAuth />}></Route>
         <Route path="/" element={<Login />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/ResetPS" element={<ResetPS />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
-      <ToastContainer position="top-center"
-      autoClose="1000" />
+      <ToastContainer position="top-center" autoClose="1000" />
     </div>
   );
 }
