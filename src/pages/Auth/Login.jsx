@@ -28,11 +28,11 @@ export default function Login() {
 
   const logIn = (e) => {
     e.preventDefault();
-    const newUser = {
+    const User = {
       username: email,
       password: password,
     };
-    loginUser(newUser, dispatch, navigate, toast);
+    loginUser(User, dispatch, navigate, toast);
   };
   return (
     <div className="bg">
@@ -43,8 +43,7 @@ export default function Login() {
               Sign in to your account
             </Heading>
             <Text fontSize={"lg"} color="white">
-              to enjoy all of our cool <Link color={"blue.400"}>features</Link>{" "}
-              ✌️
+              OMF helps you connect and share with the people in your life.
             </Text>
           </Stack>
           <Box
@@ -53,29 +52,12 @@ export default function Login() {
             boxShadow={"lg"}
             p={8}
           >
-            <Flex alignItems="center" justifyContent="center">
-              <Button
-                onClick={() => {
-                  signInWithGoogle(dispatch, navigate, toast);
-                }}
-                w="50px"
-                h="50px"
-                maxW={"md"}
-                variant={"outline"}
-                backgroundColor="blue.50"
-              >
-                <Center>
-                  <FcGoogle />
-                </Center>
-              </Button>
-            </Flex>
-            <hr style={{ margin: "10px" }}></hr>
             <form onSubmit={logIn}>
               <Stack spacing={4}>
                 <FormControl id="email">
                   <FormLabel>Email address</FormLabel>
                   <Input
-                    // type="email"
+                    type="email"
                     required
                     onChange={(e) => setEmail(e.target.value)}
                   />
@@ -93,11 +75,7 @@ export default function Login() {
                     direction={{ base: "column", sm: "row" }}
                     align={"start"}
                     justify={"space-between"}
-                  >
-                    <Link color={"blue.400"} href="/ResetPS">
-                      Forgot password?
-                    </Link>
-                  </Stack>
+                  ></Stack>
 
                   <Button
                     bg={"blue.400"}
@@ -109,16 +87,37 @@ export default function Login() {
                   >
                     Sign in
                   </Button>
-
-                  <Stack
-                    direction={{ base: "column", sm: "row" }}
-                    align={"start"}
-                    justify={"space-between"}
+                  <Center>
+                    <Link color={"blue.400"} href="/ResetPS">
+                      Forgotten password?
+                    </Link>
+                  </Center>
+                  <Center
+                    borderBottom="1px"
+                    borderBottomColor="gray"
+                    paddingBottom="2"
                   >
-                    <Link color={"blue.400"} href="/Register">
+                    <Text>Dont have an account? </Text>
+
+                    <Link mx="1" color={"blue.400"} href="/Register">
                       Sign up
                     </Link>
-                  </Stack>
+                  </Center>
+                  <Center>OR</Center>
+                  <Flex alignItems="center" justifyContent="center">
+                    <Button
+                      onClick={() => {
+                        signInWithGoogle(dispatch, navigate, toast);
+                      }}
+                      maxW={"md"}
+                      variant={"outline"}
+                      backgroundColor="blue.200"
+                      p="0"
+                    >
+                      <FcGoogle size={30} />
+                      <Text mx="2">Login with google</Text>
+                    </Button>
+                  </Flex>
                 </Stack>
               </Stack>
             </form>

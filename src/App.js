@@ -13,7 +13,12 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
   const location = useLocation();
   const setHeader = (path) => {
-    if (path === "/" || path === "/Register" || path === "/ResetPS") {
+    if (
+      path === "/" ||
+      path === "/Register" ||
+      path === "/ResetPS" ||
+      path === "/Login"
+    ) {
       return "";
     } else return <Header />;
   };
@@ -28,11 +33,13 @@ function App() {
       {/* {location.pathname === "/" || "/Register" ? "" : <Header />} */}
       {setHeader(location.pathname)}
       <Routes>
-        <Route element={<RequireAuth />}></Route>
+        <Route element={<RequireAuth />}>
+          <Route path="/profile" element={<Profile />} />
+        </Route>
         <Route path="/" element={<Login />} />
+        <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/ResetPS" element={<ResetPS />} />
-        <Route path="/profile" element={<Profile />} />
       </Routes>
       <ToastContainer position="top-center" autoClose="1000" />
     </div>

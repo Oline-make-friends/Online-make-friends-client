@@ -16,16 +16,16 @@ export const loginUser = async (user, dispatch, navigate, toast) => {
 export const loginByGmail = async (email, dispatch, navigate, toast) => {
   dispatch(loginStart());
   try {
-    const res = await axios.post(`http://localhost:8000/auth/loginByGmail/${email}`);
+    const res = await axios.post(
+      `http://localhost:8000/auth/loginByGmail/${email}`
+    );
     dispatch(loginSuccess(res.data));
-    toast.success("Login success!");
     navigate("/profile");
   } catch (error) {
     dispatch(loginFail());
     toast.error(error.message);
   }
 };
-
 
 export const logOutUser = (dispatch) => {
   try {
