@@ -9,6 +9,7 @@ import Profile from "./pages/Profile/Profile";
 import ResetPS from "./pages/Auth/ResetPS";
 import Header from "./components/Header/Header";
 import "react-toastify/dist/ReactToastify.css";
+import Updateprofile from "./pages/Profile/Updateprofile";
 
 function App() {
   const location = useLocation();
@@ -23,18 +24,13 @@ function App() {
     } else return <Header />;
   };
   return (
-    <div
-      className="App"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div className="App">
       {/* {location.pathname === "/" || "/Register" ? "" : <Header />} */}
       {setHeader(location.pathname)}
       <Routes>
         <Route element={<RequireAuth />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/updateProfile" element={<Updateprofile />} />
         </Route>
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />

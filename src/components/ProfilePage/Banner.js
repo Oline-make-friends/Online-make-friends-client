@@ -4,8 +4,9 @@ import headerImg from "../../assets/img/header-img.svg";
 import { ArrowRightCircle } from "react-bootstrap-icons";
 import "animate.css";
 import TrackVisibility from "react-on-screen";
+import { Box, Image, Text } from "@chakra-ui/react";
 
-export const Banner = () => {
+export const Banner = ({ user }) => {
   const [loopNum, setLoopNum] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [text, setText] = useState("");
@@ -53,7 +54,7 @@ export const Banner = () => {
   };
 
   return (
-    <section className="banner" id="home">
+    <section className="banner" id="home" style={{ color: "white" }}>
       <Container>
         <Row className="aligh-items-center">
           <Col xs={12} md={6} xl={7}>
@@ -66,7 +67,7 @@ export const Banner = () => {
                 >
                   <span className="tagline">Welcome to my Profile</span>
                   <h1>
-                    {`I'm Phong`}{" "}
+                    {`I'm ${user?.fullname}`}{" "}
                     <span
                       className="txt-rotate"
                       dataPeriod="1000"
@@ -75,13 +76,12 @@ export const Banner = () => {
                       <span className="wrap">{text}</span>
                     </span>
                   </h1>
-                  <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a
-                    type specimen book.
-                  </p>
+                  <Text as="bold">Gender: {user.gender}</Text>
+                  <p>{user?.about}</p>
+                  <br></br>
+                  <Box boxSize="sm">
+                    <Image src={user?.avatar_url} alt="User avatar" />
+                  </Box>
                   <button onClick={() => console.log("connect")}>
                     Add friend <ArrowRightCircle size={25} />
                   </button>
