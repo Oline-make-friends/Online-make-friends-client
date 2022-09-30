@@ -15,31 +15,35 @@ import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { loginByGmail } from "../../redux/apiRequest";
 
 export default function Updateprofile() {
+  const user = useSelector((state) => state.auth?.login.currentUser);
+  const dispatch = useDispatch();
+  console.log(user.username);
   const [startDate, setStartDate] = useState(new Date());
-  const [url, setUrl] = useState("");
-  const [avatar, setAvatar] = useState(
-    "https://res.cloudinary.com/mklaaicogido123/image/upload/v1657950811/vpv00jjcvag7p5azvumk.jpg"
-  );
+  const [image, setImage] = useState("");
+  const [avatar, setAvatar] = useState(user?.avatar_url);
 
   const updateAvatar = async (avatarURL) => {
     try {
-      await axios.post("http://localhost:8000/user/update/" + "id", {
+      await axios.post(`http://localhost:8000/user/update/${user._id}`, {
         avatar_url: avatarURL,
       });
       setAvatar(avatarURL);
+      loginByGmail(user.username, dispatch, null, toast);
       toast.success("change avatar success");
     } catch (error) {}
   };
 
   const uploadImage = (e) => {
     e.preventDefault();
-    if (url) {
+    if (image) {
       // Tạo một form data chứa dữ liệu gửi lên
       const formData = new FormData();
       // Hình ảnh cần upload
-      formData.append("file", url);
+      formData.append("file", image);
       // Tên preset vừa tạo ở bước 1
       formData.append("upload_preset", "oi7qyalz");
       // Tải ảnh lên cloudinary
@@ -52,13 +56,14 @@ export default function Updateprofile() {
         .then((response) => {
           // setUrl(response.data.url);
           // setAvatar(response.data.url);
-          updateAvatar();
+          updateAvatar(response.data.url);
         })
         .catch((err) => console.error(err));
     } else {
       toast.error("choice image before change");
     }
   };
+
   return (
     <Flex alignItems="start" justifyContent="center" p="4">
       <br />
@@ -73,12 +78,12 @@ export default function Updateprofile() {
         <Text fontSize="6xl">Update your profile</Text>
 
         <Box>
-          <Image src={avatar} alt="Dan Abramov" />
+          <Image src={avatar} alt="Avatar" />
           <input
             type="file"
             accept="image/png, image/gif, image/jpeg"
             onChange={(e) => {
-              setUrl(e.target.files[0]);
+              setImage(e.target.files[0]);
             }}
           />
           <Button onClick={uploadImage}>change avatar</Button>
