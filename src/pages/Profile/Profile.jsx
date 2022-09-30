@@ -12,7 +12,7 @@ export default function Profile() {
   return (
     <Box>
       <Banner user={user} />
-      <Interest />
+      <Interest user={user} />
       <Contact />
     </Box>
   );

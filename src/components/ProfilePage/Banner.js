@@ -78,13 +78,13 @@ export const Banner = ({ user }) => {
                   </h1>
                   <Text as="bold">Gender: {user.gender}</Text>
                   <p>{user?.about}</p>
+                  <button onClick={() => console.log("connect")}>
+                    Add friend <ArrowRightCircle size={25} />
+                  </button>
                   <br></br>
                   <Box boxSize="sm">
                     <Image src={user?.avatar_url} alt="User avatar" />
                   </Box>
-                  <button onClick={() => console.log("connect")}>
-                    Add friend <ArrowRightCircle size={25} />
-                  </button>
                 </div>
               )}
             </TrackVisibility>

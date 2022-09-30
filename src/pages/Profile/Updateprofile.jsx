@@ -21,10 +21,17 @@ import { loginByGmail } from "../../redux/apiRequest";
 export default function Updateprofile() {
   const user = useSelector((state) => state.auth?.login.currentUser);
   const dispatch = useDispatch();
-  console.log(user.username);
+  console.log(user);
   const [startDate, setStartDate] = useState(new Date());
   const [image, setImage] = useState("");
   const [avatar, setAvatar] = useState(user?.avatar_url);
+
+  const [fullname, setFullname] = useState(user?.fullname);
+  const [about, setAbout] = useState(user?.about);
+  const [gender, setGender] = useState(user?.gender);
+  const [location, setLocation] = useState(user?.location);
+  const [major, setMajor] = useState(user?.major);
+  const [interest, setInterest] = useState(user?.interrests);
 
   const updateAvatar = async (avatarURL) => {
     try {
@@ -32,9 +39,11 @@ export default function Updateprofile() {
         avatar_url: avatarURL,
       });
       setAvatar(avatarURL);
-      loginByGmail(user.username, dispatch, null, toast);
+      loginByGmail(user.username, dispatch, null, null);
       toast.success("change avatar success");
-    } catch (error) {}
+    } catch (error) {
+      toast.error("change avatar fail");
+    }
   };
 
   const uploadImage = (e) => {
@@ -61,6 +70,23 @@ export default function Updateprofile() {
         .catch((err) => console.error(err));
     } else {
       toast.error("choice image before change");
+    }
+  };
+
+  const updateProfile = async () => {
+    try {
+      await axios.post(`http://localhost:8000/user/update/${user._id}`, {
+        fullname: fullname,
+        about: about,
+        gender: gender,
+        location: location,
+        major: major,
+      });
+      loginByGmail(user.username, dispatch, null, null);
+      console.log(startDate);
+      toast.success("Update profile success");
+    } catch (error) {
+      toast.error("Update profile fail fail");
     }
   };
 
@@ -91,7 +117,11 @@ export default function Updateprofile() {
         <br></br>
         <FormControl mt="2">
           <FormLabel>Full name</FormLabel>
-          <Input type="email" />
+          <Input
+            type="email"
+            value={fullname}
+            onChange={(e) => setFullname(e.target.value)}
+          />
         </FormControl>
 
         <FormControl>
@@ -101,6 +131,8 @@ export default function Updateprofile() {
             // onChange={handleInputChange}
             placeholder=""
             size="sm"
+            value={about}
+            onChange={(e) => setAbout(e.target.value)}
           />
         </FormControl>
         <FormControl>
@@ -117,10 +149,10 @@ export default function Updateprofile() {
           <FormLabel>Gender</FormLabel>
           <Select
             border="1px"
-            // value={gender}
-            // onChange={(e) => {
-            //   setGender(e.target.value);
-            // }}
+            value={gender}
+            onChange={(e) => {
+              setGender(e.target.value);
+            }}
           >
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -129,16 +161,31 @@ export default function Updateprofile() {
         </FormControl>
         <FormControl>
           <FormLabel>Location</FormLabel>
-          <Input type="text" />
+          <Input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
         </FormControl>
         <FormControl>
           <FormLabel>Major</FormLabel>
-          <Input type="text" />
+          <Input
+            type="text"
+            value={major}
+            onChange={(e) => setMajor(e.target.value)}
+          />
         </FormControl>
         <FormControl>
           <FormLabel>Interest</FormLabel>
-          <Input type="text" />
+          <Input
+            type="text"
+            value={interest}
+            onChange={(e) => setInterest(e.target.value)}
+          />
         </FormControl>
+        <Button onClick={updateProfile} m="4">
+          Update
+        </Button>
       </Box>
     </Flex>
   );
