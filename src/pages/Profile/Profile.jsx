@@ -5,6 +5,7 @@ import { Contact } from "../../components/ProfilePage/Contact";
 import { useSelector } from "react-redux";
 import { Interest } from "../../components/ProfilePage/Interest";
 import { Box } from "@chakra-ui/react";
+import { ListPost } from "../../components/ProfilePage/ListPost";
 
 export default function Profile() {
   const user = useSelector((state) => state.auth?.login.currentUser);
@@ -13,6 +14,7 @@ export default function Profile() {
     <Box>
       <Banner user={user} />
       <Interest user={user} />
+      <ListPost user={user} />
       <Contact />
     </Box>
   );

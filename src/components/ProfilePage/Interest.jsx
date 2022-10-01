@@ -1,7 +1,8 @@
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import colorSharp from "../../assets/img/color-sharp.png";
-import { Box } from "@chakra-ui/react";
+import { Box, Center } from "@chakra-ui/react";
+import { TiTick } from "react-icons/ti";
 
 export const Interest = ({ user }) => {
   const responsive = {
@@ -37,19 +38,14 @@ export const Interest = ({ user }) => {
                 infinite={true}
                 className="owl-carousel owl-theme skill-slider"
               >
-                <div className="item">
-                  <h5>Web Development</h5>
-                </div>
+                <div className="item">{/* <h5>Web Development</h5> */}</div>
 
                 {user?.interrests?.map((interest, index) => {
                   return (
-                    <div
-                      className="item"
-                      key={index}
-                      style={{ color: "white" }}
-                    >
+                    <Center className="item" key={index}>
                       <h5>{interest}</h5>
-                    </div>
+                      <TiTick size={20} style={{ color: "green" }} />
+                    </Center>
                   );
                 })}
               </Carousel>
