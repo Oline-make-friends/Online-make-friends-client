@@ -17,12 +17,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { loginByGmail } from "../../redux/apiRequest";
+import { format } from "date-fns";
+import { TiDeleteOutline } from "react-icons/ti";
 
 export default function Updateprofile() {
   const user = useSelector((state) => state.auth?.login.currentUser);
   const dispatch = useDispatch();
   console.log(user);
-  const [startDate, setStartDate] = useState(new Date());
   const [image, setImage] = useState("");
   const [avatar, setAvatar] = useState(user?.avatar_url);
 
@@ -31,7 +32,8 @@ export default function Updateprofile() {
   const [gender, setGender] = useState(user?.gender);
   const [location, setLocation] = useState(user?.location);
   const [major, setMajor] = useState(user?.major);
-  const [interest, setInterest] = useState(user?.interrests);
+  const [interest, setInterest] = useState("");
+  const [dob, setDob] = useState(user?.date_of_birth);
 
   const updateAvatar = async (avatarURL) => {
     try {
@@ -81,12 +83,39 @@ export default function Updateprofile() {
         gender: gender,
         location: location,
         major: major,
+        date_of_birth: dob,
       });
       loginByGmail(user.username, dispatch, null, null);
-      console.log(startDate);
       toast.success("Update profile success");
     } catch (error) {
       toast.error("Update profile fail fail");
+    }
+  };
+
+  const removeInterest = async (value) => {
+    try {
+      await axios.post(
+        `http://localhost:8000/user/removeInterest/${user._id}`,
+        {
+          interest: value,
+        }
+      );
+      loginByGmail(user.username, dispatch, null, null);
+      toast.success("Update profile success");
+    } catch (error) {
+      toast.error("Update profile fail");
+    }
+  };
+
+  const addInterest = async (value) => {
+    try {
+      await axios.post(`http://localhost:8000/user/addInterest/${user._id}`, {
+        interest: value,
+      });
+      loginByGmail(user.username, dispatch, null, null);
+      toast.success("Update profile success");
+    } catch (error) {
+      toast.error("Update profile fail");
     }
   };
 
@@ -139,8 +168,11 @@ export default function Updateprofile() {
           <FormLabel>Date of birth</FormLabel>
           <Box border="1px" w="30%">
             <DatePicker
-              selected={startDate}
-              onChange={(date: Date) => setStartDate(date)}
+              value={dob}
+              onChange={(date: Date) => {
+                const result = format(date, "MM-dd-yyyy");
+                setDob(result);
+              }}
             />
           </Box>
         </FormControl>
@@ -175,13 +207,47 @@ export default function Updateprofile() {
             onChange={(e) => setMajor(e.target.value)}
           />
         </FormControl>
+
         <FormControl>
           <FormLabel>Interest</FormLabel>
+          <Box style={{ minWidth: "100%" }}>
+            {user?.interrests?.map((interest, index) => {
+              return (
+                <Button
+                  border="1px"
+                  key={index}
+                  _hover={{
+                    bg: "gray",
+                    color: "white",
+                  }}
+                  m="2"
+                  onClick={() => {
+                    removeInterest(interest);
+                  }}
+                >
+                  {interest}{" "}
+                  <TiDeleteOutline size={20} style={{ marginLeft: "5px" }} />
+                </Button>
+              );
+            })}
+          </Box>
           <Input
             type="text"
             value={interest}
             onChange={(e) => setInterest(e.target.value)}
-          />
+          ></Input>
+          <Box w="50%">
+            <Button
+              w="100%"
+              onClick={() => {
+                addInterest(interest);
+                setInterest("");
+              }}
+              m="4"
+            >
+              Add interest
+            </Button>
+          </Box>
         </FormControl>
         <Button onClick={updateProfile} m="4">
           Update
