@@ -10,6 +10,7 @@ import ResetPS from "./pages/Auth/ResetPS";
 import Header from "./components/Header/Header";
 import "react-toastify/dist/ReactToastify.css";
 import Updateprofile from "./pages/Profile/Updateprofile";
+import Chat from "./pages/ChatPage/Chat";
 
 function App() {
   const location = useLocation();
@@ -31,6 +32,7 @@ function App() {
         <Route element={<RequireAuth />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/updateProfile" element={<Updateprofile />} />
+          <Route path="/chat" element={<Chat />} />
         </Route>
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />

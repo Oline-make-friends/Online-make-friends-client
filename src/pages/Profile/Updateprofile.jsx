@@ -169,8 +169,9 @@ export default function Updateprofile() {
           <Box border="1px" w="30%">
             <DatePicker
               value={dob}
-              onChange={(date: Date) => {
-                const result = format(date, "MM-dd-yyyy");
+              onChange={(date) => {
+                const dResult = new Date(date);
+                const result = format(dResult, "MM-dd-yyyy");
                 setDob(result);
               }}
             />
