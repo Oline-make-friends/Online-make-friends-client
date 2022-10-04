@@ -1,16 +1,25 @@
 import { Box, Button, Text, Flex, Stack } from "@chakra-ui/react";
 import React from "react";
+import GroupChatModel from "./GroupChatModel";
 
 const MyChats = (props) => {
   const user = props.user;
   const chats = props.chats;
-  const selectedChat = props.selectedchat;
-  console.log(chats);
+  const selectedChat = props.chat;
+
+  const getSender = (chat) => {
+    return chat?.users[0]._id === user?._id
+      ? chat?.users[1].name
+      : chat?.users[0].name;
+  };
+  const sendData = (chat) => {
+    props.parentCallback(chat);
+    console.log(selectedChat);
+  };
   return (
     <Box
-      d={{ base: selectedChat ? " none " : " flex ", md: " flex " }}
       flexDir=" column "
-      alignItems=" center "
+      alignItems="center"
       p={3}
       bg=" white "
       w={{ base: "100%", md: "31%" }}
@@ -28,9 +37,11 @@ const MyChats = (props) => {
         alignItems="center"
       >
         <Text>My Chats</Text>
-        <Button d="flex" fontSize={{ base: "17px", md: "10px", lg: "17px" }}>
-          New Group Chat
-        </Button>
+        <GroupChatModel>
+          <Button d="flex" fontSize={{ base: "17px", md: "10px", lg: "17px" }}>
+            New Group Chat
+          </Button>
+        </GroupChatModel>
       </Flex>
       <Flex
         flexDirection="column"
@@ -46,13 +57,19 @@ const MyChats = (props) => {
             return (
               <Box
                 key={chat?._id}
+                cursor="pointer"
                 bg="#E8E8E8"
-                color="black"
+                color="Black"
                 px="3"
                 py="2"
                 borderRadius="lg"
+                onClick={() => {
+                  sendData(chat);
+                }}
               >
-                <Text>{chat?.chatName}</Text>
+                <Text>
+                  {chat?.isGroupChat ? getSender(chat) : chat?.chatName}
+                </Text>
               </Box>
             );
           })}

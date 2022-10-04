@@ -10,7 +10,7 @@ import ChatBox from "../../components/ChatPage/ChatBox";
 export default function Chat() {
   const user = useSelector((state) => state.auth?.login.currentUser);
   const [chats, setChats] = useState([]);
-  const [selectedChat, setSelectedchat] = useState({});
+  const [chat, setChat] = useState("");
   const handleGetChats = async () => {
     try {
       const res = await axios.get("http://localhost:8000/chat/getAll");
@@ -20,8 +20,8 @@ export default function Chat() {
       toast.error("get chats user fail!");
     }
   };
-  const setChatNow = (childData) => {
-    setSelectedchat(childData);
+  const callbackFunction = (childData) => {
+    setChat(childData);
   };
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function Chat() {
   }, []);
   return (
     <div style={{ width: "100vw", minHeight: "100vh" }} className="chat">
-      <SideDrawer user={user} setChatNow={setChatNow} />
+      <SideDrawer user={user} />
       <Flex
         flexDirection="row"
         justifyContent="space-between"
@@ -38,8 +38,13 @@ export default function Chat() {
         h="91.5vh"
         p="10px"
       >
-        <MyChats chats={chats} selectedchat={selectedChat} user={user} />
-        <ChatBox selectedchat={selectedChat} />
+        <MyChats
+          chats={chats}
+          user={user}
+          parentCallback={callbackFunction}
+          chat={chat}
+        />
+        <ChatBox chat={chat} />
       </Flex>
     </div>
   );
