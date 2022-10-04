@@ -26,7 +26,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [fullname, setFullname] = useState("");
-  const [gender, setGender] = useState("");
+  const [gender, setGender] = useState("Male");
 
   const handleRegister = async () => {
     try {
@@ -42,6 +42,7 @@ export default function Register() {
       navigate("/Login");
     } catch (error) {
       toast.error("Regis fail!");
+      console.log(error.message);
     }
   };
 

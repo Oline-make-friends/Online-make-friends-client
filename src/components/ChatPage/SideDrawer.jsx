@@ -16,16 +16,47 @@ import {
   DrawerContent,
   DrawerCloseButton,
   Input,
+  Avatar,
 } from "@chakra-ui/react";
+import axios from "axios";
 import React, { useState } from "react";
 import { AiOutlineSearch, AiFillBell } from "react-icons/ai";
+import { toast } from "react-toastify";
+import { loginByGmail } from "../../redux/apiRequest";
+import { useDispatch } from "react-redux";
 
-const SideDrawer = () => {
+const SideDrawer = (props) => {
+  const user = props.user;
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [loadingChat, setLoadingChat] = useState();
-  const handleSearch = () => {};
+  // const [loadingChat, setLoadingChat] = useState();
+
+  const handleSearch = () => {
+    if (!search) {
+      toast.error("please input something");
+      return;
+    }
+    try {
+      loginByGmail(user.username, dispatch, null, null);
+      const result = [];
+      user.friends?.forEach((item) => {
+        if (item?.fullname.toLowerCase().includes(search.toLowerCase()))
+          result.push(item);
+      });
+      setSearchResult(result);
+    } catch (error) {
+      toast.error("can not find");
+    }
+  };
+
+  const accessChat = async (userId) => {
+    try {
+      await axios.post("http://localhost:8000/api/chat", {
+        userId,
+      });
+    } catch (error) {}
+  };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
@@ -87,6 +118,37 @@ const SideDrawer = () => {
               />
               <Button onClick={handleSearch}> Go </Button>
             </Flex>
+            {searchResult?.map((user) => {
+              return (
+                <Flex
+                  my="2"
+                  h="65px"
+                  w="100%"
+                  bg="#E8E8E8"
+                  alignItems="center"
+                  p="2"
+                  cursor="pointer"
+                  _hover={{
+                    background: "#38B2AC",
+                    color: "white",
+                  }}
+                  onClick={() => {
+                    accessChat(user?._id);
+                  }}
+                  key={user?._id}
+                >
+                  <Avatar src={user?.avatar_url} />
+                  <Flex flexDirection="column">
+                    <Text mx="4" as="b">
+                      {user?.fullname}
+                    </Text>
+                    <Text mx="4" fontSize="xs">
+                      Email: {user?.username}
+                    </Text>
+                  </Flex>
+                </Flex>
+              );
+            })}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
