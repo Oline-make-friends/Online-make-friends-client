@@ -44,7 +44,7 @@ export default function Chat() {
           parentCallback={callbackFunction}
           chat={chat}
         />
-        <ChatBox chat={chat} />
+        <ChatBox chat={chat} user={user} />
       </Flex>
     </div>
   );

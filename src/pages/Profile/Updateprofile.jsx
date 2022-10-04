@@ -10,6 +10,7 @@ import {
   Textarea,
   Image,
   Button,
+  Spinner,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
@@ -34,6 +35,7 @@ export default function Updateprofile() {
   const [major, setMajor] = useState(user?.major);
   const [interest, setInterest] = useState("");
   const [dob, setDob] = useState(user?.date_of_birth);
+  const [loading, setLoading] = useState(false);
 
   const updateAvatar = async (avatarURL) => {
     try {
@@ -59,6 +61,7 @@ export default function Updateprofile() {
       formData.append("upload_preset", "oi7qyalz");
       // Tải ảnh lên cloudinary
       // API: https://api.cloudinary.com/v1_1/{Cloudinary-Name}/image/upload
+      setLoading(true);
       axios
         .post(
           "https://api.cloudinary.com/v1_1/mklaaicogido123/image/upload",
@@ -67,9 +70,13 @@ export default function Updateprofile() {
         .then((response) => {
           // setUrl(response.data.url);
           // setAvatar(response.data.url);
+          setLoading(false);
           updateAvatar(response.data.url);
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          setLoading(false);
+          console.error(err);
+        });
     } else {
       toast.error("choice image before change");
     }
@@ -143,6 +150,17 @@ export default function Updateprofile() {
           />
           <Button onClick={uploadImage}>change avatar</Button>
         </Box>
+        {loading ? (
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+        ) : (
+          ""
+        )}
         <br></br>
         <FormControl mt="2">
           <FormLabel>Full name</FormLabel>
