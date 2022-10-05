@@ -19,6 +19,8 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { CometChat } from "@cometchat-pro/chat";
+import * as CONSTANT from "../../constants/constans";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -32,13 +34,24 @@ export default function Register() {
     try {
       console.log(email + fullname + password + gender);
 
-      await axios.post("http://localhost:8000/auth/register", {
+      const res = await axios.post("http://localhost:8000/auth/register", {
         username: email,
         password: password,
         fullname: fullname,
         gender: gender,
       });
       toast.success("Regis success!");
+      //create for chat
+      var user = new CometChat.User(res.data._id);
+      user.setName(fullname);
+      CometChat.createUser(user, CONSTANT.AUTH_KEY).then(
+        (user) => {
+          console.log("user created", user);
+        },
+        (error) => {
+          console.log("error", error);
+        }
+      );
       navigate("/Login");
     } catch (error) {
       toast.error("Regis fail!");

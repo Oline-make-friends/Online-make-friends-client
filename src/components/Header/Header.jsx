@@ -29,8 +29,9 @@ const Header = () => {
   }
 	`;
   const user = useSelector((state) => state.auth?.login.currentUser);
-  console.log(user);
+
   const dispatch = useDispatch();
+  console.log(user);
   const logOut = () => {
     logOutUser(dispatch);
   };
