@@ -8,6 +8,30 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import { persistor, store } from "./redux/store";
 import { ChakraProvider } from "@chakra-ui/react";
+import { CometChat } from "@cometchat-pro/chat";
+
+//comet chat
+import * as CONSTANT from "./constants/constans";
+const appSetting = new CometChat.AppSettingsBuilder()
+  .subscribePresenceForAllUsers()
+  .setRegion(CONSTANT.APP_REGION)
+  .build();
+CometChat.init(CONSTANT.APP_ID, appSetting).then(
+  () => {
+    console.log("Initialization completed successfully");
+    // You can now call login function.
+  },
+  (error) => {
+    console.log("Initialization failed with error:", error);
+    // Check the reason for error and take appropriate action.
+  }
+);
+// CometChat.login(
+//   "6335a9c9a66b7ceb017988ba",
+//   "6e29092985743855d31852a40ad9d8aa9a3dd6d9"
+// )
+//   .then(console.log("Login success"))
+//   .catch(console.log("Login fail"));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

@@ -10,7 +10,6 @@ import {
   Box,
   keyframes,
   Input,
-  Select,
   Link,
 } from "@chakra-ui/react";
 import { AiFillHome } from "react-icons/ai";
@@ -63,13 +62,14 @@ const Header = () => {
         </Flex>
 
         <Flex align="center">
-          <Box>
-            <Select placeholder="Pages" border="none">
-              <option value="option1">Option 1</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
-            </Select>
-          </Box>
+          <div class="dropdown">
+            <Flex alignItems="center" justifyContent="center">
+              Pages <RiArrowDropDownLine size={30} />
+            </Flex>
+            <div class="dropdown-content">
+              <Link href="/CometChat">Chat page</Link>
+            </div>
+          </div>
           <div class="dropdown">
             <Flex alignItems="center" justifyContent="center">
               Account <RiArrowDropDownLine size={30} />
