@@ -69,6 +69,8 @@ const Header = () => {
             </Flex>
             <div class="dropdown-content">
               <Link href="/CometChat">Chat page</Link>
+              <br></br>
+              <Link href="/allpost">All post</Link>
             </div>
           </div>
           <div class="dropdown">
@@ -77,8 +79,8 @@ const Header = () => {
             </Flex>
             <div class="dropdown-content">
               <Link href="/updateProfile">Profile</Link>
-              <p>Hello World!</p>
-              <p>Hello 2</p>
+              <br></br>
+              <Link href="/updatePassword">UpdatePassword</Link>
             </div>
           </div>
           <Text mx="4">{user?.fullname}</Text>

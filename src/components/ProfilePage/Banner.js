@@ -5,8 +5,10 @@ import { ArrowRightCircle } from "react-bootstrap-icons";
 import "animate.css";
 import TrackVisibility from "react-on-screen";
 import { Box, Image, Text } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
 export const Banner = ({ user }) => {
+  const currentUser = useSelector((state) => state.auth?.login.currentUser);
   const [loopNum, setLoopNum] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [text, setText] = useState("");
@@ -76,11 +78,16 @@ export const Banner = ({ user }) => {
                       <span className="wrap">{text}</span>
                     </span>
                   </h1>
-                  <Text as="bold">Gender: {user.gender}</Text>
+                  <Text as="bold">Gender: {user?.gender}</Text>
                   <p>{user?.about}</p>
-                  <button onClick={() => console.log("connect")}>
-                    Add friend <ArrowRightCircle size={25} />
-                  </button>
+                  {currentUser?._id === user?._id ? (
+                    <></>
+                  ) : (
+                    <button onClick={() => console.log("connect")}>
+                      Add friend <ArrowRightCircle size={25} />
+                    </button>
+                  )}
+
                   <br></br>
                   <Box boxSize="sm">
                     <Image src={user?.avatar_url} alt="User avatar" />

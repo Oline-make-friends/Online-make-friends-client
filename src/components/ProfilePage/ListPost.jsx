@@ -103,7 +103,7 @@ export const ListPost = ({ user }) => {
                 <Link
                   mx="4"
                   onClick={() => {
-                    navigate("/post", {
+                    navigate("/Post", {
                       state: {
                         post,
                       },

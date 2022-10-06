@@ -12,6 +12,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Updateprofile from "./pages/Profile/Updateprofile";
 import Chat from "./pages/ChatPage/Chat";
 import CometChat from "./pages/CometChat/CometChat";
+import Post from "./pages/Post/Post";
+import OtherProfile from "./pages/Profile/OtherProfile";
+import AllPost from "./pages/AllPost/AllPost";
 
 function App() {
   const location = useLocation();
@@ -35,6 +38,9 @@ function App() {
           <Route path="/updateProfile" element={<Updateprofile />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/CometChat" element={<CometChat />} />
+          <Route path="/Post" element={<Post />} />
+          <Route path="/otherProfile" element={<OtherProfile />} />
+          <Route path="/allPost" element={<AllPost />} />
         </Route>
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />
