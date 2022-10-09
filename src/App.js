@@ -15,6 +15,7 @@ import CometChat from "./pages/CometChat/CometChat";
 import Post from "./pages/Post/Post";
 import OtherProfile from "./pages/Profile/OtherProfile";
 import AllPost from "./pages/AllPost/AllPost";
+import UploadPost from "./pages/Post/UploadPost";
 
 function App() {
   const location = useLocation();
@@ -41,6 +42,7 @@ function App() {
           <Route path="/Post" element={<Post />} />
           <Route path="/otherProfile" element={<OtherProfile />} />
           <Route path="/allPost" element={<AllPost />} />
+          <Route path="/uploadPost" element={<UploadPost />} />
         </Route>
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />

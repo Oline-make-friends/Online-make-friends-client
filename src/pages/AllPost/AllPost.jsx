@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Avatar, Flex, Text, Center, Image, Link } from "@chakra-ui/react";
+import { Box, Flex, Text, Center, Image, Link } from "@chakra-ui/react";
 import AvatarUser from "../../components/AvatarUser";
 // import { BiLike } from "react-icons/bi";
 // import { BsFillChatLeftDotsFill } from "react-icons/bs";
