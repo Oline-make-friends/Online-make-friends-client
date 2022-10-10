@@ -17,7 +17,7 @@ const AvatarUser = (props) => {
       }}
       cursor="crosshair"
     >
-      <Avatar src={user?.avatar_url} h="50px" w="50px" mx="2" />
+      <Avatar src={user?.avatar_url} h="50px" w="50px" />
     </Link>
   );
 };

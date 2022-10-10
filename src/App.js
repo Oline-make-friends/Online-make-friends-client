@@ -43,6 +43,7 @@ function App() {
           <Route path="/otherProfile" element={<OtherProfile />} />
           <Route path="/uploadPost" element={<UploadPost />} />
           <Route path="/allPost" element={<AllPost />} />
+          <Route path="/uploadPost" element={<UploadPost />} />
         </Route>
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />

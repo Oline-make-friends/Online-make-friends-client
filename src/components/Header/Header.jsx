@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOutUser } from "../../redux/apiRequest";
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -7,13 +7,26 @@ import {
   Avatar,
   Text,
   Button,
-  Box,
   keyframes,
-  Input,
   Link,
+  Tooltip,
+  Box,
+  Drawer,
+  useDisclosure,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  Input,
 } from "@chakra-ui/react";
-import { AiFillHome } from "react-icons/ai";
+import { AiFillHome, AiOutlineSearch } from "react-icons/ai";
+import { toast } from "react-toastify";
+import { loginByGmail } from "../../redux/apiRequest";
 import "./header.css";
+import AvatarUser from "../AvatarUser";
+import axios from "axios";
+import FriendRequest from "../FriendRequest/FriendRequest";
 const Header = () => {
   const color = "teal";
   const pulseRing = keyframes`
@@ -29,12 +42,52 @@ const Header = () => {
   }
 	`;
   const user = useSelector((state) => state.auth?.login.currentUser);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef();
+  const [search, setSearch] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const [friendRequest, setFriendRequest] = useState([]);
 
   const dispatch = useDispatch();
   console.log(user);
   const logOut = () => {
     logOutUser(dispatch);
   };
+  const handleSearch = () => {
+    if (!search) {
+      toast.error("please input something");
+      return;
+    }
+    try {
+      loginByGmail(user.username, dispatch, null, null);
+      const result = [];
+      user.friends?.forEach((item) => {
+        if (item?.fullname.toLowerCase().includes(search.toLowerCase()))
+          result.push(item);
+      });
+      setSearchResult(result);
+    } catch (error) {
+      toast.error("can not find");
+    }
+  };
+
+  const getFriendRequest = async () => {
+    try {
+      const res = await axios.post("http://localhost:8000/user/getFrRq", {
+        receiver_id: user?._id,
+      });
+      setFriendRequest(res.data);
+      console.log(res.data);
+      toast.success("get friend request success");
+    } catch (error) {
+      toast.error("get friend request fail");
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getFriendRequest();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Flex w="100vw" h="8vh" bg="black" justifyContent="center">
@@ -59,10 +112,24 @@ const Header = () => {
               }}
             />
           </Link>
-          <Input placeholder="Search.." mx="2" />
+          {/* <Input placeholder="Search.." mx="2" /> */}
+          <Tooltip label="Search user to chat" hasArrow placement="bottom-end">
+            <Button variant="ghost" onClick={onOpen} ref={btnRef}>
+              <AiOutlineSearch />
+              <Text d={{ base: "none", md: "flex" }} px="4">
+                Search friend
+              </Text>
+            </Button>
+          </Tooltip>
         </Flex>
 
         <Flex align="center">
+          <div>
+            <Flex alignItems="center" justifyContent="center">
+              <FriendRequest listRequest={friendRequest} />{" "}
+              <RiArrowDropDownLine size={30} />
+            </Flex>
+          </div>
           <div class="dropdown">
             <Flex alignItems="center" justifyContent="center">
               Pages <RiArrowDropDownLine size={30} />
@@ -71,6 +138,8 @@ const Header = () => {
               <Link href="/CometChat">Chat page</Link>
               <br></br>
               <Link href="/allpost">All post</Link>
+              <br></br>
+              <Link href="/uploadPost">Upload post</Link>
             </div>
           </div>
           <div class="dropdown">
@@ -123,6 +192,59 @@ const Header = () => {
           </Button>
         </Flex>
       </Flex>
+      <Drawer
+        isOpen={isOpen}
+        placement="left"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Search user</DrawerHeader>
+
+          <DrawerBody>
+            <Flex pb={2}>
+              <Input
+                placeholder=" Search your friend "
+                mr={2}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <Button onClick={handleSearch}> Go </Button>
+            </Flex>
+            {searchResult?.map((user) => {
+              return (
+                <Flex
+                  my="2"
+                  h="65px"
+                  w="100%"
+                  bg="#E8E8E8"
+                  alignItems="center"
+                  p="2"
+                  cursor="pointer"
+                  _hover={{
+                    background: "#38B2AC",
+                    color: "white",
+                  }}
+                  key={user?._id}
+                >
+                  {/* <AvatarUser user={user} /> */}
+                  <AvatarUser user={user} />
+                  <Flex flexDirection="column">
+                    <Text mx="4" as="b">
+                      {user?.fullname}
+                    </Text>
+                    <Text mx="4" fontSize="xs">
+                      Email: {user?.username}
+                    </Text>
+                  </Flex>
+                </Flex>
+              );
+            })}
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </Flex>
   );
 };

@@ -6,6 +6,8 @@ import "animate.css";
 import TrackVisibility from "react-on-screen";
 import { Box, Image, Text } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export const Banner = ({ user }) => {
   const currentUser = useSelector((state) => state.auth?.login.currentUser);
@@ -54,6 +56,22 @@ export const Banner = ({ user }) => {
       // setIndex((prevIndex) => prevIndex + 1);
     }
   };
+  const sendFriendRequest = async () => {
+    try {
+      const res = await axios.post("http://localhost:8000/user/requestFriend", {
+        sender_id: currentUser._id,
+        receiver_id: user._id,
+      });
+      if (res.data === "You already request this friend!")
+        toast.success("You already request this friend!");
+      else {
+        toast.success("Send friend request success");
+      }
+    } catch (error) {
+      toast.error("send friend request fail");
+      console.log(error);
+    }
+  };
 
   return (
     <section className="banner" id="home" style={{ color: "white" }}>
@@ -83,7 +101,7 @@ export const Banner = ({ user }) => {
                   {currentUser?._id === user?._id ? (
                     <></>
                   ) : (
-                    <button onClick={() => console.log("connect")}>
+                    <button onClick={() => sendFriendRequest()}>
                       Add friend <ArrowRightCircle size={25} />
                     </button>
                   )}

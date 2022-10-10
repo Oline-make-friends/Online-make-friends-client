@@ -2,7 +2,6 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import {
   Box,
-  Avatar,
   Flex,
   Text,
   Center,
@@ -47,7 +46,7 @@ const Post = () => {
       >
         <Box my="2">
           <Flex>
-            <Avatar m={[2, 2]} src={`${post.created_by?.avatar_url}`} />
+            <AvatarUser m={[2, 2]} user={post?.created_by} />
             <Center style={{ display: "flex", flexDirection: "column" }}>
               <Text>
                 <b>{post.created_by.fullname}</b>
