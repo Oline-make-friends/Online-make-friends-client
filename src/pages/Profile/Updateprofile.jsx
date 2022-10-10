@@ -25,6 +25,7 @@ export default function Updateprofile() {
   const user = useSelector((state) => state.auth?.login.currentUser);
   const dispatch = useDispatch();
   console.log(user);
+
   const [image, setImage] = useState("");
   const [avatar, setAvatar] = useState(user?.avatar_url);
 
@@ -125,6 +126,9 @@ export default function Updateprofile() {
       toast.error("Update profile fail");
     }
   };
+  const removeSelectedImage = () => {
+    setImage();
+  };
 
   return (
     <Flex alignItems="start" justifyContent="center" p="4">
@@ -148,6 +152,17 @@ export default function Updateprofile() {
               setImage(e.target.files[0]);
             }}
           />
+          {image && (
+            <div>
+              <Image
+                src={URL.createObjectURL(image)}
+                w="400px"
+                h="400px"
+                alt="Thumb"
+              />
+              <Button onClick={removeSelectedImage}>Remove This Image</Button>
+            </div>
+          )}
           <Button onClick={uploadImage}>change avatar</Button>
         </Box>
         {loading ? (
