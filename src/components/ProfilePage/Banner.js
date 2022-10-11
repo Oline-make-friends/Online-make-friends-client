@@ -24,6 +24,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import AvatarUser from "../AvatarUser";
 import { loginByGmail } from "../../redux/apiRequest";
+import Follows from "./Follows";
 
 export const Banner = ({ user }) => {
   const currentUser = useSelector((state) => state.auth?.login?.currentUser);
@@ -103,6 +104,20 @@ export const Banner = ({ user }) => {
     }
   };
 
+  const Follow = async (id) => {
+    try {
+      await axios.post("http://localhost:8000/user/followUser", {
+        currentUser_id: currentUser._id,
+        follower_id: id,
+      });
+      loginByGmail(currentUser?.username, dispatch, null, null);
+      toast.success("Follow success");
+    } catch (error) {
+      toast.error("Unfollow fail");
+      console.log(error);
+    }
+  };
+
   return (
     <section className="banner" id="home" style={{ color: "white" }}>
       <Container>
@@ -127,14 +142,23 @@ export const Banner = ({ user }) => {
                     </span>
                   </h1>
                   <Text as="bold">Gender: {user?.gender}</Text>
-                  <Text onClick={onOpen}> Friends </Text>
+                  <Text onClick={onOpen} cursor="pointer">
+                    {user?.friends.length + " "}
+                    Friends{" "}
+                  </Text>
+                  <Follows user={user} />
                   <p>{user?.about}</p>
                   {currentUser?._id === user?._id ? (
                     <></>
                   ) : (
-                    <button onClick={() => sendFriendRequest()}>
-                      Add friend <ArrowRightCircle size={25} />
-                    </button>
+                    <>
+                      <button onClick={() => sendFriendRequest()}>
+                        Add friend <ArrowRightCircle size={25} />
+                      </button>
+                      <button onClick={() => Follow(user?._id)}>
+                        Follow <ArrowRightCircle size={25} />
+                      </button>
+                    </>
                   )}
 
                   <br></br>
@@ -165,7 +189,7 @@ export const Banner = ({ user }) => {
             <ModalHeader>Friends</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              {currentUser?.friends.map((friend) => {
+              {user?.friends.map((friend) => {
                 return (
                   <Flex
                     alignItems="center"
