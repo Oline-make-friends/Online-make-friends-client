@@ -80,7 +80,7 @@ export const Banner = ({ user }) => {
         receiver_id: user._id,
       });
       if (res.data === "You already request this friend!")
-        toast.success("You already request this friend!");
+        toast.error("You already request this friend!");
       else {
         toast.success("Send friend request success");
       }
@@ -106,12 +106,16 @@ export const Banner = ({ user }) => {
 
   const Follow = async (id) => {
     try {
-      await axios.post("http://localhost:8000/user/followUser", {
+      const res = await axios.post("http://localhost:8000/user/followUser", {
         currentUser_id: currentUser._id,
         follower_id: id,
       });
+      if (res.data === "You already follow this user!")
+        toast.error("You already follow this user!");
+      else {
+        toast.success("Follow success");
+      }
       loginByGmail(currentUser?.username, dispatch, null, null);
-      toast.success("Follow success");
     } catch (error) {
       toast.error("Unfollow fail");
       console.log(error);
