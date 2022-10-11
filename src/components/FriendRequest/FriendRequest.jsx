@@ -6,17 +6,32 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 export default function FriendRequest({ listRequest }) {
-  const accept = async (sender_id, receiver_id) => {
+  const accept = async (sender_id, receiver_id, request_id) => {
     try {
       await axios.post("http://localhost:8000/user/addFriend", {
         sender_id: sender_id,
         receiver_id: receiver_id,
       });
+      await axios.delete(
+        "http://localhost:8000/friendRequest/deleteFrRq/" + request_id
+      );
 
       toast.success("success");
+      window.location.reload();
     } catch (error) {
       toast.error("fail");
-      console.log(error.message);
+    }
+  };
+  const decline = async (request_id) => {
+    try {
+      await axios.delete(
+        "http://localhost:8000/friendRequest/deleteFrRq/" + request_id
+      );
+
+      toast.success("declined");
+      window.location.reload();
+    } catch (error) {
+      toast.error("fail");
     }
   };
   return (
@@ -35,12 +50,16 @@ export default function FriendRequest({ listRequest }) {
               <Text>{request?.sender_id?.fullname}</Text>
               <Button
                 onClick={() =>
-                  accept(request?.sender_id?._id, request?.receiver_id)
+                  accept(
+                    request?.sender_id?._id,
+                    request?.receiver_id,
+                    request?._id
+                  )
                 }
               >
                 Accept
               </Button>
-              <Button onClick={() => console.log("decline")}>Decline</Button>
+              <Button onClick={() => decline(request?._id)}>Decline</Button>
             </MenuItem>
           );
         })}

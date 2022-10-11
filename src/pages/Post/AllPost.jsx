@@ -70,12 +70,13 @@ const AllPost = () => {
               <Box mx="2">
                 <Text>{post?.content}</Text>
               </Box>
-              <Box>
+              <Box w="100%">
                 <Image
                   border="1px"
                   borderColor="black"
                   src={`${post?.imageUrl}`}
                   alt="image"
+                  w="100%"
                 />
               </Box>
               <Flex alignItems="start" my="2">

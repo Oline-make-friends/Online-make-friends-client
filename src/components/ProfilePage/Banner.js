@@ -19,10 +19,11 @@ import {
   Button,
   Flex,
 } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 import AvatarUser from "../AvatarUser";
+import { loginByGmail } from "../../redux/apiRequest";
 
 export const Banner = ({ user }) => {
   const currentUser = useSelector((state) => state.auth?.login?.currentUser);
@@ -33,7 +34,7 @@ export const Banner = ({ user }) => {
   const toRotate = ["Ho Chi Minh city", "K14", "FPT Student"];
   const period = 2000;
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const dispatch = useDispatch();
   useEffect(() => {
     let ticker = setInterval(() => {
       tick();
@@ -84,6 +85,20 @@ export const Banner = ({ user }) => {
       }
     } catch (error) {
       toast.error("send friend request fail");
+      console.log(error);
+    }
+  };
+
+  const unFriend = async (id) => {
+    try {
+      await axios.post("http://localhost:8000/user/deleteFriend", {
+        sender_id: currentUser._id,
+        receiver_id: id,
+      });
+      loginByGmail(user?.username, dispatch, null, null);
+      toast.success("Unfriend success");
+    } catch (error) {
+      toast.error("Unfriend fail");
       console.log(error);
     }
   };
@@ -161,7 +176,17 @@ export const Banner = ({ user }) => {
                       <AvatarUser m={[2, 2]} user={friend} />
                       <Text mx="2">{friend?.fullname}</Text>
                     </Flex>
-                    <Button>Remove</Button>
+                    {currentUser?._id !== user?._id ? (
+                      <></>
+                    ) : (
+                      <Button
+                        onClick={() => {
+                          unFriend(friend?._id);
+                        }}
+                      >
+                        Remove
+                      </Button>
+                    )}
                   </Flex>
                 );
               })}

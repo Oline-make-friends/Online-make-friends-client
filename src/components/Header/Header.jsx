@@ -102,7 +102,12 @@ const Header = () => {
         // opacity="0.5"
       >
         <Flex w="20%" h="100%" alignItems="center" mx="10%">
-          <Link href="/profile">
+          <Link
+            href="/profile"
+            onClick={() => {
+              loginByGmail(user?.username, dispatch, null, null);
+            }}
+          >
             <AiFillHome
               size={35}
               style={{
