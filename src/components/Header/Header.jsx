@@ -41,7 +41,7 @@ const Header = () => {
     opacity: 0;
   }
 	`;
-  const user = useSelector((state) => state.auth?.login.currentUser);
+  const user = useSelector((state) => state.auth?.login?.currentUser);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
   const [search, setSearch] = useState("");
@@ -53,15 +53,16 @@ const Header = () => {
   const logOut = () => {
     logOutUser(dispatch);
   };
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (!search) {
       toast.error("please input something");
       return;
     }
     try {
-      loginByGmail(user.username, dispatch, null, null);
+      const res = await axios.get("http://localhost:8000/user/getAllUser");
+      loginByGmail(user?.username, dispatch, null, null);
       const result = [];
-      user.friends?.forEach((item) => {
+      res.data.forEach((item) => {
         if (item?.fullname.toLowerCase().includes(search.toLowerCase()))
           result.push(item);
       });

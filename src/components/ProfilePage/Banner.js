@@ -4,20 +4,35 @@ import headerImg from "../../assets/img/header-img.svg";
 import { ArrowRightCircle } from "react-bootstrap-icons";
 import "animate.css";
 import TrackVisibility from "react-on-screen";
-import { Box, Image, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Button,
+  Flex,
+} from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
+import AvatarUser from "../AvatarUser";
 
 export const Banner = ({ user }) => {
-  const currentUser = useSelector((state) => state.auth?.login.currentUser);
+  const currentUser = useSelector((state) => state.auth?.login?.currentUser);
   const [loopNum, setLoopNum] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [text, setText] = useState("");
   const [delta, setDelta] = useState(300 - Math.random() * 100);
-  // const [index, setIndex] = useState(1);
   const toRotate = ["Ho Chi Minh city", "K14", "FPT Student"];
   const period = 2000;
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     let ticker = setInterval(() => {
@@ -97,6 +112,7 @@ export const Banner = ({ user }) => {
                     </span>
                   </h1>
                   <Text as="bold">Gender: {user?.gender}</Text>
+                  <Text onClick={onOpen}> Friends </Text>
                   <p>{user?.about}</p>
                   {currentUser?._id === user?._id ? (
                     <></>
@@ -108,7 +124,7 @@ export const Banner = ({ user }) => {
 
                   <br></br>
                   <Box boxSize="sm">
-                    <Image src={user?.avatar_url} alt="User avatar" />
+                    <Image src={user?.avatar_url} alt="User avatar" h="400px" />
                   </Box>
                 </div>
               )}
@@ -128,6 +144,40 @@ export const Banner = ({ user }) => {
             </TrackVisibility>
           </Col>
         </Row>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Friends</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              {currentUser?.friends.map((friend) => {
+                return (
+                  <Flex
+                    alignItems="center"
+                    my="2"
+                    justifyContent="space-between"
+                  >
+                    <Flex alignItems="center">
+                      <AvatarUser m={[2, 2]} user={friend} />
+                      <Text mx="2">{friend?.fullname}</Text>
+                    </Flex>
+                    <Button>Remove</Button>
+                  </Flex>
+                );
+              })}
+              <Flex alignItems="center">
+                {/* <AvatarUser m={[2, 2]} user={post?.created_by} /> */}
+                <Text>{/* <b>{post?.created_by?.fullname}</b> */}</Text>
+              </Flex>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Container>
     </section>
   );
