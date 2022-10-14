@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import headerImg from "../../assets/img/header-img.svg";
 import { ArrowRightCircle } from "react-bootstrap-icons";
@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 import AvatarUser from "../AvatarUser";
 import { loginByGmail } from "../../redux/apiRequest";
 import Follows from "./Follows";
+import socketIOClient from "socket.io-client";
 
 export const Banner = ({ user }) => {
   const currentUser = useSelector((state) => state.auth?.login?.currentUser);
@@ -36,16 +37,24 @@ export const Banner = ({ user }) => {
   const period = 2000;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
+
+  const host = "http://localhost:8000";
+  const socketRef = useRef();
+
   useEffect(() => {
     let ticker = setInterval(() => {
       tick();
     }, delta);
+    socketRef.current = socketIOClient.connect(host);
 
     return () => {
       clearInterval(ticker);
     };
     // eslint-disable-next-line
   }, [text]);
+  const socket = () => {
+    socketRef.current.emit("sendacceptFriendRequest");
+  };
 
   const tick = () => {
     let i = loopNum % toRotate.length;
@@ -83,6 +92,7 @@ export const Banner = ({ user }) => {
         toast.error("You already request this friend!");
       else {
         toast.success("Send friend request success");
+        socketRef.current.emit("sendFriendRequest");
       }
     } catch (error) {
       toast.error("send friend request fail");
@@ -98,6 +108,7 @@ export const Banner = ({ user }) => {
       });
       loginByGmail(user?.username, dispatch, null, null);
       toast.success("Unfriend success");
+      socket();
     } catch (error) {
       toast.error("Unfriend fail");
       console.log(error);

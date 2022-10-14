@@ -10,6 +10,7 @@ import { CometChat } from "@cometchat-pro/chat";
 
 export default function Profile() {
   const user = useSelector((state) => state.auth?.login?.currentUser);
+  console.log(user.friends);
   CometChat.login(`${user._id}`, "6e29092985743855d31852a40ad9d8aa9a3dd6d9")
     .then(console.log("Login success"))
     .catch(console.log("Login fail"));

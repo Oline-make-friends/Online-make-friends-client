@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOutUser } from "../../redux/apiRequest";
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -27,6 +27,8 @@ import "./header.css";
 import AvatarUser from "../AvatarUser";
 import axios from "axios";
 import FriendRequest from "../FriendRequest/FriendRequest";
+import socketIOClient from "socket.io-client";
+
 const Header = () => {
   const color = "teal";
   const pulseRing = keyframes`
@@ -85,8 +87,25 @@ const Header = () => {
       console.log(error);
     }
   };
+
+  const socket = () => {
+    socketRef.current.emit("sendacceptFriendRequest");
+  };
+  const host = "http://localhost:8000";
+  const socketRef = useRef();
+
   useEffect(() => {
     getFriendRequest();
+    socketRef.current = socketIOClient.connect(host);
+    console.log(socketRef.current);
+    socketRef.current.on("getFriendRequest", (msg) => {
+      console.log(msg);
+      getFriendRequest();
+    });
+    socketRef.current.on("acceptFriendRequest", (msg) => {
+      console.log(msg);
+      loginByGmail(user?.username, dispatch, null, null);
+    });
     // eslint-disable-next-line
   }, []);
 
@@ -123,7 +142,7 @@ const Header = () => {
             <Button variant="ghost" onClick={onOpen} ref={btnRef}>
               <AiOutlineSearch />
               <Text d={{ base: "none", md: "flex" }} px="4">
-                Search friend
+                Search users
               </Text>
             </Button>
           </Tooltip>
@@ -132,7 +151,12 @@ const Header = () => {
         <Flex align="center">
           <div>
             <Flex alignItems="center" justifyContent="center">
-              <FriendRequest listRequest={friendRequest} />{" "}
+              <FriendRequest
+                listRequest={friendRequest}
+                getFriendRequest={getFriendRequest}
+                user={user}
+                socket={socket}
+              />{" "}
               <RiArrowDropDownLine size={30} />
             </Flex>
           </div>

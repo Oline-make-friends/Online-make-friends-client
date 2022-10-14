@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Menu, MenuButton, MenuList, MenuItem, Text } from "@chakra-ui/react";
 import AvatarUser from "../AvatarUser";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { FaUserFriends } from "react-icons/fa";
+import "./friendRequest.css";
+import { loginByGmail } from "../../redux/apiRequest";
+import { useDispatch } from "react-redux";
 
-export default function FriendRequest({ listRequest }) {
+export default function FriendRequest({
+  listRequest,
+  getFriendRequest,
+  user,
+  socket,
+}) {
+  const dispatch = useDispatch();
   const accept = async (sender_id, receiver_id, request_id) => {
     try {
       await axios.post("http://localhost:8000/user/addFriend", {
@@ -15,9 +25,10 @@ export default function FriendRequest({ listRequest }) {
       await axios.delete(
         "http://localhost:8000/friendRequest/deleteFrRq/" + request_id
       );
-
+      loginByGmail(user?.username, dispatch, null, null);
       toast.success("success");
-      window.location.reload();
+      getFriendRequest();
+      socket();
     } catch (error) {
       toast.error("fail");
     }
@@ -29,14 +40,25 @@ export default function FriendRequest({ listRequest }) {
       );
 
       toast.success("declined");
-      window.location.reload();
+      getFriendRequest();
     } catch (error) {
       toast.error("fail");
     }
   };
+  useEffect(() => {}, []);
+
   return (
     <Menu mx="4">
-      <MenuButton>Friend request</MenuButton>
+      <MenuButton>
+        <div className="icon">
+          <FaUserFriends className="iconImg" />
+          {listRequest.length === 0 ? (
+            <></>
+          ) : (
+            <div className="counter">{listRequest.length}</div>
+          )}
+        </div>
+      </MenuButton>
       <MenuList bg="black" color="white">
         {/* <MenuItem>Download</MenuItem>
         <MenuItem>Create a Copy</MenuItem>

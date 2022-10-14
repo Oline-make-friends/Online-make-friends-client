@@ -38,6 +38,7 @@
     "react-use-googlelogin": "^0.12.5",
     "reactjs-popup": "^2.0.5",
     "redux-persist": "^6.0.0",
+    "socket.io-client": "^4.5.0",
     "swiper": "^8.4.2",
     "twemoji": "^14.0.2",
     "web-vitals": "^2.1.4"

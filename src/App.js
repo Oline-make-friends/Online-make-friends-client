@@ -16,8 +16,19 @@ import Post from "./pages/Post/Post";
 import OtherProfile from "./pages/Profile/OtherProfile";
 import AllPost from "./pages/Post/AllPost";
 import UploadPost from "./pages/Post/UploadPost";
+import socketIOClient from "socket.io-client";
+import { useEffect, useRef } from "react";
 
 function App() {
+  const host = "http://localhost:8000";
+
+  const socketRef = useRef();
+
+  useEffect(() => {
+    socketRef.current = socketIOClient.connect(host);
+    // // eslint-disable-next-line
+  }, []);
+
   const location = useLocation();
   const setHeader = (path) => {
     if (

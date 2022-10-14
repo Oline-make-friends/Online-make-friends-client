@@ -26,12 +26,6 @@ CometChat.init(CONSTANT.APP_ID, appSetting).then(
     // Check the reason for error and take appropriate action.
   }
 );
-// CometChat.login(
-//   "6335a9c9a66b7ceb017988ba",
-//   "6e29092985743855d31852a40ad9d8aa9a3dd6d9"
-// )
-//   .then(console.log("Login success"))
-//   .catch(console.log("Login fail"));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
