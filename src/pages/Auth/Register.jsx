@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { CometChat } from "@cometchat-pro/chat";
 import * as CONSTANT from "../../constants/constans";
+import { baseURL } from "../../utils/api";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ export default function Register() {
     try {
       console.log(email + fullname + password + gender);
 
-      const res = await axios.post("http://localhost:8000/auth/register", {
+      const res = await axios.post(`${baseURL}auth/register`, {
         username: email,
         password: password,
         fullname: fullname,
@@ -44,7 +45,9 @@ export default function Register() {
       //create for chat
       var user = new CometChat.User(res.data._id);
       user.setName(fullname);
-      user.setAvatar("https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-Conversation-lam-hinh-dai-dien.jpg");
+      user.setAvatar(
+        "https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-Conversation-lam-hinh-dai-dien.jpg"
+      );
       CometChat.createUser(user, CONSTANT.AUTH_KEY).then(
         (user) => {
           console.log("user created", user);

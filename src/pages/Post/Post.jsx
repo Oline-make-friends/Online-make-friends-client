@@ -24,6 +24,7 @@ import { FaRegComment } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { baseURL } from "../../utils/api";
 
 const Post = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,7 +38,7 @@ const Post = () => {
 
   const handleLikePost = async (postId) => {
     try {
-      await axios.post(`http://localhost:8000/post/like/`, {
+      await axios.post(`${baseURL}post/like/`, {
         _id: postId,
         userId: user?._id,
       });
@@ -48,7 +49,7 @@ const Post = () => {
   };
   const handleGetPost = async () => {
     try {
-      const res = await axios.post(`http://localhost:8000/post/getPost/` + id);
+      const res = await axios.post(`${baseURL}post/getPost/` + id);
       var likee = false;
       res.data?.likes.forEach((like) => {
         if (like._id === user?._id) {
@@ -63,7 +64,7 @@ const Post = () => {
   };
   const handleComment = async (postId) => {
     try {
-      await axios.post(`http://localhost:8000/post/comment/`, {
+      await axios.post(`${baseURL}post/comment/`, {
         id: post?._id,
         postid: postId,
       });
@@ -78,7 +79,7 @@ const Post = () => {
       e.preventDefault();
       setLoading(true);
       await axios
-        .post(`http://localhost:8000/comment/add/`, {
+        .post(`${baseURL}comment/add/`, {
           user_id: user._id,
           content: comment,
         })

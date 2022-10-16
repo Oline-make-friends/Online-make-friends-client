@@ -28,6 +28,7 @@ import AvatarUser from "../AvatarUser";
 import axios from "axios";
 import FriendRequest from "../FriendRequest/FriendRequest";
 import socketIOClient from "socket.io-client";
+import { baseURL } from "../../utils/api";
 
 const Header = () => {
   const color = "teal";
@@ -61,7 +62,7 @@ const Header = () => {
       return;
     }
     try {
-      const res = await axios.get("http://localhost:8000/user/getAllUser");
+      const res = await axios.get(`${baseURL}user/getAllUser`);
       loginByGmail(user?.username, dispatch, null, null);
       const result = [];
       res.data.forEach((item) => {
@@ -76,7 +77,7 @@ const Header = () => {
 
   const getFriendRequest = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/user/getFrRq", {
+      const res = await axios.post(`${baseURL}user/getFrRq`, {
         receiver_id: user?._id,
       });
       setFriendRequest(res.data);
@@ -91,7 +92,7 @@ const Header = () => {
   const socket = () => {
     socketRef.current.emit("sendacceptFriendRequest");
   };
-  const host = "http://localhost:8000";
+  const host = `${baseURL}`;
   const socketRef = useRef();
 
   useEffect(() => {
@@ -247,7 +248,6 @@ const Header = () => {
               return (
                 <Flex
                   my="2"
-                  h="65px"
                   w="100%"
                   bg="#E8E8E8"
                   alignItems="center"
@@ -258,17 +258,13 @@ const Header = () => {
                     color: "white",
                   }}
                   key={user?._id}
+                  direction="column"
                 >
                   {/* <AvatarUser user={user} /> */}
                   <AvatarUser user={user} />
-                  <Flex flexDirection="column">
-                    <Text mx="4" as="b">
-                      {user?.fullname}
-                    </Text>
-                    <Text mx="4" fontSize="xs">
-                      Email: {user?.username}
-                    </Text>
-                  </Flex>
+                  <Text mx="4" fontSize="xs">
+                    Email: {user?.username}
+                  </Text>
                 </Flex>
               );
             })}

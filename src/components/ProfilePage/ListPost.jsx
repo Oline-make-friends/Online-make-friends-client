@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
+import { baseURL } from "../../utils/api";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
@@ -23,9 +24,7 @@ export const ListPost = ({ user }) => {
   const [posts, setPosts] = useState([]);
   const handleGetAllPost = async () => {
     try {
-      const res = await axios.post(
-        `http://localhost:8000/post/get/` + user._id
-      );
+      const res = await axios.post(`${baseURL}post/get/` + user._id);
       toast.success("get post success!");
       setPosts(res.data);
     } catch (error) {
@@ -35,7 +34,7 @@ export const ListPost = ({ user }) => {
 
   const handleLikePost = async (postId) => {
     try {
-      await axios.post(`http://localhost:8000/post/like/`, {
+      await axios.post(`${baseURL}post/like/`, {
         _id: postId,
         userId: user?._id,
       });

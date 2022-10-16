@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Menu, MenuButton, MenuList, MenuItem, Text } from "@chakra-ui/react";
+import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import AvatarUser from "../AvatarUser";
 import { Button } from "react-bootstrap";
 import axios from "axios";
@@ -8,6 +8,7 @@ import { FaUserFriends } from "react-icons/fa";
 import "./friendRequest.css";
 import { loginByGmail } from "../../redux/apiRequest";
 import { useDispatch } from "react-redux";
+import { baseURL } from "../../utils/api";
 
 export default function FriendRequest({
   listRequest,
@@ -18,13 +19,11 @@ export default function FriendRequest({
   const dispatch = useDispatch();
   const accept = async (sender_id, receiver_id, request_id) => {
     try {
-      await axios.post("http://localhost:8000/user/addFriend", {
+      await axios.post(`${baseURL}user/addFriend`, {
         sender_id: sender_id,
         receiver_id: receiver_id,
       });
-      await axios.delete(
-        "http://localhost:8000/friendRequest/deleteFrRq/" + request_id
-      );
+      await axios.delete(`${baseURL}friendRequest/deleteFrRq/` + request_id);
       loginByGmail(user?.username, dispatch, null, null);
       toast.success("success");
       getFriendRequest();
@@ -35,9 +34,7 @@ export default function FriendRequest({
   };
   const decline = async (request_id) => {
     try {
-      await axios.delete(
-        "http://localhost:8000/friendRequest/deleteFrRq/" + request_id
-      );
+      await axios.delete(`${baseURL}friendRequest/deleteFrRq/` + request_id);
 
       toast.success("declined");
       getFriendRequest();
@@ -69,7 +66,6 @@ export default function FriendRequest({
           return (
             <MenuItem key={request?._id} p="2">
               <AvatarUser user={request?.sender_id} />
-              <Text>{request?.sender_id?.fullname}</Text>
               <Button
                 onClick={() =>
                   accept(

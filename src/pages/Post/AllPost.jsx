@@ -8,13 +8,14 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { baseURL } from "../../utils/api";
 
 const AllPost = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const handleGetAllPost = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/post/getAll");
+      const res = await axios.get(`${baseURL}post/getAll`);
       toast.success("get post success!");
       setPosts(res.data);
       console.log(res.data);

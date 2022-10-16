@@ -18,9 +18,10 @@ import AllPost from "./pages/Post/AllPost";
 import UploadPost from "./pages/Post/UploadPost";
 import socketIOClient from "socket.io-client";
 import { useEffect, useRef } from "react";
+import { baseURL } from "./utils/api";
 
 function App() {
-  const host = "http://localhost:8000";
+  const host = `${baseURL}`;
 
   const socketRef = useRef();
 

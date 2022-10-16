@@ -17,6 +17,7 @@ import AvatarUser from "../AvatarUser";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { loginByGmail } from "../../redux/apiRequest";
+import { baseURL } from "../../utils/api";
 
 const Follows = ({ user }) => {
   const currentUser = useSelector((state) => state.auth?.login?.currentUser);
@@ -24,7 +25,7 @@ const Follows = ({ user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const unFollow = async (id) => {
     try {
-      await axios.post("http://localhost:8000/user/unfollow", {
+      await axios.post(`${baseURL}user/unfollow`, {
         currentUser_id: currentUser._id,
         follower_id: id,
       });

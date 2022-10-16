@@ -26,6 +26,7 @@ import AvatarUser from "../AvatarUser";
 import { loginByGmail } from "../../redux/apiRequest";
 import Follows from "./Follows";
 import socketIOClient from "socket.io-client";
+import { baseURL } from "../../utils/api";
 
 export const Banner = ({ user }) => {
   const currentUser = useSelector((state) => state.auth?.login?.currentUser);
@@ -38,7 +39,7 @@ export const Banner = ({ user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
 
-  const host = "http://localhost:8000";
+  const host = `${baseURL}`;
   const socketRef = useRef();
 
   useEffect(() => {
@@ -84,7 +85,7 @@ export const Banner = ({ user }) => {
   };
   const sendFriendRequest = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/user/requestFriend", {
+      const res = await axios.post(`${baseURL}user/requestFriend`, {
         sender_id: currentUser._id,
         receiver_id: user._id,
       });
@@ -102,7 +103,7 @@ export const Banner = ({ user }) => {
 
   const unFriend = async (id) => {
     try {
-      await axios.post("http://localhost:8000/user/deleteFriend", {
+      await axios.post(`${baseURL}user/deleteFriend`, {
         sender_id: currentUser._id,
         receiver_id: id,
       });

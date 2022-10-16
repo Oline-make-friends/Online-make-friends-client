@@ -1,11 +1,12 @@
 import axios from "axios";
 import { loginFail, loginStart, loginSuccess, logOut } from "./authSlice";
 import { CometChat } from "@cometchat-pro/chat";
+import { baseURL } from "../utils/api";
 
 export const loginUser = async (user, dispatch, navigate, toast) => {
   dispatch(loginStart());
   try {
-    const res = await axios.post("http://localhost:8000/auth/login", user);
+    const res = await axios.post(`${baseURL}auth/login`, user);
     dispatch(loginSuccess(res.data));
     CometChat.login(
       "6335a9c9a66b7ceb017988ba",
@@ -23,9 +24,7 @@ export const loginUser = async (user, dispatch, navigate, toast) => {
 export const loginByGmail = async (email, dispatch, navigate, toast) => {
   dispatch(loginStart());
   try {
-    const res = await axios.post(
-      `http://localhost:8000/auth/loginByGmail/${email}`
-    );
+    const res = await axios.post(`${baseURL}auth/loginByGmail/${email}`);
     dispatch(loginSuccess(res.data));
     navigate("/profile");
   } catch (error) {
