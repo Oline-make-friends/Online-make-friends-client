@@ -213,7 +213,6 @@ export const Banner = ({ user }) => {
                   >
                     <Flex alignItems="center">
                       <AvatarUser m={[2, 2]} user={friend} />
-                      <Text mx="2">{friend?.fullname}</Text>
                     </Flex>
                     {currentUser?._id !== user?._id ? (
                       <></>
