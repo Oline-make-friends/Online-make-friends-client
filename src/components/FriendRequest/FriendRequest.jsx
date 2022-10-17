@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export default function FriendRequest({ listRequest }) {
+export default function FriendRequest({ listRequest, getFriendRequest }) {
   const accept = async (sender_id, receiver_id, request_id) => {
     try {
       await axios.post("http://localhost:8000/user/addFriend", {
@@ -16,8 +16,8 @@ export default function FriendRequest({ listRequest }) {
         "http://localhost:8000/friendRequest/deleteFrRq/" + request_id
       );
 
-      toast.success("success");
-      window.location.reload();
+      toast.success("accepted");
+      getFriendRequest();
     } catch (error) {
       toast.error("fail");
     }
@@ -29,7 +29,7 @@ export default function FriendRequest({ listRequest }) {
       );
 
       toast.success("declined");
-      window.location.reload();
+      getFriendRequest();
     } catch (error) {
       toast.error("fail");
     }

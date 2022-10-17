@@ -132,7 +132,10 @@ const Header = () => {
         <Flex align="center">
           <div>
             <Flex alignItems="center" justifyContent="center">
-              <FriendRequest listRequest={friendRequest} />{" "}
+              <FriendRequest
+                listRequest={friendRequest}
+                getFriendRequest={getFriendRequest}
+              />{" "}
               <RiArrowDropDownLine size={30} />
             </Flex>
           </div>
