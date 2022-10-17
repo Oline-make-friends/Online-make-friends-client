@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Menu, MenuButton, MenuList, MenuItem, Text } from "@chakra-ui/react";
+import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import AvatarUser from "../AvatarUser";
 import { Button } from "react-bootstrap";
 import axios from "axios";
@@ -69,7 +69,6 @@ export default function FriendRequest({
           return (
             <MenuItem key={request?._id} p="2">
               <AvatarUser user={request?.sender_id} />
-              <Text>{request?.sender_id?.fullname}</Text>
               <Button
                 onClick={() =>
                   accept(

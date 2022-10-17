@@ -179,7 +179,7 @@ const Header = () => {
             <div class="dropdown-content">
               <Link href="/updateProfile">Profile</Link>
               <br></br>
-              <Link href="/updatePassword">UpdatePassword</Link>
+              <Link href="/updatePassword">Update Password</Link>
             </div>
           </div>
           <Text mx="4">{user?.fullname}</Text>
@@ -247,7 +247,6 @@ const Header = () => {
               return (
                 <Flex
                   my="2"
-                  h="65px"
                   w="100%"
                   bg="#E8E8E8"
                   alignItems="center"
@@ -260,11 +259,9 @@ const Header = () => {
                   key={user?._id}
                 >
                   {/* <AvatarUser user={user} /> */}
-                  <AvatarUser user={user} />
+
                   <Flex flexDirection="column">
-                    <Text mx="4" as="b">
-                      {user?.fullname}
-                    </Text>
+                    <AvatarUser user={user} />
                     <Text mx="4" fontSize="xs">
                       Email: {user?.username}
                     </Text>

@@ -12,6 +12,8 @@ import {
   Text,
   useColorModeValue,
   Center,
+  InputRightElement,
+  InputGroup,
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -34,6 +36,9 @@ export default function Login() {
     };
     loginUser(User, dispatch, navigate, toast);
   };
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleShowClick = () => setShowPassword(!showPassword);
   return (
     <div className="bg">
       <Flex minH={"100vh"} align={"center"} justify={"center"} color="black">
@@ -62,13 +67,20 @@ export default function Login() {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </FormControl>
-                <FormControl id="password">
+                <FormControl>
                   <FormLabel>Password</FormLabel>
-                  <Input
-                    type="password"
-                    required
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+                  <InputGroup id="password">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      required
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <InputRightElement width="4.5rem">
+                      <Button h="1.75rem" size="sm" onClick={handleShowClick}>
+                        {showPassword ? "Hide" : "Show"}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
                 </FormControl>
                 <Stack spacing={5}>
                   <Stack
