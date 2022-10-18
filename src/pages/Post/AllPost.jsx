@@ -54,7 +54,7 @@ const AllPost = () => {
               borderRadius="10px"
               my="4"
               bg="white"
-              key={post._id}
+              key={post?._id}
             >
               <Box my="2">
                 <Flex>
@@ -80,9 +80,6 @@ const AllPost = () => {
                 />
               </Box>
               <Flex alignItems="start" my="2">
-                {/* <BiLike size={25} style={{ marginRight: "5px" }} />
-              <BsFillChatLeftDotsFill size={25} />
-              <Text mx="2">See comment</Text> */}
                 <Link
                   mx="4"
                   onClick={() => {

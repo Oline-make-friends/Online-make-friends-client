@@ -1,11 +1,31 @@
-import React from "react";
-import { Avatar, Link } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Avatar, Link, Flex, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const AvatarUser = (props) => {
   const navigate = useNavigate();
-  const user = props.user;
-  // console.log(user);
+  const id = props.id;
+  const [user, setUser] = useState(props.user);
+
+  const handleGetUser = async () => {
+    try {
+      if (id !== undefined) {
+        const res = await axios.post(
+          `http://localhost:8000/user/getUser/` + id
+        );
+        setUser(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleGetUser();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <Link
       onClick={() => {
@@ -15,9 +35,14 @@ const AvatarUser = (props) => {
           },
         });
       }}
-      cursor="crosshair"
+      cursor="pointer"
     >
-      <Avatar src={user?.avatar_url} h="50px" w="50px" />
+      <Flex alignItems="center" my="2">
+        <Avatar m={[2, 2]} src={user?.avatar_url} h="50px" w="50px" />
+        <Text>
+          <b>{user?.fullname}</b>
+        </Text>
+      </Flex>
     </Link>
   );
 };

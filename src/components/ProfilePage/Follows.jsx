@@ -53,7 +53,6 @@ const Follows = ({ user }) => {
                 <Flex alignItems="center" my="2" justifyContent="space-between">
                   <Flex alignItems="center">
                     <AvatarUser m={[2, 2]} user={follow} />
-                    <Text mx="2">{follow?.fullname}</Text>
                   </Flex>
                   {currentUser?._id !== user?._id ? (
                     <></>

@@ -17,6 +17,7 @@
     "bootstrap": "^5.2.1",
     "date-fns": "^2.29.3",
     "dateformat": "^5.0.3",
+    "dotenv": "^16.0.3",
     "firebase": "^9.10.0",
     "framer-motion": "^7.3.6",
     "gapi-script": "^1.2.0",
@@ -38,6 +39,7 @@
     "react-use-googlelogin": "^0.12.5",
     "reactjs-popup": "^2.0.5",
     "redux-persist": "^6.0.0",
+    "socket.io-client": "^4.5.0",
     "swiper": "^8.4.2",
     "twemoji": "^14.0.2",
     "web-vitals": "^2.1.4"
@@ -65,5 +67,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "dotenv-webpack": "^8.0.1"
   }
 }

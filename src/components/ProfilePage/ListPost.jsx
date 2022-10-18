@@ -3,7 +3,9 @@ import SwiperCore, { Virtual, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Box, Flex, Image, Text, Avatar, Center, Link } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { BsThreeDots } from "react-icons/bs";
+import { FaRegComment } from "react-icons/fa";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
@@ -22,11 +24,22 @@ export const ListPost = ({ user }) => {
   const handleGetAllPost = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8000/post/get/" + user._id
+        `http://localhost:8000/post/get/` + user._id
       );
       toast.success("get post success!");
       setPosts(res.data);
-      console.log(res.data);
+    } catch (error) {
+      toast.error("get post user fail!");
+    }
+  };
+
+  const handleLikePost = async (postId) => {
+    try {
+      await axios.post(`http://localhost:8000/post/like/`, {
+        _id: postId,
+        userId: user?._id,
+      });
+      handleGetAllPost();
     } catch (error) {
       toast.error("get post user fail!");
     }
@@ -67,39 +80,65 @@ export const ListPost = ({ user }) => {
               border="1px"
               borderColor="black"
               borderRadius="10px"
-              key={post._id}
+              key={post?._id}
               h="500px"
               m="0"
               className="card"
             >
               <Box my="2">
                 <Flex>
-                  <Avatar m={[2, 2]} src={`${post.created_by.avatar_url}`} />
+                  <Avatar m={[2, 2]} src={`${post?.created_by?.avatar_url}`} />
                   <Center style={{ display: "flex", flexDirection: "column" }}>
                     <Text>
-                      <b>{post.created_by.fullname}</b>
+                      <b>{post?.created_by?.fullname}</b>
                     </Text>
-                    <Text>{post.createdAt.substring(0, 10)}</Text>
+                    <Text>{post?.createdAt.substring(0, 10)}</Text>
                   </Center>
                 </Flex>
               </Box>
               <Box mx="2">
-                <Text>{post.content}</Text>
+                <Text>{post?.content}</Text>
               </Box>
               <Box h="70%" w="100%">
                 <Image
                   border="1px"
                   borderColor="black"
-                  src={`${post.imageUrl}`}
+                  src={`${post?.imageUrl}`}
                   alt="image"
                   h="100%"
                   w="100%"
                 />
               </Box>
-              <Flex alignItems="start" my="2">
-                {/* <BiLike size={25} style={{ marginRight: "5px" }} />
-              <BsFillChatLeftDotsFill size={25} />
-              <Text mx="2">See comment</Text> */}
+              <Flex justifyContent="space-between" w="100%" m="2">
+                <Flex>
+                  <Flex>
+                    {post?.likes.includes(user._id) ? (
+                      <AiFillHeart
+                        style={{ color: "red" }}
+                        size={25}
+                        onClick={() => {
+                          handleLikePost(post?._id);
+                        }}
+                        cursor="pointer"
+                      />
+                    ) : (
+                      <AiOutlineHeart
+                        size={25}
+                        onClick={() => {
+                          handleLikePost(post?._id);
+                        }}
+                        cursor="pointer"
+                      />
+                    )}
+
+                    <Text mx="2">{post?.likes.length}</Text>
+                  </Flex>
+                  <Flex>
+                    <FaRegComment size={25} />
+                    <Text mx="2">{post?.comments.length}</Text>
+                  </Flex>
+                </Flex>
+
                 <Link
                   mx="4"
                   onClick={() => {
@@ -110,7 +149,7 @@ export const ListPost = ({ user }) => {
                     });
                   }}
                 >
-                  <b>Detail</b>
+                  <BsThreeDots size={25} />
                 </Link>
               </Flex>
             </Flex>
