@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import AvatarUser from "../AvatarUser";
 import { Button } from "react-bootstrap";
@@ -45,7 +45,7 @@ export default function FriendRequest({
       toast.error("fail");
     }
   };
-  useEffect(() => {}, []);
+  // useEffect(() => {}, []);
 
   return (
     <Menu mx="4">

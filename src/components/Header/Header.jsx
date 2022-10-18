@@ -26,8 +26,9 @@ import { loginByGmail } from "../../redux/apiRequest";
 import "./header.css";
 import AvatarUser from "../AvatarUser";
 import axios from "axios";
-import FriendRequest from "../FriendRequest/FriendRequest";
+import FriendRequest from "./FriendRequest";
 import socketIOClient from "socket.io-client";
+import Notification from "./Notification";
 
 const Header = () => {
   const color = "teal";
@@ -49,9 +50,9 @@ const Header = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [friendRequest, setFriendRequest] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   const dispatch = useDispatch();
-  console.log(user);
   const logOut = () => {
     logOutUser(dispatch);
   };
@@ -81,21 +82,43 @@ const Header = () => {
       });
       setFriendRequest(res.data);
       console.log(res.data);
-      toast.success("get friend request success");
     } catch (error) {
       toast.error("get friend request fail");
+      console.log(error);
+    }
+  };
+  const getNotification = async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/noti/getAll");
+      ///
+      let temp = [];
+
+      for (let i = 0; i < res.data.length; i++) {
+        if (
+          res.data[i].user_id._id === user._id ||
+          res.data[i].user_id.is_admin === true
+        ) {
+          temp.push(res.data[i]);
+        }
+      }
+      //////
+      setNotifications(temp);
+    } catch (error) {
+      toast.error("get notification fail");
       console.log(error);
     }
   };
 
   const socket = () => {
     socketRef.current.emit("sendacceptFriendRequest");
+    socketRef.current.emit("sendNotification");
   };
   const host = "http://localhost:8000";
   const socketRef = useRef();
 
   useEffect(() => {
     getFriendRequest();
+    getNotification();
     socketRef.current = socketIOClient.connect(host);
     console.log(socketRef.current);
     socketRef.current.on("getFriendRequest", (msg) => {
@@ -105,6 +128,9 @@ const Header = () => {
     socketRef.current.on("acceptFriendRequest", (msg) => {
       console.log(msg);
       loginByGmail(user?.username, dispatch, null, null);
+    });
+    socketRef.current.on("getNotification", () => {
+      getNotification();
     });
     // eslint-disable-next-line
   }, []);
@@ -155,6 +181,17 @@ const Header = () => {
                 listRequest={friendRequest}
                 getFriendRequest={getFriendRequest}
                 user={user}
+                socket={socket}
+              />{" "}
+              <RiArrowDropDownLine size={30} />
+            </Flex>
+          </div>
+          <div>
+            <Flex alignItems="center" justifyContent="center">
+              <Notification
+                listNotification={notifications}
+                user={user}
+                toast={toast}
                 socket={socket}
               />{" "}
               <RiArrowDropDownLine size={30} />

@@ -47,7 +47,10 @@ function App() {
       {setHeader(location.pathname)}
       <Routes>
         <Route element={<RequireAuth />}>
-          <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/profile"
+            element={<Profile socket={socketRef.current} />}
+          />
           <Route path="/updateProfile" element={<Updateprofile />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/CometChat" element={<CometChat />} />
