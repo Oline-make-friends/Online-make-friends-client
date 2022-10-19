@@ -19,6 +19,8 @@ import UploadPost from "./pages/Post/UploadPost";
 import socketIOClient from "socket.io-client";
 import { useEffect, useRef } from "react";
 import UpdatePS from "./pages/Auth/UpdatePS";
+import AllGroup from "./pages/Group/AllGroup";
+import Group from "./pages/Group/Group";
 
 function App() {
   const host = "http://localhost:8000";
@@ -60,6 +62,8 @@ function App() {
           <Route path="/allPost" element={<AllPost />} />
           <Route path="/uploadPost" element={<UploadPost />} />
           <Route path="/updatePassword" element={<UpdatePS />} />
+          <Route path="/allGroup" element={<AllGroup />} />
+          <Route path="/group" element={<Group />} />
         </Route>
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />

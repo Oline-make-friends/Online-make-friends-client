@@ -2,22 +2,24 @@ import React from "react";
 import { Box, Flex, Text, Center, Image, Link } from "@chakra-ui/react";
 import AvatarUser from "../../components/AvatarUser";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import socketIOClient from "socket.io-client";
 
 const AllPost = () => {
   const user = useSelector((state) => state.auth?.login?.currentUser);
+  const host = "http://localhost:8000";
+  const socketRef = useRef();
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const handleGetAllPost = async () => {
     try {
       const res = await axios.get("http://localhost:8000/post/getAll");
-      toast.success("get post success!");
       setPosts(res.data);
     } catch (error) {
       toast.error("get post fail!");
@@ -34,8 +36,22 @@ const AllPost = () => {
       toast.error("get post user fail!");
     }
   };
+
+  const handleSendNoti = async (userPostId) => {
+    try {
+      await axios.post("http://localhost:8000/noti/add", {
+        title: user?.fullname,
+        content: "like your post",
+        user_id: userPostId,
+      });
+      socketRef.current.emit("sendNotification");
+    } catch (error) {
+      toast.error("Send noti fail!");
+    }
+  };
   // setPosts("abds");
   useEffect(() => {
+    socketRef.current = socketIOClient.connect(host);
     handleGetAllPost();
     // eslint-disable-next-line
   }, []);
@@ -105,6 +121,7 @@ const AllPost = () => {
                         size={25}
                         onClick={() => {
                           handleLikePost(post?._id);
+                          handleSendNoti(post?.created_by?._id);
                         }}
                         cursor="pointer"
                       />

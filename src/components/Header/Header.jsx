@@ -81,7 +81,6 @@ const Header = () => {
         receiver_id: user?._id,
       });
       setFriendRequest(res.data);
-      console.log(res.data);
     } catch (error) {
       toast.error("get friend request fail");
       console.log(error);
@@ -193,6 +192,7 @@ const Header = () => {
                 user={user}
                 toast={toast}
                 socket={socket}
+                getNotification={getNotification}
               />{" "}
               <RiArrowDropDownLine size={30} />
             </Flex>
