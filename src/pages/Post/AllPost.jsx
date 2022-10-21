@@ -1,5 +1,14 @@
 import React from "react";
-import { Box, Flex, Text, Center, Image, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Center,
+  Image,
+  Link,
+  Input,
+  Button,
+} from "@chakra-ui/react";
 import AvatarUser from "../../components/AvatarUser";
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
@@ -17,9 +26,22 @@ const AllPost = () => {
   const socketRef = useRef();
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
+  const [find, setFind] = useState("");
   const handleGetAllPost = async () => {
     try {
       const res = await axios.get("http://localhost:8000/post/getAll");
+      setPosts(res.data);
+    } catch (error) {
+      toast.error("get post fail!");
+    }
+  };
+
+  const handleFindPost = async () => {
+    try {
+      const search = find;
+      const res = await axios.post("http://localhost:8000/post/searchTag", {
+        hashtag: `${search}`,
+      });
       setPosts(res.data);
     } catch (error) {
       toast.error("get post fail!");
@@ -71,6 +93,23 @@ const AllPost = () => {
           marginTop: "20px",
         }}
       >
+        <Box width="100%">
+          <Input
+            placeholder="Find post by hashtag"
+            value={find}
+            onChange={(e) => {
+              setFind(e.target.value);
+            }}
+            bg="white"
+          />
+          <Button
+            onClick={() => {
+              handleFindPost();
+            }}
+          >
+            Find
+          </Button>
+        </Box>
         {/*  */}
         {posts?.map((post) => {
           return (

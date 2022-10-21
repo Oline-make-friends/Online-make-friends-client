@@ -126,9 +126,6 @@ export default function Updateprofile() {
       toast.error("Update profile fail");
     }
   };
-  const removeSelectedImage = () => {
-    setImage();
-  };
 
   return (
     <Flex alignItems="start" justifyContent="center" p="4">
@@ -144,7 +141,11 @@ export default function Updateprofile() {
         <Text fontSize="6xl">Update your profile</Text>
 
         <Box>
-          <Image src={avatar} alt="Avatar" />
+          <Image
+            src={avatar}
+            alt="Avatar"
+            style={{ width: "100%", height: "650px" }}
+          />
           <input
             type="file"
             accept="image/png, image/gif, image/jpeg"
@@ -152,17 +153,7 @@ export default function Updateprofile() {
               setImage(e.target.files[0]);
             }}
           />
-          {image && (
-            <div>
-              <Image
-                src={URL.createObjectURL(image)}
-                w="400px"
-                h="400px"
-                alt="Thumb"
-              />
-              <Button onClick={removeSelectedImage}>Remove This Image</Button>
-            </div>
-          )}
+
           <Button onClick={uploadImage}>change avatar</Button>
         </Box>
         {loading ? (

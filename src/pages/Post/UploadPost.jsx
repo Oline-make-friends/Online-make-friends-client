@@ -3,8 +3,10 @@ import axios from "axios";
 import { Box, Flex, Text, Textarea, Spinner, Button } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 const UploadPost = () => {
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth?.login.currentUser);
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -36,7 +38,7 @@ const UploadPost = () => {
           console.error(err);
         });
     } else {
-      toast.error("choice image before change");
+      toast.error("choice image before upload");
     }
   };
   const handleUploadPost = async (url) => {
@@ -48,6 +50,7 @@ const UploadPost = () => {
       });
       setDescription("");
       toast.success("Upload success");
+      navigate("/profile");
     } catch (error) {
       toast.error("upload fail, check again");
     }

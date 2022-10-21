@@ -129,7 +129,7 @@ export const ListPost = ({ user }) => {
               <Flex justifyContent="space-between" w="100%" m="2">
                 <Flex>
                   <Flex>
-                    {post?.likes.includes(user._id) ? (
+                    {post?.likes.includes(currentUser._id) ? (
                       <AiFillHeart
                         style={{ color: "red" }}
                         size={25}

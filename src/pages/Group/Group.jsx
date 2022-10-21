@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Box, Flex, Text } from "@chakra-ui/react";
+import ModalList from "../../components/Group/Modal";
 
 const Group = () => {
   const [group, setGroup] = useState();
@@ -16,7 +17,6 @@ const Group = () => {
       const res = await axios.get(`http://localhost:8000/group/get/${id}`);
 
       setGroup(res.data);
-      console.log(res.data);
     } catch (error) {
       toast.error("get post user fail!");
     }
@@ -25,6 +25,7 @@ const Group = () => {
     handleGetGroup();
     // eslint-disable-next-line
   }, []);
+
   return (
     <Flex width="100vw" minHeight="100vh" justifyContent="center">
       <Box w="80vw" minHeight="100vh" bg="white">
@@ -39,8 +40,9 @@ const Group = () => {
             {group?.name}
           </Text>
           <Text color="gray">{group?.content}</Text>
-          <Text>Private group</Text>
-          <Text>Memebers</Text>
+
+          <ModalList users={group?.members} listContent={"Group memeber"} />
+          <ModalList users={group?.admins} listContent={"Admin"} />
         </Flex>
       </Box>
     </Flex>

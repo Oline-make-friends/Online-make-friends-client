@@ -167,7 +167,7 @@ const Header = () => {
             <Button variant="ghost" onClick={onOpen} ref={btnRef}>
               <AiOutlineSearch />
               <Text d={{ base: "none", md: "flex" }} px="4">
-                Search users
+                Find users
               </Text>
             </Button>
           </Tooltip>
@@ -207,6 +207,8 @@ const Header = () => {
               <Link href="/allpost">All post</Link>
               <br></br>
               <Link href="/uploadPost">Upload post</Link>
+              <br></br>
+              <Link href="/allGroup">Group</Link>
             </div>
           </div>
           <div class="dropdown">
@@ -268,12 +270,12 @@ const Header = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Search user</DrawerHeader>
+          <DrawerHeader>Find user</DrawerHeader>
 
           <DrawerBody>
             <Flex pb={2}>
               <Input
-                placeholder=" Search your friend "
+                placeholder=" Find your friend "
                 mr={2}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}

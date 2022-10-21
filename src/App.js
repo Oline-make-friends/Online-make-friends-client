@@ -21,6 +21,7 @@ import { useEffect, useRef } from "react";
 import UpdatePS from "./pages/Auth/UpdatePS";
 import AllGroup from "./pages/Group/AllGroup";
 import Group from "./pages/Group/Group";
+import LinkResetPS from "./pages/Auth/LinkResetPS";
 
 function App() {
   const host = "http://localhost:8000";
@@ -38,7 +39,8 @@ function App() {
       path === "/" ||
       path === "/Register" ||
       path === "/ResetPS" ||
-      path === "/Login"
+      path === "/Login" ||
+      path.includes("LinkResetPS")
     ) {
       return "";
     } else return <Header />;
@@ -69,6 +71,7 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/ResetPS" element={<ResetPS />} />
+        <Route path="/LinkResetPS/:id/:random" element={<LinkResetPS />} />
       </Routes>
       <ToastContainer position="top-center" autoClose="1000" />
     </div>
