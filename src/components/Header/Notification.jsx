@@ -11,13 +11,17 @@ import {
 import { MdNotifications } from "react-icons/md";
 import axios from "axios";
 
-export default function Notification({ listNotification, toast, socket }) {
-  console.log(listNotification);
+export default function Notification({
+  listNotification,
+  toast,
+  getNotification,
+}) {
   const handleDeleteNoti = async (id) => {
     try {
       await axios.post("http://localhost:8000/noti/delete/" + id);
-      socket();
+      getNotification();
     } catch (error) {
+      console.log(error.message);
       toast.error("delete notification  fail!");
     }
   };

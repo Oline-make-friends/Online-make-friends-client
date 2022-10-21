@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import {
   Box,
@@ -30,8 +30,13 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import socketIOClient from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 const Post = () => {
+  const host = "http://localhost:8000";
+  const socketRef = useRef();
+  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { state } = useLocation();
   const id = state.post._id;
@@ -43,6 +48,8 @@ const Post = () => {
   const [update, setUpdate] = useState(false);
   const [content, setContent] = useState("");
   const [temp, setTemp] = useState("");
+  const [updatePost, setUpdatePost] = useState(false);
+  const [contentPost, setContentPost] = useState("");
 
   const handleLikePost = async (postId) => {
     try {
@@ -129,8 +136,46 @@ const Post = () => {
     }
   };
 
+  const handleSendNoti = async (userPostId) => {
+    try {
+      await axios.post("http://localhost:8000/noti/add", {
+        title: user.fullname,
+        content: "like your post",
+        user_id: userPostId,
+      });
+      socketRef.current.emit("sendNotification");
+    } catch (error) {
+      toast.error("Send noti fail!");
+    }
+  };
+
+  const handleDeletePost = async () => {
+    try {
+      await axios.post(`http://localhost:8000/post/delete/` + id);
+      toast.success("delete post success");
+      navigate("/profile");
+    } catch (error) {
+      toast.error("delete post fail");
+    }
+  };
+
+  const handleUpdatePost = async () => {
+    try {
+      await axios.post(`http://localhost:8000/post/update/`, {
+        id: id,
+        content: contentPost,
+      });
+      setUpdatePost(false);
+      setContentPost("");
+      handleGetPost();
+    } catch (error) {
+      toast.error("delete post fail");
+    }
+  };
+
   useEffect(() => {
     handleGetPost();
+    socketRef.current = socketIOClient.connect(host);
     // eslint-disable-next-line
   }, []);
   return (
@@ -153,16 +198,76 @@ const Post = () => {
         my="4"
         bg="white"
         key={post?._id}
+        minWidth="800px"
       >
-        <Box my="2">
-          <Flex mx="2">
+        <Box my="2" w="100%">
+          <Flex
+            alignItems="center"
+            justifyContent="space-between"
+            w="100%"
+            px="4"
+          >
             <Center style={{ display: "flex", flexDirection: "column" }}>
               <AvatarUser m={[2, 2]} user={post?.created_by} />
             </Center>
+            {post?.created_by?._id === user?._id ? (
+              <Menu>
+                <MenuButton as={Text}>
+                  <BsThreeDotsVertical size={30} />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem
+                    onClick={() => {
+                      setUpdatePost(true);
+                      setContentPost(post?.content);
+                    }}
+                  >
+                    Update POST
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleDeletePost();
+                    }}
+                  >
+                    Delete POST
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            ) : (
+              <></>
+            )}
           </Flex>
         </Box>
         <Box mx="2">
-          <Text>{post?.content}</Text>
+          {updatePost ? (
+            <Flex direction="column">
+              <Input
+                value={contentPost}
+                onChange={(e) => setContentPost(e.target.value)}
+              />
+              <Flex>
+                <Text
+                  cursor="pointer"
+                  onClick={() => {
+                    setUpdatePost(false);
+                  }}
+                  mr="2"
+                >
+                  Cancel
+                </Text>
+                <Text
+                  cursor="pointer"
+                  onClick={() => {
+                    handleUpdatePost();
+                  }}
+                >
+                  Update
+                </Text>
+              </Flex>
+            </Flex>
+          ) : (
+            <Text>{post?.content}</Text>
+          )}
         </Box>
         <Box>
           <Image
@@ -170,6 +275,7 @@ const Post = () => {
             borderColor="black"
             src={`${post?.imageUrl}`}
             alt="image"
+            minWidth="800px"
           />
         </Box>
         {/* hard code */}
@@ -190,6 +296,7 @@ const Post = () => {
                   size={25}
                   onClick={() => {
                     handleLikePost(post?._id);
+                    handleSendNoti(post?.created_by?._id);
                   }}
                   cursor="pointer"
                 />

@@ -1,0 +1,28 @@
+.hero {
+  position: relative;
+  height: 100px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero::before {
+  content: "";
+  background-image: url("https://ecampusontario.pressbooks.pub/app/uploads/sites/115/2018/04/image4-4-1024x682.jpg");
+  background-size: cover;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  opacity: 0.5;
+  filter: brightness(50%);
+}
+
+.group_text {
+  position: relative;
+  color: black;
+  line-height: 0.9;
+  text-align: center;
+}

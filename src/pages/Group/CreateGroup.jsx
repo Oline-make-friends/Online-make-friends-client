@@ -5,9 +5,10 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
-const UploadPost = () => {
+const CreateGroup = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth?.login.currentUser);
+  const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
@@ -31,7 +32,7 @@ const UploadPost = () => {
           // setUrl(response.data.url);
           // setAvatar(response.data.url);
           setLoading(false);
-          handleUploadPost(response.data.url);
+          handleCreateGroup(response.data.url);
         })
         .catch((err) => {
           setLoading(false);
@@ -41,21 +42,21 @@ const UploadPost = () => {
       toast.error("choice image before upload");
     }
   };
-  const handleUploadPost = async (url) => {
+  const handleCreateGroup = async (url) => {
     try {
-      await axios.post("http://localhost:8000/post/add", {
-        created_by: user._id,
+      await axios.post("http://localhost:8000/group/add", {
+        userid: user._id,
+        name: name,
         content: description,
-        imageUrl: url,
+        avatar_url: url,
       });
       setDescription("");
       toast.success("Upload success");
-      navigate("/profile");
+      navigate("/allGroup");
     } catch (error) {
       toast.error("upload fail, check again");
     }
   };
-
   return (
     <Flex justifyContent="center" w="100vw" h="99vh">
       <Flex
@@ -64,10 +65,11 @@ const UploadPost = () => {
         minHeight="100%"
         bg="white"
         direction="column"
-        justifyContent="center"
+        justifyContent="start"
         padding="20px"
       >
-        <Text fontSize="6xl">Upload post</Text>
+        <Text fontSize="6xl">Create group</Text>
+        <Text>Group image</Text>
         {image && (
           <div style={styles.preview}>
             <img
@@ -89,36 +91,47 @@ const UploadPost = () => {
             }}
           />
         </Box>
-        <Textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          m="4"
-          p="4"
-        />
-        <Button
-          onClick={() => {
-            uploadImage();
-          }}
-        >
-          Upload
-        </Button>
-        {loading ? (
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
+        <form style={{ width: "100%" }}>
+          <Text ml="4">Name of group</Text>
+          <Textarea
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            m="4"
+            p="4"
           />
-        ) : (
-          ""
-        )}
+          <Text ml="4">Description</Text>
+          <Textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            m="4"
+            p="4"
+          />
+          <Button
+            ml="4"
+            onClick={() => {
+              uploadImage();
+            }}
+          >
+            Create
+          </Button>
+          {loading ? (
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          ) : (
+            ""
+          )}
+        </form>
       </Flex>
     </Flex>
   );
 };
 
-export default UploadPost;
+export default CreateGroup;
 
 // Just some styles
 const styles = {
@@ -135,7 +148,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
   },
-  image: { maxWidth: "100%", maxHeight: 320 },
+  image: { maxWidth: "100%", maxHeight: "600px" },
   delete: {
     cursor: "pointer",
     padding: 15,
