@@ -1,15 +1,17 @@
 import React from "react";
 import { Box, Flex, Text, Center, Image, Link } from "@chakra-ui/react";
 import AvatarUser from "../../components/AvatarUser";
-// import { BiLike } from "react-icons/bi";
-// import { BsFillChatLeftDotsFill } from "react-icons/bs";
-
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { BsThreeDots } from "react-icons/bs";
+import { FaRegComment } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const AllPost = () => {
+  const user = useSelector((state) => state.auth?.login?.currentUser);
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const handleGetAllPost = async () => {
@@ -17,9 +19,19 @@ const AllPost = () => {
       const res = await axios.get("http://localhost:8000/post/getAll");
       toast.success("get post success!");
       setPosts(res.data);
-      console.log(res.data);
     } catch (error) {
       toast.error("get post fail!");
+    }
+  };
+  const handleLikePost = async (postId) => {
+    try {
+      await axios.post(`http://localhost:8000/post/like/`, {
+        _id: postId,
+        userId: user?._id,
+      });
+      handleGetAllPost();
+    } catch (error) {
+      toast.error("get post user fail!");
     }
   };
   // setPosts("abds");
@@ -57,12 +69,9 @@ const AllPost = () => {
               key={post?._id}
             >
               <Box my="2">
-                <Flex>
-                  <AvatarUser m={[2, 2]} user={post?.created_by} />
+                <AvatarUser m={[2, 2]} user={post?.created_by} />
+                <Flex ml="2" color="gray">
                   <Center style={{ display: "flex", flexDirection: "column" }}>
-                    <Text>
-                      <b>{post?.created_by?.fullname}</b>
-                    </Text>
                     <Text>{post?.createdAt?.substring(0, 10)}</Text>
                   </Center>
                 </Flex>
@@ -79,18 +88,47 @@ const AllPost = () => {
                   w="100%"
                 />
               </Box>
-              <Flex alignItems="start" my="2">
+              <Flex justifyContent="space-between" w="100%" m="2">
+                <Flex>
+                  <Flex>
+                    {post?.likes.includes(user._id) ? (
+                      <AiFillHeart
+                        style={{ color: "red" }}
+                        size={25}
+                        onClick={() => {
+                          handleLikePost(post?._id);
+                        }}
+                        cursor="pointer"
+                      />
+                    ) : (
+                      <AiOutlineHeart
+                        size={25}
+                        onClick={() => {
+                          handleLikePost(post?._id);
+                        }}
+                        cursor="pointer"
+                      />
+                    )}
+
+                    <Text mx="2">{post?.likes.length}</Text>
+                  </Flex>
+                  <Flex>
+                    <FaRegComment size={25} />
+                    <Text mx="2">{post?.comments.length}</Text>
+                  </Flex>
+                </Flex>
+
                 <Link
                   mx="4"
                   onClick={() => {
-                    navigate("/post", {
+                    navigate("/Post", {
                       state: {
                         post,
                       },
                     });
                   }}
                 >
-                  <b>Detail</b>
+                  <BsThreeDots size={25} />
                 </Link>
               </Flex>
             </Flex>

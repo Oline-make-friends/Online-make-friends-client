@@ -11,6 +11,7 @@ import {
   Text,
   useDisclosure,
   Flex,
+  Box,
 } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
 import AvatarUser from "../AvatarUser";
@@ -39,7 +40,7 @@ const Follows = ({ user }) => {
     <>
       <Text onClick={onOpen} cursor="pointer">
         {user?.follows.length + " "}
-        Follows{" "}
+        Following{" "}
       </Text>
 
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -48,26 +49,32 @@ const Follows = ({ user }) => {
           <ModalHeader>Follows</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {user?.follows.map((follow) => {
-              return (
-                <Flex alignItems="center" my="2" justifyContent="space-between">
-                  <Flex alignItems="center">
-                    <AvatarUser m={[2, 2]} user={follow} />
+            <Box height="400px" overflowY="scroll" p="4">
+              {user?.follows.map((follow) => {
+                return (
+                  <Flex
+                    alignItems="center"
+                    my="2"
+                    justifyContent="space-between"
+                  >
+                    <Flex alignItems="center">
+                      <AvatarUser m={[2, 2]} user={follow} />
+                    </Flex>
+                    {currentUser?._id !== user?._id ? (
+                      <></>
+                    ) : (
+                      <Button
+                        onClick={() => {
+                          unFollow(follow?._id);
+                        }}
+                      >
+                        UnFollow
+                      </Button>
+                    )}
                   </Flex>
-                  {currentUser?._id !== user?._id ? (
-                    <></>
-                  ) : (
-                    <Button
-                      onClick={() => {
-                        unFollow(follow?._id);
-                      }}
-                    >
-                      UnFollow
-                    </Button>
-                  )}
-                </Flex>
-              );
-            })}
+                );
+              })}
+            </Box>
           </ModalBody>
 
           <ModalFooter>

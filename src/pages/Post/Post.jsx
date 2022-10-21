@@ -17,10 +17,16 @@ import {
   Button,
   Textarea,
   Spinner,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Input,
 } from "@chakra-ui/react";
 import AvatarUser from "../../components/AvatarUser";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -34,6 +40,9 @@ const Post = () => {
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.auth?.login?.currentUser);
+  const [update, setUpdate] = useState(false);
+  const [content, setContent] = useState("");
+  const [temp, setTemp] = useState("");
 
   const handleLikePost = async (postId) => {
     try {
@@ -73,6 +82,31 @@ const Post = () => {
     }
   };
 
+  const deleteComment = async (commentId) => {
+    try {
+      await axios.post(`http://localhost:8000/comment/delete/`, {
+        postId: post?._id,
+        commentId: commentId,
+      });
+      handleGetPost();
+    } catch (error) {
+      toast.error("delete comment fail!");
+    }
+  };
+
+  const updateComment = async (commentId) => {
+    try {
+      await axios.post(`http://localhost:8000/comment/update/${commentId}`, {
+        content: content,
+      });
+      setUpdate(false);
+      setContent("");
+      handleGetPost();
+    } catch (error) {
+      toast.error("update comment fail!");
+    }
+  };
+
   const createComment = async (e) => {
     try {
       e.preventDefault();
@@ -95,7 +129,6 @@ const Post = () => {
     }
   };
 
-  console.log(post?.comments);
   useEffect(() => {
     handleGetPost();
     // eslint-disable-next-line
@@ -123,12 +156,8 @@ const Post = () => {
       >
         <Box my="2">
           <Flex mx="2">
-            <AvatarUser m={[2, 2]} user={post?.created_by} />
             <Center style={{ display: "flex", flexDirection: "column" }}>
-              <Text mx="4">
-                <b>{post?.created_by?.fullname}</b>
-              </Text>
-              {/* <Text>{post.createdAt.substring(0, 10)}</Text> */}
+              <AvatarUser m={[2, 2]} user={post?.created_by} />
             </Center>
           </Flex>
         </Box>
@@ -170,6 +199,7 @@ const Post = () => {
             </Flex>
             <Flex>
               <FaRegComment size={25} />
+              <Text mx="2">{post?.comments.length}</Text>
             </Flex>
           </Flex>
           <Text onClick={onOpen} cursor="pointer" m="2">
@@ -195,7 +225,63 @@ const Post = () => {
                     <Text ml="2" mr="1">
                       <b></b>
                     </Text>
-                    <Text color="gray">{comment?.content}</Text>
+
+                    {update &&
+                    comment?.user_id === user._id &&
+                    temp === comment?._id ? (
+                      <Flex direction="column">
+                        <Input
+                          value={content}
+                          onChange={(e) => setContent(e.target.value)}
+                        />
+                        <Flex>
+                          <Text
+                            cursor="pointer"
+                            onClick={() => {
+                              setUpdate(false);
+                            }}
+                            mr="2"
+                          >
+                            Cancel
+                          </Text>
+                          <Text
+                            cursor="pointer"
+                            onClick={() => {
+                              updateComment(comment?._id);
+                            }}
+                          >
+                            Update
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    ) : (
+                      <Text color="" mr="2">
+                        {comment?.content}
+                      </Text>
+                    )}
+                    {comment?.user_id === user._id ? (
+                      <Menu>
+                        <MenuButton as={Text}>
+                          <BsThreeDotsVertical />
+                        </MenuButton>
+                        <MenuList>
+                          <MenuItem
+                            onClick={() => {
+                              setUpdate(true);
+                              setContent(comment?.content);
+                              setTemp(comment?._id);
+                            }}
+                          >
+                            Update
+                          </MenuItem>
+                          <MenuItem onClick={() => deleteComment(comment?._id)}>
+                            Delete
+                          </MenuItem>
+                        </MenuList>
+                      </Menu>
+                    ) : (
+                      <></>
+                    )}
                   </Flex>
                 );
               })}

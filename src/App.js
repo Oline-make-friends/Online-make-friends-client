@@ -18,6 +18,7 @@ import AllPost from "./pages/Post/AllPost";
 import UploadPost from "./pages/Post/UploadPost";
 import socketIOClient from "socket.io-client";
 import { useEffect, useRef } from "react";
+import UpdatePS from "./pages/Auth/UpdatePS";
 
 function App() {
   const host = "http://localhost:8000";
@@ -46,7 +47,10 @@ function App() {
       {setHeader(location.pathname)}
       <Routes>
         <Route element={<RequireAuth />}>
-          <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/profile"
+            element={<Profile socket={socketRef.current} />}
+          />
           <Route path="/updateProfile" element={<Updateprofile />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/CometChat" element={<CometChat />} />
@@ -55,6 +59,7 @@ function App() {
           <Route path="/uploadPost" element={<UploadPost />} />
           <Route path="/allPost" element={<AllPost />} />
           <Route path="/uploadPost" element={<UploadPost />} />
+          <Route path="/updatePassword" element={<UpdatePS />} />
         </Route>
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />

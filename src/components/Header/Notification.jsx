@@ -1,0 +1,53 @@
+import React from "react";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Flex,
+  Text,
+  Button,
+} from "@chakra-ui/react";
+import { MdNotifications } from "react-icons/md";
+import axios from "axios";
+
+export default function Notification({ listNotification, toast, socket }) {
+  console.log(listNotification);
+  const handleDeleteNoti = async (id) => {
+    try {
+      await axios.post("http://localhost:8000/noti/delete/" + id);
+      socket();
+    } catch (error) {
+      toast.error("delete notification  fail!");
+    }
+  };
+  return (
+    <Menu mx="4">
+      <MenuButton>
+        <div className="icon">
+          <MdNotifications className="iconImg" />
+          {listNotification.length === 0 ? (
+            <></>
+          ) : (
+            <div className="counter">{listNotification.length}</div>
+          )}
+        </div>
+      </MenuButton>
+      <MenuList bg="black" color="white">
+        {listNotification?.map((noti) => {
+          return (
+            <MenuItem key={noti?._id} p="2">
+              <Flex direction="row">
+                <Text as="b">{noti?.title + " "}:</Text>
+                <Text mx="1"> {noti?.content}</Text>
+                <Button bg="blue" onClick={() => handleDeleteNoti(noti?._id)}>
+                  Mark as read
+                </Button>
+              </Flex>
+            </MenuItem>
+          );
+        })}
+      </MenuList>
+    </Menu>
+  );
+}

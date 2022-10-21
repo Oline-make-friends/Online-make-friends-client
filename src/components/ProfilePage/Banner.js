@@ -204,34 +204,32 @@ export const Banner = ({ user }) => {
             <ModalHeader>Friends</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              {user?.friends.map((friend) => {
-                return (
-                  <Flex
-                    alignItems="center"
-                    my="2"
-                    justifyContent="space-between"
-                  >
-                    <Flex alignItems="center">
-                      <AvatarUser m={[2, 2]} user={friend} />
+              <Box height="400px" overflowY="scroll" p="4">
+                {user?.friends.map((friend) => {
+                  return (
+                    <Flex
+                      alignItems="center"
+                      my="2"
+                      justifyContent="space-between"
+                    >
+                      <Flex alignItems="center">
+                        <AvatarUser m={[2, 2]} user={friend} />
+                      </Flex>
+                      {currentUser?._id !== user?._id ? (
+                        <></>
+                      ) : (
+                        <Button
+                          onClick={() => {
+                            unFriend(friend?._id);
+                          }}
+                        >
+                          Remove
+                        </Button>
+                      )}
                     </Flex>
-                    {currentUser?._id !== user?._id ? (
-                      <></>
-                    ) : (
-                      <Button
-                        onClick={() => {
-                          unFriend(friend?._id);
-                        }}
-                      >
-                        Remove
-                      </Button>
-                    )}
-                  </Flex>
-                );
-              })}
-              <Flex alignItems="center">
-                {/* <AvatarUser m={[2, 2]} user={post?.created_by} /> */}
-                <Text>{/* <b>{post?.created_by?.fullname}</b> */}</Text>
-              </Flex>
+                  );
+                })}
+              </Box>
             </ModalBody>
 
             <ModalFooter>
