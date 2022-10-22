@@ -19,6 +19,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import socketIOClient from "socket.io-client";
+import ReactHashtag from "react-hashtag";
 
 const AllPost = () => {
   const user = useSelector((state) => state.auth?.login?.currentUser);
@@ -40,9 +41,8 @@ const AllPost = () => {
 
   const handleFindPost = async () => {
     try {
-      const search = find;
       const res = await axios.post("http://localhost:8000/post/searchTag", {
-        hashtag: `${search}`,
+        hashtag: `${find}`,
       });
       setPosts(res.data);
     } catch (error) {
@@ -134,7 +134,16 @@ const AllPost = () => {
                 </Flex>
               </Box>
               <Box mx="2">
-                <Text>{post?.content}</Text>
+                <Text>
+                  <ReactHashtag
+                    onHashtagClick={(val) => {
+                      setFind(val);
+                      handleFindPost();
+                    }}
+                  >
+                    {`${post?.content}`}
+                  </ReactHashtag>
+                </Text>
               </Box>
               <Box w="100%">
                 {post?.imageUrl === undefined ? (
