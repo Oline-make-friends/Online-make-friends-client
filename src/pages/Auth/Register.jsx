@@ -44,7 +44,9 @@ export default function Register() {
       //create for chat
       var user = new CometChat.User(res.data._id);
       user.setName(fullname);
-      user.setAvatar("https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-Conversation-lam-hinh-dai-dien.jpg");
+      user.setAvatar(
+        "https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-Conversation-lam-hinh-dai-dien.jpg"
+      );
       CometChat.createUser(user, CONSTANT.AUTH_KEY).then(
         (user) => {
           console.log("user created", user);
@@ -83,6 +85,7 @@ export default function Register() {
             bg={useColorModeValue("white", "gray.700")}
             boxShadow={"lg"}
             p={8}
+            w="450px"
           >
             <form>
               <Stack spacing={4}>

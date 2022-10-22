@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../redux/apiRequest";
 import { signInWithGoogle } from "../../firebase";
 import { FcGoogle } from "react-icons/fc";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -77,7 +78,7 @@ export default function Login() {
                     />
                     <InputRightElement width="4.5rem">
                       <Button h="1.75rem" size="sm" onClick={handleShowClick}>
-                        {showPassword ? "Hide" : "Show"}
+                        {showPassword ? <ViewOffIcon /> : <ViewIcon />}
                       </Button>
                     </InputRightElement>
                   </InputGroup>

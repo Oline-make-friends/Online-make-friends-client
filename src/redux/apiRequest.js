@@ -10,9 +10,10 @@ export const loginUser = async (user, dispatch, navigate, toast) => {
     CometChat.login(
       "6335a9c9a66b7ceb017988ba",
       "6e29092985743855d31852a40ad9d8aa9a3dd6d9"
-    )
-      .then(console.log("Login success"))
-      .catch(console.log("Login fail"));
+    );
+    if (res.data === "This account has been baned") {
+      return toast.error("This account has been baned");
+    }
     toast.success("Login success!");
     navigate("/profile");
   } catch (error) {
@@ -26,6 +27,9 @@ export const loginByGmail = async (email, dispatch, navigate, toast) => {
     const res = await axios.post(
       `http://localhost:8000/auth/loginByGmail/${email}`
     );
+    if (res.data === "This account has been baned") {
+      return toast.error("This account has been baned");
+    }
     dispatch(loginSuccess(res.data));
     navigate("/profile");
   } catch (error) {
