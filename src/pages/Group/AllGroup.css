@@ -9,20 +9,24 @@
 
 .hero::before {
   content: "";
-  background-image: url("https://ecampusontario.pressbooks.pub/app/uploads/sites/115/2018/04/image4-4-1024x682.jpg");
+  background-image: url("https://images.unsplash.com/photo-1605379399642-870262d3d051?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1206&q=80&fbclid=IwAR07L670BNPs1bkrx3YJ2HFCdfOjcPfwreD5g3lZWiWRBmAYRXm1ACY3oUk");
   background-size: cover;
   position: absolute;
   top: 0px;
   right: 0px;
   bottom: 0px;
   left: 0px;
-  opacity: 0.5;
-  filter: brightness(50%);
+  filter: brightness(70%);
 }
 
 .group_text {
   position: relative;
-  color: black;
+  color: white;
   line-height: 0.9;
-  text-align: center;
+}
+
+.group {
+  background-color: white;
+  height: 200px;
+  border-radius: 15px;
 }

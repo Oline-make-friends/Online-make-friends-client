@@ -312,7 +312,7 @@ const Post = () => {
           <Text onClick={onOpen} cursor="pointer" m="2">
             {post?.likes.length} Likes{" "}
           </Text>
-          <Text style={{ color: "gray" }}>21 MINUTES AGO</Text>
+          <Text style={{ color: "gray" }}>25 minutes ago</Text>
           <Flex
             direction="column"
             width="100%"

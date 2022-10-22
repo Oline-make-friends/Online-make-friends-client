@@ -62,7 +62,7 @@ const AllGroup = () => {
         }}
         navigation={true}
         virtual
-        style={{ height: "200px", width: "60%" }}
+        style={{ height: "", width: "100%" }}
       >
         {groups?.map((group) => {
           return (
@@ -71,19 +71,12 @@ const AllGroup = () => {
               style={{ backgroundColor: "black", margin: "20px" }}
               className="aas"
             >
-              <Flex
-                direction="column"
-                align="start"
-                border="1px"
-                borderColor="black"
-                m="0"
-                className="card"
-              >
+              <Flex direction="column" align="start" m="0" className="group">
                 <Flex
                   className="hero"
                   direction="column"
                   alignItems="start"
-                  justify="center"
+                  justify="start"
                   bg={group?.avatar_url}
                 >
                   <Flex
@@ -116,9 +109,9 @@ const AllGroup = () => {
                     {capitalizeFirstLetter(group?.content)}
                   </Text>
                 </Flex>
-                <Flex>
-                  <Text mx="1">{group?.members.length + " "}Members -</Text>
-                  <Text>{group?.members.length + " "}Posts</Text>
+                <Flex direction="column">
+                  <Text mx="1">Members:{" " + group?.members.length}</Text>
+                  <Text mx="1">Posts:{" " + group?.members.length}</Text>
                 </Flex>
               </Flex>
             </SwiperSlide>

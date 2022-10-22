@@ -23,6 +23,7 @@ import AllGroup from "./pages/Group/AllGroup";
 import Group from "./pages/Group/Group";
 import LinkResetPS from "./pages/Auth/LinkResetPS";
 import CreateGroup from "./pages/Group/CreateGroup";
+import AllEvent from "./pages/Event/AllEvent";
 
 function App() {
   const host = "http://localhost:8000";
@@ -67,7 +68,8 @@ function App() {
           <Route path="/updatePassword" element={<UpdatePS />} />
           <Route path="/allGroup" element={<AllGroup />} />
           <Route path="/group" element={<Group />} />
-          <Route path="createGroup" element={<CreateGroup />} />
+          <Route path="/createGroup" element={<CreateGroup />} />
+          <Route path="/allEvent" element={<AllEvent />} />
         </Route>
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />

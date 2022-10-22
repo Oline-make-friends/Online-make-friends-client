@@ -30,6 +30,8 @@ const AllPost = () => {
   const handleGetAllPost = async () => {
     try {
       const res = await axios.get("http://localhost:8000/post/getAll");
+      console.log(res.data);
+      console.log(res.data[5].imageUrl);
       setPosts(res.data);
     } catch (error) {
       toast.error("get post fail!");
@@ -135,13 +137,17 @@ const AllPost = () => {
                 <Text>{post?.content}</Text>
               </Box>
               <Box w="100%">
-                <Image
-                  border="1px"
-                  borderColor="black"
-                  src={`${post?.imageUrl}`}
-                  alt="image"
-                  w="100%"
-                />
+                {post?.imageUrl === undefined ? (
+                  <></>
+                ) : (
+                  <Image
+                    border="1px"
+                    borderColor="black"
+                    src={`${post?.imageUrl}`}
+                    alt="image"
+                    w="100%"
+                  />
+                )}
               </Box>
               <Flex justifyContent="space-between" w="100%" m="2">
                 <Flex>

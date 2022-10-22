@@ -209,6 +209,8 @@ const Header = () => {
               <Link href="/uploadPost">Upload post</Link>
               <br></br>
               <Link href="/allGroup">Group</Link>
+              <br></br>
+              <Link href="/allEvent">Event</Link>
             </div>
           </div>
           <div class="dropdown">
