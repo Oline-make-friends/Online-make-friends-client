@@ -213,7 +213,7 @@ export default function Updateprofile() {
           >
             <option value="Male">Male</option>
             <option value="Female">Female</option>
-            <option value="Other">Other</option>
+            <option value="Prefer not to say">Prefer not to say</option>
           </Select>
         </FormControl>
         <FormControl>

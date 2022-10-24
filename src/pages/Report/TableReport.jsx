@@ -48,6 +48,7 @@ export default function TableReport({ user }) {
   //   };
   useEffect(() => {
     handleGetAllReport();
+    // eslint-disable-next-line
   }, []);
 
   return (

@@ -25,6 +25,7 @@ import LinkResetPS from "./pages/Auth/LinkResetPS";
 import CreateGroup from "./pages/Group/CreateGroup";
 import AllEvent from "./pages/Event/AllEvent";
 import Report from "./pages/Report/Report";
+import Event from "./pages/Event/Event";
 
 function App() {
   const host = "http://localhost:8000";
@@ -72,6 +73,7 @@ function App() {
           <Route path="/createGroup" element={<CreateGroup />} />
           <Route path="/allEvent" element={<AllEvent />} />
           <Route path="/report" element={<Report />} />
+          <Route path="/event" element={<Event />} />
         </Route>
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />

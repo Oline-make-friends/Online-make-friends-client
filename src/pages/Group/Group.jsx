@@ -31,7 +31,7 @@ const Group = () => {
       <Box w="80vw" minHeight="100vh" bg="white">
         <Image
           objectFit="fill"
-          src="https://bit.ly/dan-abramov"
+          src={group?.avatar_url}
           alt="Dan Abramov"
           w="100%"
           h="350px"

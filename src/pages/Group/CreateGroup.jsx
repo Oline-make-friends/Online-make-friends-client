@@ -58,7 +58,7 @@ const CreateGroup = () => {
     }
   };
   return (
-    <Flex justifyContent="center" w="100vw" h="99vh">
+    <Flex justifyContent="center" w="100vw" minHeight="99vh">
       <Flex
         alignItems="center"
         w="80%"

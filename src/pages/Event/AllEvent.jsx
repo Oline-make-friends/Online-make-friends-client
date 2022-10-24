@@ -1,5 +1,5 @@
-import { Flex, Input, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { Flex, Input, Text, Link } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import SwiperCore, { Virtual, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
@@ -9,9 +9,27 @@ import "swiper/css/navigation";
 // import "./style.css";
 // install Virtual module
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./AllEvent.css";
+import { set } from "date-fns";
+import { toast } from "react-toastify";
+
 SwiperCore.use([Virtual, Navigation, Pagination]);
 const AllEvent = () => {
+  const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
+  const getAllEvent = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8000/event/getAll`);
+      setEvents(res.data);
+    } catch (error) {
+      toast.error("Can not get event list");
+    }
+  };
+  useEffect(() => {
+    getAllEvent();
+    // eslint-disable-next-line
+  }, []);
   return (
     <Flex
       justifyContent="center"
@@ -36,108 +54,60 @@ const AllEvent = () => {
         virtual
         style={{ height: "", width: "100%" }}
       >
-        <SwiperSlide style={{ backgroundColor: "black", margin: "20px" }}>
-          <Flex direction="column" align="start" m="0" className="event" p="2">
-            <div className="topEvent">
+        {events?.map((event) => {
+          return (
+            <SwiperSlide style={{ backgroundColor: "black", margin: "20px" }}>
               <Flex
-                m="4"
-                bg="white"
-                p="2"
-                borderRadius="10px"
                 direction="column"
-                alignItems="center"
-                width="15%"
-                height="100%"
-              >
-                <Text>21</Text>
-                <Text>Dec</Text>
-              </Flex>
-            </div>
-            <Flex
-              direction="column"
-              alignItems=""
-              justifyContent="flex-end"
-              width="100%"
-              height="80%"
-              p="2"
-            >
-              <Text mx="1" color="white" as="b">
-                Glowing Art Performance
-              </Text>
-              <Text fontSize="xs" color="white">
-                (xs) In love with React & Next
-              </Text>
-            </Flex>
-          </Flex>
-        </SwiperSlide>
-        <SwiperSlide style={{ backgroundColor: "black", margin: "20px" }}>
-          <Flex direction="column" align="start" m="0" className="event" p="2">
-            <div className="topEvent">
-              <Flex
-                m="4"
-                bg="white"
+                align="start"
+                m="0"
+                className="event"
                 p="2"
-                borderRadius="10px"
-                direction="column"
-                alignItems="center"
-                width="15%"
-                height="100%"
               >
-                <Text>21</Text>
-                <Text>Dec</Text>
+                <div className="topEvent">
+                  <Flex
+                    m="4"
+                    bg="white"
+                    p="2"
+                    borderRadius="10px"
+                    direction="column"
+                    alignItems="center"
+                    minwidth="15%"
+                    height="100%"
+                  >
+                    <Text>{event?.date_time}</Text>
+                  </Flex>
+                </div>
+                <Flex
+                  direction="column"
+                  alignItems=""
+                  justifyContent="flex-end"
+                  width="100%"
+                  height="80%"
+                  p="2"
+                >
+                  <Link
+                    cursor="pointer"
+                    onClick={() => {
+                      navigate("/event", {
+                        state: {
+                          event,
+                        },
+                      });
+                    }}
+                  >
+                    <Text color="white" as="b">
+                      {event?.title}
+                    </Text>
+                  </Link>
+                  <Text fontSize="xs" color="white">
+                    Type:{event?.type}
+                  </Text>
+                </Flex>
               </Flex>
-            </div>
-            <Flex
-              direction="column"
-              alignItems=""
-              justifyContent="flex-end"
-              width="100%"
-              height="80%"
-              p="2"
-            >
-              <Text mx="1" color="white" as="b">
-                Glowing Art Performance
-              </Text>
-              <Text fontSize="xs" color="white">
-                (xs) In love with React & Next
-              </Text>
-            </Flex>
-          </Flex>
-        </SwiperSlide>
-        <SwiperSlide style={{ backgroundColor: "black", margin: "20px" }}>
-          <Flex direction="column" align="start" m="0" className="event" p="2">
-            <div className="topEvent">
-              <Flex
-                m="4"
-                bg="white"
-                p="2"
-                borderRadius="10px"
-                direction="column"
-                alignItems="center"
-                width="15%"
-                height="100%"
-              >
-                <Text>21</Text>
-                <Text>Dec</Text>
-              </Flex>
-            </div>
-            <Flex
-              direction="column"
-              alignItems=""
-              justifyContent="flex-end"
-              width="100%"
-              height="80%"
-              p="2"
-            >
-              <Text mx="1" color="white" as="b">
-                Glowing Art Performance
-              </Text>
-              <Text fontSize="xs" color="white">
-                (xs) In love with React & Next
-              </Text>
-            </Flex>
-          </Flex>
-        </SwiperSlide>
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </Flex>
   );

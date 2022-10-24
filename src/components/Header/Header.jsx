@@ -211,6 +211,8 @@ const Header = () => {
               <Link href="/allGroup">Group</Link>
               <br></br>
               <Link href="/allEvent">Event</Link>
+              <br></br>
+              <Link href="/report">Report</Link>
             </div>
           </div>
           <div class="dropdown">

@@ -101,7 +101,7 @@ const AllGroup = () => {
                         });
                       }}
                     >
-                      <BsThreeDots size={25} />
+                      <BsThreeDots size={25} style={{ color: "white" }} />
                     </Button>
                   </Flex>
 

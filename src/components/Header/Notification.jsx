@@ -37,7 +37,8 @@ export default function Notification({
           )}
         </div>
       </MenuButton>
-      <MenuList bg="black" color="white">
+      <MenuList bg="black" color="white" minHeight="50px">
+        {listNotification.length === 0 ? <Text>Empty</Text> : <></>}
         {listNotification?.map((noti) => {
           return (
             <MenuItem key={noti?._id} p="2">
