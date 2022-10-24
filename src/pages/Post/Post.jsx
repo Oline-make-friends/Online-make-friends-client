@@ -238,7 +238,7 @@ const Post = () => {
             )}
           </Flex>
         </Box>
-        <Box mx="2">
+        <Box m="2">
           {updatePost ? (
             <Flex direction="column">
               <Input
@@ -269,6 +269,9 @@ const Post = () => {
             <Text>{post?.content}</Text>
           )}
         </Box>
+        <Text style={{ color: "gray" }} ml="2">
+          {post?.createdAt?.substring(0, 10)}
+        </Text>
         <Box>
           <Image
             border="1px"
@@ -278,7 +281,6 @@ const Post = () => {
             minWidth="800px"
           />
         </Box>
-        {/* hard code */}
         <Box py="4" w="100%">
           <Flex>
             <Flex>
@@ -312,7 +314,7 @@ const Post = () => {
           <Text onClick={onOpen} cursor="pointer" m="2">
             {post?.likes.length} Likes{" "}
           </Text>
-          <Text style={{ color: "gray" }}>25 minutes ago</Text>
+
           <Flex
             direction="column"
             width="100%"

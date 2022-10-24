@@ -33,7 +33,7 @@ export const Banner = ({ user }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [text, setText] = useState("");
   const [delta, setDelta] = useState(300 - Math.random() * 100);
-  const toRotate = ["Ho Chi Minh city", "K14", "FPT Student"];
+  const toRotate = [user?.location, user?.major, "FPT"];
   const period = 2000;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();

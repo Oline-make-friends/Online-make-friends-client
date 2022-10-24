@@ -26,14 +26,17 @@ export default function Register() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmpassword] = useState("");
   const [email, setEmail] = useState("");
   const [fullname, setFullname] = useState("");
   const [gender, setGender] = useState("Male");
 
   const handleRegister = async () => {
     try {
-      console.log(email + fullname + password + gender);
-
+      if (confirmpassword !== password) {
+        toast.error("Confirm password is wrong");
+        return;
+      }
       const res = await axios.post("http://localhost:8000/auth/register", {
         username: email,
         password: password,
@@ -114,6 +117,26 @@ export default function Register() {
                     <Input
                       type={showPassword ? "text" : "password"}
                       onChange={(e) => setPassword(e.target.value)}
+                      isRequired
+                    />
+                    <InputRightElement h={"full"}>
+                      <Button
+                        variant={"ghost"}
+                        onClick={() =>
+                          setShowPassword((showPassword) => !showPassword)
+                        }
+                      >
+                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                </FormControl>
+                <FormControl id="password" isRequired>
+                  <FormLabel>Confirm password</FormLabel>
+                  <InputGroup>
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      onChange={(e) => setConfirmpassword(e.target.value)}
                       isRequired
                     />
                     <InputRightElement h={"full"}>

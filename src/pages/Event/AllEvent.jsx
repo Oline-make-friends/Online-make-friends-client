@@ -1,4 +1,4 @@
-import { Flex, Input, Text, Link } from "@chakra-ui/react";
+import { Flex, Input, Text, Link, Button } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import SwiperCore, { Virtual, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -11,7 +11,6 @@ import "swiper/css/navigation";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./AllEvent.css";
-import { set } from "date-fns";
 import { toast } from "react-toastify";
 
 SwiperCore.use([Virtual, Navigation, Pagination]);
@@ -37,7 +36,16 @@ const AllEvent = () => {
       color="black"
       direction="column"
       alignItems="center"
+      bg="linear-gradient(rgba(13, 13, 14, 0.5), rgba(28, 27, 27, 0.5))"
     >
+      <Button
+        my="4"
+        onClick={() => {
+          navigate("/createEvent");
+        }}
+      >
+        Create event
+      </Button>
       <Input w="50vw" bg="white" placeholder="Find event" />
 
       <Text color="white" as="bold">

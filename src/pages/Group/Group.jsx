@@ -10,7 +10,7 @@ const Group = () => {
   const [group, setGroup] = useState();
   const { state } = useLocation();
   const id = state.group._id;
-  const user = useSelector((state) => state.auth?.login?.currentUser);
+  // const user = useSelector((state) => state.auth?.login?.currentUser);
 
   const handleGetGroup = async () => {
     try {

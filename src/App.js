@@ -26,6 +26,7 @@ import CreateGroup from "./pages/Group/CreateGroup";
 import AllEvent from "./pages/Event/AllEvent";
 import Report from "./pages/Report/Report";
 import Event from "./pages/Event/Event";
+import CreateEvent from "./pages/Event/CreateEvent";
 
 function App() {
   const host = "http://localhost:8000";
@@ -74,6 +75,7 @@ function App() {
           <Route path="/allEvent" element={<AllEvent />} />
           <Route path="/report" element={<Report />} />
           <Route path="/event" element={<Event />} />
+          <Route path="/createEvent" element={<CreateEvent />} />
         </Route>
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />
