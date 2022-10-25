@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOutUser } from "../../redux/apiRequest";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import "./header.css";
 import {
   Flex,
   Avatar,
@@ -19,6 +20,7 @@ import {
   DrawerContent,
   DrawerCloseButton,
   Input,
+  Image,
 } from "@chakra-ui/react";
 import { AiFillHome, AiOutlineSearch } from "react-icons/ai";
 import { toast } from "react-toastify";
@@ -135,7 +137,7 @@ const Header = () => {
   }, []);
 
   return (
-    <Flex w="100vw" h="8vh" bg="black" justifyContent="center">
+    <Flex w="100vw" h="10vh" bg="black" justifyContent="center">
       <Flex
         w="80%"
         h="100%"
@@ -145,14 +147,15 @@ const Header = () => {
         p="4"
         // opacity="0.5"
       >
-        <Flex w="20%" h="100%" alignItems="center" mx="10%">
+        <Flex h="100%" alignItems="center">
           <Link
             href="/profile"
             onClick={() => {
               loginByGmail(user?.username, dispatch, null, null);
             }}
+            height="100%"
           >
-            <AiFillHome
+            {/* <AiFillHome
               size={35}
               style={{
                 backgroundColor: "#3182ce",
@@ -160,7 +163,8 @@ const Header = () => {
                 borderRadius: "5px",
                 color: "white",
               }}
-            />
+            /> */}
+            <Box className="logo"></Box>
           </Link>
           {/* <Input placeholder="Search.." mx="2" /> */}
           <Tooltip label="Search user to chat" hasArrow placement="bottom-end">

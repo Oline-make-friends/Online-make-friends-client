@@ -17,6 +17,7 @@ const Group = () => {
       const res = await axios.get(`http://localhost:8000/group/get/${id}`);
 
       setGroup(res.data);
+      console.log(res.data);
     } catch (error) {
       toast.error("get post user fail!");
     }
@@ -48,8 +49,14 @@ const Group = () => {
           </Text>
           <Text color="gray">{group?.content}</Text>
 
-          <ModalList users={group?.members} listContent={"Group memeber"} />
-          <ModalList users={group?.admins} listContent={"Admin"} />
+          <ModalList
+            users={group?.members}
+            listContent={"Group memeber : " + group?.members?.length}
+          />
+          <ModalList
+            users={group?.admins}
+            listContent={"Admin: " + group?.admins?.length}
+          />
         </Flex>
       </Box>
     </Flex>

@@ -7,6 +7,7 @@ import "./AllGroup.css";
 import { BsThreeDots } from "react-icons/bs";
 import SwiperCore, { Virtual, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useSelector } from "react-redux";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
@@ -15,12 +16,12 @@ import "swiper/css/navigation";
 // install Virtual module
 SwiperCore.use([Virtual, Navigation, Pagination]);
 const AllGroup = () => {
+  const user = useSelector((state) => state.auth?.login?.currentUser);
   const navigate = useNavigate();
   const [groups, setGroup] = useState([]);
   const handleGetAllGroup = async () => {
     try {
       const res = await axios.get("http://localhost:8000/group/getAll");
-
       setGroup(res.data);
       toast.success("get all group success!");
     } catch (error) {
@@ -42,6 +43,7 @@ const AllGroup = () => {
       color="black"
       direction="column"
       alignItems="center"
+      bg="linear-gradient(rgba(13, 13, 14, 0.5), rgba(28, 27, 27, 0.5))"
     >
       <Button
         onClick={() => {
@@ -109,7 +111,7 @@ const AllGroup = () => {
                     {capitalizeFirstLetter(group?.content)}
                   </Text>
                 </Flex>
-                <Flex direction="column">
+                <Flex direction="column" my="4">
                   <Text mx="1">Members:{" " + group?.members.length}</Text>
                   <Text mx="1">Posts:{" " + group?.members.length}</Text>
                 </Flex>
@@ -118,54 +120,76 @@ const AllGroup = () => {
           );
         })}
       </Swiper>
-      {/* {groups?.map((group) => {
-        return (
-          <Box
-            key={group?._id}
-            my="2"
-            border="white"
-            bg="white"
-            p="2"
-            borderRadius="10px"
-            width="500px"
-            height="150px"
-          >
-            <Flex
-              className="hero"
-              direction="column"
-              p="2"
-              alignItems="start"
-              justify="center"
-            >
-              <Flex justify="space-between" width="100%">
-                <Text className="group_text">
-                  {capitalizeFirstLetter(group?.name)}
-                </Text>
-                <Button
-                  bg="none"
-                  onClick={() => {
-                    navigate("/group", {
-                      state: {
-                        group,
-                      },
-                    });
-                  }}
-                >
-                  <BsThreeDots size={25} />
-                </Button>
-              </Flex>
 
-              <Text className="group_text">
-                {capitalizeFirstLetter(group?.content)}
-              </Text>
-            </Flex>
-            <Flex>
-              <Text mx="1">{group?.members.length + " "}Members -</Text>
-              <Text>{group?.members.length + " "}Posts</Text>
-            </Flex>
-          </Box>
-        );
-      })} */}
+      <Text color="white" as="bold" mt="4">
+        YOUR GROUP
+      </Text>
+      <Swiper
+        slidesPerView={3}
+        centeredSlides={true}
+        spaceBetween={30}
+        pagination={{
+          type: "fraction",
+        }}
+        navigation={true}
+        virtual
+        style={{ height: "", width: "100%" }}
+      >
+        {groups?.map((group) => {
+          if (group?.admins?.includes(user?._id))
+            return (
+              <SwiperSlide
+                key={group?._id}
+                style={{ backgroundColor: "black", margin: "20px" }}
+                className="aas"
+              >
+                <Flex direction="column" align="start" m="0" className="group">
+                  <Flex
+                    className="hero"
+                    direction="column"
+                    alignItems="start"
+                    justify="start"
+                    bg={group?.avatar_url}
+                  >
+                    <Flex
+                      justify="space-between"
+                      width="100%"
+                      alignItems="center"
+                    >
+                      <Text
+                        className="group_text"
+                        style={{ textTransform: "uppercase" }}
+                        as="b"
+                      >
+                        {capitalizeFirstLetter(group?.name)}
+                      </Text>
+                      <Button
+                        bg="none"
+                        onClick={() => {
+                          navigate("/group", {
+                            state: {
+                              group,
+                            },
+                          });
+                        }}
+                      >
+                        <BsThreeDots size={25} style={{ color: "white" }} />
+                      </Button>
+                    </Flex>
+
+                    <Text className="group_text" as="cite">
+                      {capitalizeFirstLetter(group?.content)}
+                    </Text>
+                  </Flex>
+                  <Flex direction="column">
+                    <Text mx="1">Members:{" " + group?.members.length}</Text>
+                    <Text mx="1">Posts:{" " + group?.members.length}</Text>
+                  </Flex>
+                </Flex>
+              </SwiperSlide>
+            );
+        })}
+      </Swiper>
     </Flex>
   );
 };

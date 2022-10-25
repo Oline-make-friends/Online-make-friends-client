@@ -16,3 +16,13 @@
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+.logo {
+  background-image: url(../../assets/final-logo.svg);
+  width: 200px;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+
+
+}
