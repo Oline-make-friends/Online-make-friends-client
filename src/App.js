@@ -52,8 +52,14 @@ function App() {
   };
   return (
     <div className="App">
-      {/* {location.pathname === "/" || "/Register" ? "" : <Header />} */}
       {setHeader(location.pathname)}
+      <div
+        style={{
+          backgroundColor: "rgba(255, 0, 0, 0)",
+          width: "100%",
+          height: "10vh",
+        }}
+      ></div>
       <Routes>
         <Route element={<RequireAuth />}>
           <Route

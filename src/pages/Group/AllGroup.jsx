@@ -136,7 +136,7 @@ const AllGroup = () => {
         style={{ height: "", width: "100%" }}
       >
         {groups?.map((group) => {
-          if (group?.admins?.includes(user?._id))
+          if (group?.admins?.includes(user?._id)) {
             return (
               <SwiperSlide
                 key={group?._id}
@@ -188,6 +188,7 @@ const AllGroup = () => {
                 </Flex>
               </SwiperSlide>
             );
+          } else return <></>;
         })}
       </Swiper>
     </Flex>

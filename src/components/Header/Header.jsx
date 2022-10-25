@@ -10,19 +10,9 @@ import {
   Button,
   keyframes,
   Link,
-  Tooltip,
   Box,
-  Drawer,
-  useDisclosure,
-  DrawerBody,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
   Input,
-  Image,
 } from "@chakra-ui/react";
-import { AiFillHome, AiOutlineSearch } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { loginByGmail } from "../../redux/apiRequest";
 import "./header.css";
@@ -47,8 +37,6 @@ const Header = () => {
   }
 	`;
   const user = useSelector((state) => state.auth?.login?.currentUser);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [friendRequest, setFriendRequest] = useState([]);
@@ -61,6 +49,7 @@ const Header = () => {
   const handleSearch = async () => {
     if (!search) {
       toast.error("please input something");
+      setSearchResult([]);
       return;
     }
     try {
@@ -137,7 +126,15 @@ const Header = () => {
   }, []);
 
   return (
-    <Flex w="100vw" h="10vh" bg="black" justifyContent="center">
+    <Flex
+      w="100vw"
+      h="10vh"
+      bg="#222020"
+      justifyContent="center"
+      position="fixed"
+      top="0"
+      zIndex="1"
+    >
       <Flex
         w="80%"
         h="100%"
@@ -167,14 +164,57 @@ const Header = () => {
             <Box className="logo"></Box>
           </Link>
           {/* <Input placeholder="Search.." mx="2" /> */}
-          <Tooltip label="Search user to chat" hasArrow placement="bottom-end">
+          {/* <Tooltip label="Search user to chat" hasArrow placement="bottom-end">
             <Button variant="ghost" onClick={onOpen} ref={btnRef}>
               <AiOutlineSearch />
               <Text d={{ base: "none", md: "flex" }} px="4">
                 Find users
               </Text>
             </Button>
-          </Tooltip>
+          </Tooltip> */}
+          {/* ///////////////////////////////////// */}
+          <Flex direction="column" position="absolute" top="30%" left="22vw">
+            <Flex pb={2}>
+              <Input
+                placeholder=" Find your friend "
+                mr={2}
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
+              <Button onClick={() => handleSearch()}> Go </Button>
+            </Flex>
+            <Box maxHeight="20vh" overflowY="scroll">
+              {searchResult?.map((user) => {
+                return (
+                  <Flex
+                    my="2"
+                    w="100%"
+                    bg="black"
+                    alignItems="center"
+                    p="2"
+                    cursor="pointer"
+                    _hover={{
+                      background: "#38B2AC",
+                      color: "white",
+                    }}
+                    key={user?._id}
+                  >
+                    {/* <AvatarUser user={user} /> */}
+
+                    <Flex flexDirection="column">
+                      <AvatarUser user={user} />
+                      <Text mx="4" fontSize="xs">
+                        Email: {user?.username}
+                      </Text>
+                    </Flex>
+                  </Flex>
+                );
+              })}
+            </Box>
+          </Flex>
+          {/* //////////////////////////////////////////// */}
         </Flex>
 
         <Flex align="center">
@@ -269,56 +309,6 @@ const Header = () => {
           </Button>
         </Flex>
       </Flex>
-      <Drawer
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        finalFocusRef={btnRef}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Find user</DrawerHeader>
-
-          <DrawerBody>
-            <Flex pb={2}>
-              <Input
-                placeholder=" Find your friend "
-                mr={2}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <Button onClick={handleSearch}> Go </Button>
-            </Flex>
-            {searchResult?.map((user) => {
-              return (
-                <Flex
-                  my="2"
-                  w="100%"
-                  bg="#E8E8E8"
-                  alignItems="center"
-                  p="2"
-                  cursor="pointer"
-                  _hover={{
-                    background: "#38B2AC",
-                    color: "white",
-                  }}
-                  key={user?._id}
-                >
-                  {/* <AvatarUser user={user} /> */}
-
-                  <Flex flexDirection="column">
-                    <AvatarUser user={user} />
-                    <Text mx="4" fontSize="xs">
-                      Email: {user?.username}
-                    </Text>
-                  </Flex>
-                </Flex>
-              );
-            })}
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
     </Flex>
   );
 };

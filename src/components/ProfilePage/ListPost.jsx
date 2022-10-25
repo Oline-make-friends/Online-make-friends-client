@@ -68,7 +68,7 @@ export const ListPost = ({ user }) => {
   }, []);
 
   return (
-    <>
+    <Box>
       <Center>
         <Text fontSize="4xl" color="white">
           All my post
@@ -174,6 +174,6 @@ export const ListPost = ({ user }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </>
+    </Box>
   );
 };
