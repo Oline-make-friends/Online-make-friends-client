@@ -18,7 +18,7 @@ export default function Profile() {
       <Banner user={user} />
       <Interest user={user} />
       <ListPost user={user} />
-      <Contact />
+      {/* <Contact /> */}
     </Box>
   );
 }

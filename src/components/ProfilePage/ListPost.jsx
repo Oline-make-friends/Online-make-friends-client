@@ -1,7 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import SwiperCore, { Virtual, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Box, Flex, Image, Text, Avatar, Center, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Image,
+  Text,
+  Avatar,
+  Center,
+  Link,
+  Grid,
+  GridItem,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
@@ -83,7 +93,7 @@ export const ListPost = ({ user }) => {
         }}
         navigation={true}
         virtual
-        style={{ height: "600px" }}
+        style={{ height: "800px" }}
       >
         {posts.map((post, index) => (
           <SwiperSlide
@@ -109,17 +119,17 @@ export const ListPost = ({ user }) => {
                     <Text>
                       <b>{post?.created_by?.fullname}</b>
                     </Text>
-                    <Text>{post?.createdAt.substring(0, 10)}</Text>
+                    <Text color={"gray.500"}>
+                      {post?.createdAt.substring(0, 10)}
+                    </Text>
                   </Center>
                 </Flex>
               </Box>
               <Box mx="2">
-                <Text>{post?.content}</Text>
+                <Text color={"gray.500"}>{post?.content}</Text>
               </Box>
               <Box h="70%" w="100%">
                 <Image
-                  border="1px"
-                  borderColor="black"
                   src={`${post?.imageUrl}`}
                   alt="image"
                   h="100%"

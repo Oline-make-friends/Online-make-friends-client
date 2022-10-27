@@ -15,7 +15,6 @@ const AvatarUser = (props) => {
           `http://localhost:8000/user/getUser/` + id
         );
         setUser(res.data);
-        console.log(res.data);
       }
     } catch (error) {
       console.log(error);

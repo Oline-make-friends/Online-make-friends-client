@@ -30,7 +30,10 @@ export const Interest = ({ user }) => {
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <div className="skill-bx wow zoomIn">
+            <div
+              className="skill-bx wow zoomIn"
+              style={{ backgroundColor: "black" }}
+            >
               <h2>Interest</h2>
               <p>These are the things that I'm interest</p>
               <Carousel

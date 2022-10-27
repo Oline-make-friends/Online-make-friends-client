@@ -80,13 +80,14 @@ const Header = () => {
   const getNotification = async () => {
     try {
       const res = await axios.get("http://localhost:8000/noti/getAll");
+      console.log("res" + res.data[0].user_id);
       ///
       let temp = [];
 
       for (let i = 0; i < res.data.length; i++) {
         if (
-          res.data[i].user_id._id === user._id ||
-          res.data[i].user_id.is_admin === true
+          res.data[i]?.user_id?._id === user._id ||
+          res.data[i]?.user_id?.is_admin === true
         ) {
           temp.push(res.data[i]);
         }
@@ -183,7 +184,10 @@ const Header = () => {
                   setSearch(e.target.value);
                 }}
               />
-              <Button onClick={() => handleSearch()}> Go </Button>
+              <Button onClick={() => handleSearch()} bg="blue.500">
+                {" "}
+                Go{" "}
+              </Button>
             </Flex>
             <Box maxHeight="20vh" overflowY="scroll">
               {searchResult?.map((user) => {
