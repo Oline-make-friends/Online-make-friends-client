@@ -174,7 +174,7 @@ const Header = () => {
             </Button>
           </Tooltip> */}
           {/* ///////////////////////////////////// */}
-          <Flex direction="column" position="absolute" top="30%" left="22vw">
+          <Flex direction="column" left="22vw">
             <Flex pb={2}>
               <Input
                 placeholder=" Find your friend "

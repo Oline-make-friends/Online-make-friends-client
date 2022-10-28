@@ -19,7 +19,7 @@ import {
   useDisclosure,
   Box,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import AvatarUser from "../../components/AvatarUser";
 import { useSelector } from "react-redux";
@@ -47,6 +47,7 @@ const Event = () => {
         `http://localhost:8000/event/getEvent/${event?._id}`
       );
       setEvent(res.data);
+      console.log(res.data);
     } catch (error) {
       toast.error("update comment fail!");
     }
@@ -79,6 +80,37 @@ const Event = () => {
       toast.error("update comment fail!");
     }
   };
+  const joinEvent = async () => {
+    try {
+      const res = await axios.post(`http://localhost:8000/event/joinEvent`, {
+        eventId: event?._id,
+        userId: user?._id,
+      });
+      if (res.data === "You already joined this event")
+        toast.error("You already joined this event");
+      else {
+        toast.success("Join success");
+        handleGetEvent();
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  const unJoinEvent = async () => {
+    try {
+      await axios.post(`http://localhost:8000/event/unJoinEvent`, {
+        eventId: event?._id,
+        userId: user?._id,
+      });
+      handleGetEvent();
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  useEffect(() => {
+    handleGetEvent();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Flex
@@ -255,15 +287,31 @@ const Event = () => {
               <ModalCloseButton />
               <ModalBody>
                 <Box height="400px" overflowY="scroll" p="4">
-                  {event?.user_joined.map((user) => {
+                  {event?.user_joined.map((user_joined) => {
                     return (
                       <Flex
                         alignItems="center"
                         my="2"
                         justifyContent="space-between"
                       >
-                        <Flex alignItems="center">
-                          <AvatarUser m={[2, 2]} user={user} />
+                        <Flex
+                          alignItems="center"
+                          flexDirection="row"
+                          justifyContent="space-between"
+                          w="100%"
+                        >
+                          <AvatarUser m={[2, 2]} user={user_joined} />
+                          {user?._id === user_joined?._id ? (
+                            <Button
+                              onClick={() => {
+                                unJoinEvent();
+                              }}
+                            >
+                              UnJoin
+                            </Button>
+                          ) : (
+                            <></>
+                          )}
                         </Flex>
                       </Flex>
                     );
@@ -280,7 +328,15 @@ const Event = () => {
           </Modal>
         </Flex>
       </Flex>
-      <Button w="800px" mt="4" bg="white" _hover={{ bg: "#ebedf0" }}>
+      <Button
+        w="800px"
+        mt="4"
+        bg="white"
+        _hover={{ bg: "#ebedf0" }}
+        onClick={() => {
+          joinEvent();
+        }}
+      >
         <Text m="4">Join</Text>
       </Button>
     </Flex>
