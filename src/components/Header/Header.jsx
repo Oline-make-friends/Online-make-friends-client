@@ -48,7 +48,6 @@ const Header = () => {
   };
   const handleSearch = async () => {
     if (!search) {
-      toast.error("please input something");
       setSearchResult([]);
       return;
     }
@@ -174,7 +173,7 @@ const Header = () => {
             </Button>
           </Tooltip> */}
           {/* ///////////////////////////////////// */}
-          <Flex direction="column" left="22vw">
+          <Flex direction="column">
             <Flex pb={2}>
               <Input
                 placeholder=" Find your friend "
@@ -183,17 +182,22 @@ const Header = () => {
                 onChange={(e) => {
                   setSearch(e.target.value);
                 }}
+                position="relative"
               />
               <Button onClick={() => handleSearch()} bg="blue.500">
                 {" "}
                 Go{" "}
               </Button>
             </Flex>
-            <Box maxHeight="20vh" overflowY="scroll">
+            <Box
+              maxHeight="20vh"
+              overflowY="scroll"
+              position="absolute"
+              top="90%"
+            >
               {searchResult?.map((user) => {
                 return (
                   <Flex
-                    my="2"
                     w="100%"
                     bg="black"
                     alignItems="center"
