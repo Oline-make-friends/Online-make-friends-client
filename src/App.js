@@ -28,6 +28,7 @@ import Report from "./pages/Report/Report";
 import Event from "./pages/Event/Event";
 import CreateEvent from "./pages/Event/CreateEvent";
 import UploadPostGroup from "./pages/Group/UploadPostGroup";
+import RegisterOldStudent from "./pages/Auth/RegisterOldStudent";
 
 function App() {
   const host = "http://localhost:8000";
@@ -46,6 +47,7 @@ function App() {
       path === "/Register" ||
       path === "/ResetPS" ||
       path === "/Login" ||
+      path === "/RegisterOldStudent" ||
       path.includes("LinkResetPS")
     ) {
       return "";
@@ -88,6 +90,8 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
+        <Route path="/RegisterOldStudent" element={<RegisterOldStudent />} />
+
         <Route path="/ResetPS" element={<ResetPS />} />
         <Route path="/LinkResetPS/:id/:random" element={<LinkResetPS />} />
       </Routes>
