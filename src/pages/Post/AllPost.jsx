@@ -16,10 +16,12 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
-import { FaRegComment } from "react-icons/fa";
+import { FaRegComment, FaBook } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import socketIOClient from "socket.io-client";
 import ReactHashtag from "react-hashtag";
+import { FcQuestions } from "react-icons/fc";
+import { MdSource } from "react-icons/md";
 
 const AllPost = () => {
   const user = useSelector((state) => state.auth?.login?.currentUser);
@@ -87,127 +89,204 @@ const AllPost = () => {
         flexDirection: "column",
         alignItems: "center",
         width: "99vw",
+        height: "90vh",
       }}
     >
-      <Box
-        style={{
-          width: "50%",
-          marginTop: "20px",
-        }}
-      >
-        <Box width="100%">
-          <Input
-            placeholder="Find post by hashtag"
-            value={find}
-            onChange={(e) => {
-              setFind(e.target.value);
-            }}
-            bg="white"
-          />
-          <Button
-            onClick={() => {
-              handleFindPost();
-            }}
+      <Flex justifyContent="space-between" w="100%">
+        <Box h="100%" w="25%" borderColor="#ccc" bg="rgba(0,0,0,0.2)">
+          <Flex
+            alignItems="center"
+            justifyContent="space-between"
+            color="white"
+            flexDirection="column"
           >
-            Find
-          </Button>
-        </Box>
-        {/*  */}
-        {posts?.map((post) => {
-          return (
             <Flex
-              direction="column"
-              align="start"
-              border="1px"
-              borderColor="black"
-              borderRadius="10px"
-              my="4"
-              bg="white"
-              key={post?._id}
+              borderBottom="1px"
+              borderColor="white"
+              w="100%"
+              h="30%"
+              alignItems="center"
+              justifyContent="center"
+              flexDirection="column"
+              p="4"
             >
-              <Box my="2">
-                <AvatarUser m={[2, 2]} user={post?.created_by} />
-                <Flex ml="2" color="gray">
-                  <Center style={{ display: "flex", flexDirection: "column" }}>
-                    <Text>{post?.createdAt?.substring(0, 10)}</Text>
-                  </Center>
-                </Flex>
+              <Text fontSize="3xl" color="white">
+                Type of post
+              </Text>
+              <Box
+                display="flex"
+                my="2"
+                alignItems="center"
+                justifyContent="center"
+                w="100%"
+              >
+                <FcQuestions size={30} />
+                <Text mx="1">Questions</Text>
               </Box>
-              <Box mx="2">
-                <Text>
-                  <ReactHashtag
-                    onHashtagClick={(val) => {
-                      setFind(val);
-                      handleFindPost();
+              <Box
+                display="flex"
+                my="2"
+                alignItems="center"
+                justifyContent="center"
+                w="100%"
+              >
+                <FaBook size={25} style={{ color: "#90CAF9" }} />
+                <Text mx="1">Knowledge</Text>
+              </Box>
+              <Box
+                display="flex"
+                my="2"
+                alignItems="center"
+                justifyContent="center"
+                w="100%"
+              >
+                <MdSource size={30} style={{ color: "#90CAF9" }} />
+                <Text mx="1">Source</Text>
+              </Box>
+            </Flex>
+
+            <Flex>
+              <Text fontSize="3xl">Course</Text>
+            </Flex>
+          </Flex>
+        </Box>
+        <Box
+          style={{
+            width: "50%",
+            marginTop: "20px",
+            height: "90vh",
+            overflowY: "scroll",
+          }}
+        >
+          <Box width="100%">
+            <Input
+              placeholder="Find post by hashtag"
+              value={find}
+              onChange={(e) => {
+                setFind(e.target.value);
+              }}
+              bg="white"
+            />
+            <Button
+              onClick={() => {
+                handleFindPost();
+              }}
+            >
+              Find
+            </Button>
+          </Box>
+          {/*  */}
+          {posts?.map((post) => {
+            return (
+              <Flex
+                direction="column"
+                align="start"
+                border="1px"
+                borderColor="black"
+                borderRadius="10px"
+                my="4"
+                bg="white"
+                key={post?._id}
+              >
+                <Box my="2">
+                  <AvatarUser m={[2, 2]} user={post?.created_by} />
+                  <Flex ml="2" color="gray">
+                    <Center
+                      style={{ display: "flex", flexDirection: "column" }}
+                    >
+                      <Text>{post?.createdAt?.substring(0, 10)}</Text>
+                    </Center>
+                  </Flex>
+                </Box>
+                <Box mx="2">
+                  <Text>
+                    <ReactHashtag
+                      onHashtagClick={(val) => {
+                        setFind(val);
+                        handleFindPost();
+                      }}
+                    >
+                      {`${post?.content}`}
+                    </ReactHashtag>
+                  </Text>
+                </Box>
+                <Box w="100%">
+                  {post?.imageUrl === undefined ? (
+                    <></>
+                  ) : (
+                    <Image
+                      border="1px"
+                      borderColor="black"
+                      src={`${post?.imageUrl}`}
+                      alt="image"
+                      w="100%"
+                    />
+                  )}
+                </Box>
+                <Flex justifyContent="space-between" w="100%" m="2">
+                  <Flex>
+                    <Flex>
+                      {post?.likes.includes(user._id) ? (
+                        <AiFillHeart
+                          style={{ color: "red" }}
+                          size={25}
+                          onClick={() => {
+                            handleLikePost(post?._id);
+                          }}
+                          cursor="pointer"
+                        />
+                      ) : (
+                        <AiOutlineHeart
+                          size={25}
+                          onClick={() => {
+                            handleLikePost(post?._id);
+                            handleSendNoti(post?.created_by?._id);
+                          }}
+                          cursor="pointer"
+                        />
+                      )}
+
+                      <Text mx="2">{post?.likes.length}</Text>
+                    </Flex>
+                    <Flex>
+                      <FaRegComment size={25} />
+                      <Text mx="2">{post?.comments.length}</Text>
+                    </Flex>
+                  </Flex>
+
+                  <Link
+                    mx="4"
+                    onClick={() => {
+                      navigate("/Post", {
+                        state: {
+                          post,
+                        },
+                      });
                     }}
                   >
-                    {`${post?.content}`}
-                  </ReactHashtag>
-                </Text>
-              </Box>
-              <Box w="100%">
-                {post?.imageUrl === undefined ? (
-                  <></>
-                ) : (
-                  <Image
-                    border="1px"
-                    borderColor="black"
-                    src={`${post?.imageUrl}`}
-                    alt="image"
-                    w="100%"
-                  />
-                )}
-              </Box>
-              <Flex justifyContent="space-between" w="100%" m="2">
-                <Flex>
-                  <Flex>
-                    {post?.likes.includes(user._id) ? (
-                      <AiFillHeart
-                        style={{ color: "red" }}
-                        size={25}
-                        onClick={() => {
-                          handleLikePost(post?._id);
-                        }}
-                        cursor="pointer"
-                      />
-                    ) : (
-                      <AiOutlineHeart
-                        size={25}
-                        onClick={() => {
-                          handleLikePost(post?._id);
-                          handleSendNoti(post?.created_by?._id);
-                        }}
-                        cursor="pointer"
-                      />
-                    )}
-
-                    <Text mx="2">{post?.likes.length}</Text>
-                  </Flex>
-                  <Flex>
-                    <FaRegComment size={25} />
-                    <Text mx="2">{post?.comments.length}</Text>
-                  </Flex>
+                    <BsThreeDots size={25} />
+                  </Link>
                 </Flex>
-
-                <Link
-                  mx="4"
-                  onClick={() => {
-                    navigate("/Post", {
-                      state: {
-                        post,
-                      },
-                    });
-                  }}
-                >
-                  <BsThreeDots size={25} />
-                </Link>
               </Flex>
-            </Flex>
-          );
-        })}
+            );
+          })}
 
-        {/*  */}
-      </Box>
+          {/*  */}
+        </Box>
+        <Box h="100%" w="25%" borderColor="#ccc" bg="rgba(0,0,0,0.2)">
+          <Flex
+            alignItems="center"
+            justifyContent="space-between"
+            color="white"
+            flexDirection="column"
+          >
+            <Text fontSize="3xl" color="white">
+              You might know
+            </Text>
+            <AvatarUser />
+          </Flex>
+        </Box>
+      </Flex>
     </Box>
   );
 };
