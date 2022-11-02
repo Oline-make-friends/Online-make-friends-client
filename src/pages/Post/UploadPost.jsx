@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Box, Flex, Text, Textarea, Spinner, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Textarea,
+  Spinner,
+  Button,
+  Select,
+} from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -11,6 +19,8 @@ const UploadPost = () => {
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
+  const [type, setType] = useState("");
+  const [course, setCourse] = useState("Coding");
   const uploadImage = () => {
     if (image) {
       // Tạo một form data chứa dữ liệu gửi lên
@@ -47,6 +57,8 @@ const UploadPost = () => {
         created_by: user._id,
         content: description,
         imageUrl: url,
+        type: type,
+        course: course,
       });
       setDescription("");
       toast.success("Upload success");
@@ -68,6 +80,34 @@ const UploadPost = () => {
         padding="20px"
       >
         <Text fontSize="6xl">Upload post</Text>
+        <Text>Type:</Text>
+        <Select
+          border="1px"
+          value={type}
+          onChange={(e) => {
+            setType(e.target.value);
+          }}
+          w="80%"
+          my="4"
+        >
+          <option value="Question">Question</option>
+          <option value="Knowledge">Knowledge</option>
+          <option value="Source">Source</option>
+        </Select>
+
+        <Text>Course:</Text>
+        <Select
+          border="1px"
+          value={course}
+          onChange={(e) => {
+            setCourse(e.target.value);
+          }}
+          w="80%"
+          my="4"
+        >
+          <option value="Coding">Coding</option>
+          <option value="Soft skills">Soft skills</option>
+        </Select>
         {image && (
           <div style={styles.preview}>
             <img
@@ -89,11 +129,14 @@ const UploadPost = () => {
             }}
           />
         </Box>
+
         <Textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           m="4"
           p="4"
+          w="80%"
+          h="400px"
         />
         <Button
           onClick={() => {

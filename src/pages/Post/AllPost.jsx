@@ -14,7 +14,7 @@ import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart, AiOutlineCode } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
 import { FaRegComment, FaBook } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -22,6 +22,7 @@ import socketIOClient from "socket.io-client";
 import ReactHashtag from "react-hashtag";
 import { FcQuestions } from "react-icons/fc";
 import { MdSource } from "react-icons/md";
+import { GiSkills } from "react-icons/gi";
 
 const AllPost = () => {
   const user = useSelector((state) => state.auth?.login?.currentUser);
@@ -29,13 +30,35 @@ const AllPost = () => {
   const socketRef = useRef();
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
+  const [selected, setSelected] = useState("");
   const [find, setFind] = useState("");
-  const handleGetAllPost = async () => {
+  const handleGetAllPost = async (type, course) => {
     try {
-      const res = await axios.get("http://localhost:8000/post/getAll");
-      console.log(res.data);
-      console.log(res.data[5].imageUrl);
-      setPosts(res.data);
+      if (type === undefined && course === undefined) {
+        const res = await axios.get("http://localhost:8000/post/getAll");
+        setPosts(res.data);
+        return;
+      }
+      if (type && course === undefined) {
+        const res = await axios.post(
+          "http://localhost:8000/post/getAllbyType",
+          {
+            type,
+          }
+        );
+        setPosts(res.data);
+        setSelected(type);
+      }
+      if (course) {
+        const res = await axios.post(
+          "http://localhost:8000/post/getAllbyCourse",
+          {
+            course,
+          }
+        );
+        setPosts(res.data);
+        setSelected(course);
+      }
     } catch (error) {
       toast.error("get post fail!");
     }
@@ -57,7 +80,7 @@ const AllPost = () => {
         _id: postId,
         userId: user?._id,
       });
-      handleGetAllPost();
+      handleGetAllPost("", "");
     } catch (error) {
       toast.error("get post user fail!");
     }
@@ -84,7 +107,7 @@ const AllPost = () => {
   return (
     <Box
       style={{
-        minHeight: "900px",
+        minHeight: "90vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -113,48 +136,105 @@ const AllPost = () => {
               <Text fontSize="3xl" color="white">
                 Type of post
               </Text>
-              <Box
+              <Button
                 display="flex"
                 my="2"
                 alignItems="center"
                 justifyContent="center"
                 w="100%"
+                bg="none"
+                onClick={() => {
+                  handleGetAllPost("Questions", undefined);
+                }}
+                border={selected === "Questions" ? "1px" : ""}
+                borderColor={selected === "Questions" ? "blue.500" : ""}
               >
                 <FcQuestions size={30} />
                 <Text mx="1">Questions</Text>
-              </Box>
-              <Box
+              </Button>
+              <Button
                 display="flex"
                 my="2"
                 alignItems="center"
                 justifyContent="center"
                 w="100%"
+                bg="none"
+                onClick={() => {
+                  handleGetAllPost("Knowledge", undefined);
+                }}
+                border={selected === "Knowledge" ? "1px" : ""}
+                borderColor={selected === "Knowledge" ? "blue.500" : ""}
               >
                 <FaBook size={25} style={{ color: "#90CAF9" }} />
                 <Text mx="1">Knowledge</Text>
-              </Box>
-              <Box
+              </Button>
+              <Button
                 display="flex"
                 my="2"
                 alignItems="center"
                 justifyContent="center"
                 w="100%"
+                bg="none"
+                onClick={() => {
+                  handleGetAllPost("Source", undefined);
+                }}
+                border={selected === "Source" ? "1px" : ""}
+                borderColor={selected === "Source" ? "blue.500" : ""}
               >
                 <MdSource size={30} style={{ color: "#90CAF9" }} />
                 <Text mx="1">Source</Text>
-              </Box>
+              </Button>
             </Flex>
 
-            <Flex>
+            <Flex
+              alignItems="center"
+              justifyContent="space-between"
+              color="white"
+              flexDirection="column"
+              w="100%"
+            >
               <Text fontSize="3xl">Course</Text>
+              <Button
+                display="flex"
+                my="2"
+                alignItems="center"
+                justifyContent="center"
+                w="100%"
+                bg="none"
+                onClick={() => {
+                  handleGetAllPost(undefined, "Coding");
+                }}
+                border={selected === "Coding" ? "1px" : ""}
+                borderColor={selected === "Coding" ? "blue.500" : ""}
+              >
+                <AiOutlineCode size={30} style={{ color: "#90CAF9" }} />
+                <Text mx="1">Coding</Text>
+              </Button>
+              <Button
+                display="flex"
+                my="2"
+                alignItems="center"
+                justifyContent="center"
+                w="100%"
+                bg="none"
+                onClick={() => {
+                  handleGetAllPost(undefined, "Soft skills");
+                }}
+                border={selected === "Soft skills" ? "1px" : ""}
+                borderColor={selected === "Soft skills" ? "blue.500" : ""}
+              >
+                <GiSkills size={30} style={{ color: "#90CAF9" }} />
+                <Text mx="1">Soft skills</Text>
+              </Button>
             </Flex>
           </Flex>
         </Box>
         <Box
+          px="2"
           style={{
             width: "50%",
             marginTop: "20px",
-            height: "90vh",
+            height: "88vh",
             overflowY: "scroll",
           }}
         >
@@ -198,8 +278,10 @@ const AllPost = () => {
                     </Center>
                   </Flex>
                 </Box>
-                <Box mx="2">
-                  <Text>
+                <Box mx="2" display="flex" flexDirection="column">
+                  <Text as="u">Type : {post?.type}</Text>
+                  <Text as="u">Course : {post?.course}</Text>
+                  <Text my="2">
                     <ReactHashtag
                       onHashtagClick={(val) => {
                         setFind(val);

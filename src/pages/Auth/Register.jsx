@@ -33,6 +33,10 @@ export default function Register() {
 
   const handleRegister = async () => {
     try {
+      if (!email.includes("fpt.edu.vn")) {
+        toast.error("Must be fpt mail");
+        return;
+      }
       if (confirmpassword !== password) {
         toast.error("Confirm password is wrong");
         return;
