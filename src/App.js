@@ -29,8 +29,10 @@ import Event from "./pages/Event/Event";
 import CreateEvent from "./pages/Event/CreateEvent";
 import UploadPostGroup from "./pages/Group/UploadPostGroup";
 import RegisterOldStudent from "./pages/Auth/RegisterOldStudent";
+import Zego from "./pages/ZegoCloud/Zego.tsx";
 
 function App() {
+  /////////////////////////////////////////////////
   const host = "http://localhost:8000";
 
   const socketRef = useRef();
@@ -86,6 +88,7 @@ function App() {
           <Route path="/event" element={<Event />} />
           <Route path="/createEvent" element={<CreateEvent />} />
           <Route path="/uploadPostGroup" element={<UploadPostGroup />} />
+          <Route path="/zego" element={<Zego />} />
         </Route>
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />

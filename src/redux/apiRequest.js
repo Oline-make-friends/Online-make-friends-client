@@ -15,7 +15,7 @@ export const loginUser = async (user, dispatch, navigate, toast) => {
       return toast.error("This account has been baned");
     }
     toast.success("Login success!");
-    navigate("/profile");
+    navigate("/allPost");
   } catch (error) {
     dispatch(loginFail());
     toast.error("Check username and password");
@@ -31,7 +31,7 @@ export const loginByGmail = async (email, dispatch, navigate, toast) => {
       return toast.error("This account has been baned");
     }
     dispatch(loginSuccess(res.data));
-    navigate("/profile");
+    navigate("/allPost");
   } catch (error) {
     dispatch(loginFail());
     toast.error(error.message);
