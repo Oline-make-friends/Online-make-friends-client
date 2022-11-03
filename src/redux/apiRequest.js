@@ -12,7 +12,7 @@ export const loginUser = async (user, dispatch, navigate, toast) => {
       "6e29092985743855d31852a40ad9d8aa9a3dd6d9"
     );
     if (res.data === "This account has been baned") {
-      return toast.error("This account has been baned");
+      return toast.error("This account is not active!!");
     }
     toast.success("Login success!");
     navigate("/allPost");
@@ -28,7 +28,7 @@ export const loginByGmail = async (email, dispatch, navigate, toast) => {
       `http://localhost:8000/auth/loginByGmail/${email}`
     );
     if (res.data === "This account has been baned") {
-      return toast.error("This account has been baned");
+      return toast.error("This account is not active!!");
     }
     dispatch(loginSuccess(res.data));
     navigate("/allPost");

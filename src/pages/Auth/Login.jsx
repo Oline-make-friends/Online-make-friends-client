@@ -105,15 +105,22 @@ export default function Login() {
                       Forgotten password?
                     </Link>
                   </Center>
+                  <Center borderBottomColor="gray" paddingBottom="2">
+                    <Text>Dont have an account? </Text>
+
+                    <Link mx="1" color={"blue.400"} href="/Register">
+                      Sign up
+                    </Link>
+                  </Center>
                   <Center
                     borderBottom="1px"
                     borderBottomColor="gray"
                     paddingBottom="2"
                   >
-                    <Text>Dont have an account? </Text>
+                    <Text>Are you old student? </Text>
 
-                    <Link mx="1" color={"blue.400"} href="/Register">
-                      Sign up
+                    <Link mx="1" color={"blue.400"} href="/RegisterOldStudent">
+                      Click here!!
                     </Link>
                   </Center>
                   <Center>OR</Center>

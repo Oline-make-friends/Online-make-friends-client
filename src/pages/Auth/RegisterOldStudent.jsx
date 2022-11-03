@@ -13,6 +13,7 @@ import {
   useColorModeValue,
   Link,
   Select,
+  Spinner,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -31,8 +32,9 @@ export default function RegisterOldStudent() {
   const [fullname, setFullname] = useState("");
   const [gender, setGender] = useState("Male");
   const [image, setImage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleRegister = async () => {
+  const handleRegister = async (image) => {
     try {
       if (confirmpassword !== password) {
         toast.error("Confirm password is wrong");
@@ -43,6 +45,9 @@ export default function RegisterOldStudent() {
         password: password,
         fullname: fullname,
         gender: gender,
+        is_active: false,
+        is_prove: false,
+        proveImage_url: image,
       });
       toast.success("Regis success!");
       //create for chat
@@ -63,6 +68,37 @@ export default function RegisterOldStudent() {
     } catch (error) {
       toast.error("Regis fail!");
       console.log(error.message);
+    }
+  };
+
+  const uploadImage = () => {
+    if (image) {
+      // Tạo một form data chứa dữ liệu gửi lên
+      const formData = new FormData();
+      // Hình ảnh cần upload
+      formData.append("file", image);
+      // Tên preset vừa tạo ở bước 1
+      formData.append("upload_preset", "oi7qyalz");
+      // Tải ảnh lên cloudinary
+      // API: https://api.cloudinary.com/v1_1/{Cloudinary-Name}/image/upload
+      setLoading(true);
+      axios
+        .post(
+          "https://api.cloudinary.com/v1_1/mklaaicogido123/image/upload",
+          formData
+        )
+        .then((response) => {
+          // setUrl(response.data.url);
+          // setAvatar(response.data.url);
+          setLoading(false);
+          handleRegister(response.data.url);
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.error(err);
+        });
+    } else {
+      toast.error("please upload image");
     }
   };
 
@@ -197,10 +233,23 @@ export default function RegisterOldStudent() {
                     _hover={{
                       bg: "blue.500",
                     }}
-                    onClick={handleRegister}
+                    onClick={() => {
+                      uploadImage();
+                    }}
                   >
                     Sign up
                   </Button>
+                  {loading ? (
+                    <Spinner
+                      thickness="4px"
+                      speed="0.65s"
+                      emptyColor="gray.200"
+                      color="blue.500"
+                      size="xl"
+                    />
+                  ) : (
+                    ""
+                  )}
                 </Stack>
                 <Stack pt={6}>
                   <Text align={"center"}>

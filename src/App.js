@@ -30,6 +30,7 @@ import CreateEvent from "./pages/Event/CreateEvent";
 import UploadPostGroup from "./pages/Group/UploadPostGroup";
 import RegisterOldStudent from "./pages/Auth/RegisterOldStudent";
 import Zego from "./pages/ZegoCloud/Zego.tsx";
+import CheckUser from "./pages/CheckUser";
 
 function App() {
   /////////////////////////////////////////////////
@@ -94,6 +95,7 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/RegisterOldStudent" element={<RegisterOldStudent />} />
+        <Route path="/CheckUser" element={<CheckUser />} />
 
         <Route path="/ResetPS" element={<ResetPS />} />
         <Route path="/LinkResetPS/:id/:random" element={<LinkResetPS />} />

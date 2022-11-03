@@ -10,6 +10,7 @@ import {
   Text,
   useColorModeValue,
   Button,
+  Spinner,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
@@ -19,17 +20,22 @@ import { useNavigate } from "react-router-dom";
 const ResetPS = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
   const handleSendEmailResetPassword = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post(
-        `http://localhost:8000/sendMail/sendEmailResetPassword/${email}`
-      );
-      toast.success("send email success");
-      navigate("/Login");
-    } catch (error) {
-      toast.error("can not find user");
-    }
+    setLoading(true);
+    axios
+      .post(`http://localhost:8000/sendMail/sendEmailResetPassword/${email}`)
+      .then(() => {
+        setLoading(false);
+        toast.success("send email success");
+        navigate("/Login");
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.error(err);
+        toast.error("can not find email");
+      });
   };
   return (
     <div className="bg">
@@ -66,6 +72,17 @@ const ResetPS = () => {
                 <Button bg={"blue.400"} color="white" type="submit">
                   Request Reset
                 </Button>
+                {loading ? (
+                  <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="blue.500"
+                    size="xl"
+                  />
+                ) : (
+                  ""
+                )}
               </Stack>
             </Box>
           </form>

@@ -255,6 +255,7 @@ const AllPost = () => {
               Find
             </Button>
           </Box>
+
           {/*  */}
           {posts?.map((post) => {
             return (
