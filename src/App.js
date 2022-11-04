@@ -31,6 +31,8 @@ import UploadPostGroup from "./pages/Group/UploadPostGroup";
 import RegisterOldStudent from "./pages/Auth/RegisterOldStudent";
 import Zego from "./pages/ZegoCloud/Zego.tsx";
 import CheckUser from "./pages/CheckUser";
+import Course from "./pages/Post/Course";
+import AllCourse from "./pages/Post/AllCourse";
 
 function App() {
   /////////////////////////////////////////////////
@@ -90,6 +92,8 @@ function App() {
           <Route path="/createEvent" element={<CreateEvent />} />
           <Route path="/uploadPostGroup" element={<UploadPostGroup />} />
           <Route path="/zego" element={<Zego />} />
+          <Route path="/allCourse" element={<AllCourse />} />
+          <Route path="/course" element={<Course />} />
         </Route>
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />
