@@ -14,7 +14,7 @@ import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { AiOutlineHeart, AiFillHeart, AiOutlineCode } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
 import { FaRegComment, FaBook } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -22,7 +22,7 @@ import socketIOClient from "socket.io-client";
 import ReactHashtag from "react-hashtag";
 import { FcQuestions } from "react-icons/fc";
 import { MdSource } from "react-icons/md";
-import { GiSkills } from "react-icons/gi";
+// import { GiSkills } from "react-icons/gi";
 
 const AllPost = () => {
   const user = useSelector((state) => state.auth?.login?.currentUser);
@@ -32,14 +32,16 @@ const AllPost = () => {
   const [posts, setPosts] = useState([]);
   const [selected, setSelected] = useState("");
   const [find, setFind] = useState("");
-  const handleGetAllPost = async (type, course) => {
+  const [mayKnows, setMayKnows] = useState([]);
+  const handleGetAllPost = async (type) => {
     try {
-      if (type === undefined && course === undefined) {
+      if (type === undefined) {
         const res = await axios.get("http://localhost:8000/post/getAll");
         setPosts(res.data);
+        console.log(res.data);
         return;
       }
-      if (type && course === undefined) {
+      if (type) {
         const res = await axios.post(
           "http://localhost:8000/post/getAllbyType",
           {
@@ -49,16 +51,32 @@ const AllPost = () => {
         setPosts(res.data);
         setSelected(type);
       }
-      if (course) {
+      // if (course) {
+      //   const res = await axios.post(
+      //     "http://localhost:8000/post/getAllbyCourse",
+      //     {
+      //       course,
+      //     }
+      //   );
+      //   setPosts(res.data);
+      //   setSelected(course);
+      // }
+    } catch (error) {
+      toast.error("get post fail!");
+    }
+  };
+
+  const handleGetAllPostFollowing = async () => {
+    try {
+      const result = [];
+      for (var i = 0; i < user?.follows.length; i++) {
         const res = await axios.post(
-          "http://localhost:8000/post/getAllbyCourse",
-          {
-            course,
-          }
+          `http://localhost:8000/post/get/${user?.follows[0]?._id}`
         );
-        setPosts(res.data);
-        setSelected(course);
+        result.push(res.data);
       }
+      console.log(result);
+      setPosts(result[0]);
     } catch (error) {
       toast.error("get post fail!");
     }
@@ -80,7 +98,7 @@ const AllPost = () => {
         _id: postId,
         userId: user?._id,
       });
-      handleGetAllPost("", "");
+      handleGetAllPost();
     } catch (error) {
       toast.error("get post user fail!");
     }
@@ -98,10 +116,24 @@ const AllPost = () => {
       toast.error("Send noti fail!");
     }
   };
-  // setPosts("abds");
+  const mayKnowUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/user/getAllUser");
+      const result = [];
+      for (var i = 0; i <= 5; i++) {
+        var random = Math.floor(Math.random() * res.data.length);
+        result.push(res.data[random]);
+      }
+      setMayKnows(result);
+    } catch (error) {
+      toast.error("can not find");
+    }
+  };
+
   useEffect(() => {
     socketRef.current = socketIOClient.connect(host);
     handleGetAllPost();
+    mayKnowUser();
     // eslint-disable-next-line
   }, []);
   return (
@@ -184,9 +216,25 @@ const AllPost = () => {
                 <MdSource size={30} style={{ color: "#90CAF9" }} />
                 <Text mx="1">Source</Text>
               </Button>
+              <Button
+                display="flex"
+                my="2"
+                alignItems="center"
+                justifyContent="center"
+                w="100%"
+                bg="none"
+                onClick={() => {
+                  handleGetAllPostFollowing();
+                }}
+                border={selected === "Following" ? "1px" : ""}
+                borderColor={selected === "Following" ? "blue.500" : ""}
+              >
+                <MdSource size={30} style={{ color: "#90CAF9" }} />
+                <Text mx="1">Following</Text>
+              </Button>
             </Flex>
 
-            <Flex
+            {/* <Flex
               alignItems="center"
               justifyContent="space-between"
               color="white"
@@ -226,7 +274,7 @@ const AllPost = () => {
                 <GiSkills size={30} style={{ color: "#90CAF9" }} />
                 <Text mx="1">Soft skills</Text>
               </Button>
-            </Flex>
+            </Flex> */}
           </Flex>
         </Box>
         <Box
@@ -309,7 +357,7 @@ const AllPost = () => {
                 <Flex justifyContent="space-between" w="100%" m="2">
                   <Flex>
                     <Flex>
-                      {post?.likes.includes(user._id) ? (
+                      {post?.likes?.includes(user._id) ? (
                         <AiFillHeart
                           style={{ color: "red" }}
                           size={25}
@@ -329,11 +377,11 @@ const AllPost = () => {
                         />
                       )}
 
-                      <Text mx="2">{post?.likes.length}</Text>
+                      <Text mx="2">{post?.likes?.length}</Text>
                     </Flex>
                     <Flex>
                       <FaRegComment size={25} />
-                      <Text mx="2">{post?.comments.length}</Text>
+                      <Text mx="2">{post?.comments?.length}</Text>
                     </Flex>
                   </Flex>
 
@@ -358,7 +406,7 @@ const AllPost = () => {
         </Box>
         <Box h="100%" w="25%" borderColor="#ccc" bg="rgba(0,0,0,0.2)">
           <Flex
-            alignItems="center"
+            alignItems="start"
             justifyContent="space-between"
             color="white"
             flexDirection="column"
@@ -366,7 +414,9 @@ const AllPost = () => {
             <Text fontSize="3xl" color="white">
               You might know
             </Text>
-            <AvatarUser />
+            {mayKnows?.map((user) => {
+              return <AvatarUser user={user} />;
+            })}
           </Flex>
         </Box>
       </Flex>

@@ -8,42 +8,63 @@ import {
   Button,
   Input,
   Center,
+  Textarea,
 } from "@chakra-ui/react";
 import AvatarUser from "../../components/AvatarUser";
 import { useNavigate } from "react-router";
+import axios from "axios";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const AllCourse = () => {
-  const quizData = [
-    {
-      id: 0,
-      question: ` What is the Capital Of India ?`,
-      options: [`New Delhi`, `Mumbai`, `Kolkatta`],
-      answer: `New Delhi`,
-    },
-    {
-      id: 1,
-      question: `Who is the CEO of Tesla Motors?`,
-      options: [`Bill Gates`, `Steve Jobs`, `Elon Musk`],
-      answer: `Elon Musk`,
-    },
-    {
-      id: 3,
-      question: `Name World's Richest Man?`,
-      options: [`Jeff Bezo`, `Bill Gates`, `Mark Zuckerberg`],
-      answer: `Jeff Bezo`,
-    },
-    {
-      id: 4,
-      question: `World's Longest River?`,
-      options: [`River Nile`, `River Amazon`, `River Godavari`],
-      answer: `River Nile`,
-    },
-  ];
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth?.login.currentUser);
+  const [courses, setCourse] = useState([]);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState([]);
+
+  const handleGetAllCourse = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8000/course/getAll`);
+      console.log(res.data);
+      setCourse(res.data?.reverse());
+    } catch (error) {
+      console.log(error.message);
+      toast.error("can not get all course");
+    }
+  };
+
+  const handleCreateCourse = async () => {
+    try {
+      if (name === "" || description === "") {
+        toast.error("check input");
+        return;
+      }
+      await axios.post(`http://localhost:8000/course/add`, {
+        created_by: user?._id,
+        name: name,
+        description: description,
+      });
+      setName("");
+      setDescription("");
+      toast.success("create success");
+      navigate("/allCourse");
+      handleGetAllCourse();
+    } catch (error) {
+      toast.error("create fail");
+    }
+  };
+
+  useEffect(() => {
+    handleGetAllCourse();
+    // eslint-disable-next-line
+  }, []);
   return (
     <Box h="90vh" w="100vw" p="4" overflowY="scroll" bg="rgba(0,0,0,0.2)">
       {/*  */}
-      <Center>
+      {/* <Center>
         <Flex width="50%" my="4">
           <Input
             placeholder="Find course"
@@ -62,85 +83,71 @@ const AllCourse = () => {
             Find
           </Button>
         </Flex>
-      </Center>
+      </Center> */}
       {/*  */}
       <Grid templateColumns="repeat(5, 1fr)" gap={6} color="black">
-        <GridItem
-          w="100%"
-          h="180px"
-          bg="white"
-          p="2"
-          onClick={() => navigate("/course")}
-          cursor="pointer"
-          _hover={{
-            background: "blue.100",
-          }}
-        >
+        <GridItem w="100%" h="300px" bg="white" p="2" borderRadius="15px">
           <Flex w="100%" h="100%" direction="column">
-            <Flex w="100%" h="50%" direction="column" p="2">
+            <Flex w="100%" h="80%" direction="column" p="2">
               <Text as="b" fontSize="2xl">
-                PRX301
+                Add a new Course
               </Text>
-              <Text color="gray">150 Questions</Text>
+              <Input
+                placeholder="Name course"
+                value={name}
+                type="text"
+                onChange={(e) => setName(e.target.value)}
+              />
+              <Textarea
+                my="2"
+                placeholder="Description"
+                onChange={(e) => setDescription(e.target.value)}
+              />
+              <Button
+                bg="green.400"
+                onClick={() => {
+                  handleCreateCourse();
+                }}
+              >
+                Add
+              </Button>
             </Flex>
-            <AvatarUser />
           </Flex>
         </GridItem>
-        <GridItem w="100%" h="180px" bg="white" p="2">
-          <Flex w="100%" h="100%" direction="column">
-            <Flex w="100%" h="50%" direction="column" p="2">
-              <Text as="b" fontSize="2xl">
-                PRX301
-              </Text>
-              <Text color="gray">150 Questions</Text>
-            </Flex>
-            <AvatarUser />
-          </Flex>
-        </GridItem>
-        <GridItem w="100%" h="180px" bg="white" p="2">
-          <Flex w="100%" h="100%" direction="column">
-            <Flex w="100%" h="50%" direction="column" p="2">
-              <Text as="b" fontSize="2xl">
-                PRX301
-              </Text>
-              <Text color="gray">150 Questions</Text>
-            </Flex>
-            <AvatarUser />
-          </Flex>
-        </GridItem>
-        <GridItem w="100%" h="180px" bg="white" p="2">
-          <Flex w="100%" h="100%" direction="column">
-            <Flex w="100%" h="50%" direction="column" p="2">
-              <Text as="b" fontSize="2xl">
-                PRX301
-              </Text>
-              <Text color="gray">150 Questions</Text>
-            </Flex>
-            <AvatarUser />
-          </Flex>
-        </GridItem>
-        <GridItem w="100%" h="180px" bg="white" p="2">
-          <Flex w="100%" h="100%" direction="column">
-            <Flex w="100%" h="50%" direction="column" p="2">
-              <Text as="b" fontSize="2xl">
-                PRX301
-              </Text>
-              <Text color="gray">150 Questions</Text>
-            </Flex>
-            <AvatarUser />
-          </Flex>
-        </GridItem>
-        <GridItem w="100%" h="180px" bg="white" p="2">
-          <Flex w="100%" h="100%" direction="column">
-            <Flex w="100%" h="50%" direction="column" p="2">
-              <Text as="b" fontSize="2xl">
-                PRX301
-              </Text>
-              <Text color="gray">150 Questions</Text>
-            </Flex>
-            <AvatarUser />
-          </Flex>
-        </GridItem>
+
+        {courses?.map((course) => {
+          return (
+            <GridItem
+              w="100%"
+              h="300px"
+              bg="white"
+              p="2"
+              key={course?._id}
+              onClick={() =>
+                navigate("/course", {
+                  state: {
+                    course,
+                  },
+                })
+              }
+              _hover={{
+                background: "blue.100",
+              }}
+              cursor="pointer"
+              borderRadius="15px"
+            >
+              <Flex w="100%" h="100%" direction="column">
+                <Flex w="100%" h="50%" direction="column" p="2">
+                  <Text as="b" fontSize="2xl">
+                    {course?.name}
+                  </Text>
+                  <Text color="gray">{course?.quizs.length} Questions</Text>
+                </Flex>
+                <AvatarUser user={course?.created_by} />
+              </Flex>
+            </GridItem>
+          );
+        })}
       </Grid>
     </Box>
   );

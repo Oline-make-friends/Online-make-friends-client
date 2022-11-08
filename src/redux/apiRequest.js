@@ -1,16 +1,22 @@
 import axios from "axios";
 import { loginFail, loginStart, loginSuccess, logOut } from "./authSlice";
 import { CometChat } from "@cometchat-pro/chat";
+import * as CONSTANT from "../constants/constans";
 
 export const loginUser = async (user, dispatch, navigate, toast) => {
   dispatch(loginStart());
   try {
     const res = await axios.post("http://localhost:8000/auth/login", user);
     dispatch(loginSuccess(res.data));
-    CometChat.login(
-      "6335a9c9a66b7ceb017988ba",
-      "6e29092985743855d31852a40ad9d8aa9a3dd6d9"
-    );
+    CometChat.login(`${res.data?._id}`, CONSTANT.AUTH_KEY)
+      .then(console.log("Login success"))
+      .catch(() => {
+        console.log("Login fail");
+        CometChat.createUser(`${res.data?._id}`, CONSTANT.AUTH_KEY).then(() => {
+          CometChat.login(`${res.data?._id}`, CONSTANT.AUTH_KEY);
+        });
+      });
+
     if (res.data === "This account has been baned") {
       return toast.error("This account is not active!!");
     }
@@ -27,6 +33,15 @@ export const loginByGmail = async (email, dispatch, navigate, toast) => {
     const res = await axios.post(
       `http://localhost:8000/auth/loginByGmail/${email}`
     );
+    CometChat.login(`${res.data?._id}`, CONSTANT.AUTH_KEY)
+      .then(console.log("Login success"))
+      .catch(() => {
+        console.log("Login fail");
+        CometChat.createUser(`${res.data?._id}`, CONSTANT.AUTH_KEY).then(() => {
+          CometChat.login(`${res.data?._id}`, CONSTANT.AUTH_KEY);
+        });
+      });
+
     if (res.data === "This account has been baned") {
       return toast.error("This account is not active!!");
     }

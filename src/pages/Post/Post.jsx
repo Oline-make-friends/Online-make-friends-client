@@ -272,13 +272,13 @@ const Post = () => {
         <Text style={{ color: "gray" }} ml="2">
           {post?.createdAt?.substring(0, 10)}
         </Text>
-        <Box>
+        <Box w="100%">
           <Image
             border="1px"
             borderColor="black"
             src={`${post?.imageUrl}`}
             alt="image"
-            minWidth="800px"
+            width="100%"
           />
         </Box>
         <Box py="4" w="100%">

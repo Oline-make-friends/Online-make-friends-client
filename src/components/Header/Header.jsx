@@ -79,7 +79,6 @@ const Header = () => {
   const getNotification = async () => {
     try {
       const res = await axios.get("http://localhost:8000/noti/getAll");
-      console.log("res" + res.data[0].user_id);
       ///
       let temp = [];
 
@@ -95,7 +94,6 @@ const Header = () => {
       setNotifications(temp);
     } catch (error) {
       toast.error("get notification fail");
-      console.log(error);
     }
   };
 

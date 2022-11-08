@@ -18,7 +18,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { loginByGmail } from "../../redux/apiRequest";
-import { format } from "date-fns";
+// import { format } from "date-fns";
 import { TiDeleteOutline } from "react-icons/ti";
 
 export default function Updateprofile() {
@@ -35,7 +35,7 @@ export default function Updateprofile() {
   const [location, setLocation] = useState(user?.location);
   const [major, setMajor] = useState(user?.major);
   const [interest, setInterest] = useState("");
-  const [dob, setDob] = useState(user?.date_of_birth);
+  // const [dob, setDob] = useState(user?.date_of_birth);
   const [loading, setLoading] = useState(false);
 
   const updateAvatar = async (avatarURL) => {
@@ -91,7 +91,6 @@ export default function Updateprofile() {
         gender: gender,
         location: location,
         major: major,
-        date_of_birth: dob,
       });
       loginByGmail(user.username, dispatch, null, null);
       toast.success("Update profile success");
@@ -188,7 +187,7 @@ export default function Updateprofile() {
             onChange={(e) => setAbout(e.target.value)}
           />
         </FormControl>
-        <FormControl>
+        {/* <FormControl>
           <FormLabel>Date of birth</FormLabel>
           <Box border="1px" w="30%">
             <DatePicker
@@ -200,7 +199,7 @@ export default function Updateprofile() {
               }}
             />
           </Box>
-        </FormControl>
+        </FormControl> */}
 
         <FormControl>
           <FormLabel>Gender</FormLabel>

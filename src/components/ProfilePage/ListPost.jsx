@@ -1,17 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import SwiperCore, { Virtual, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Box,
-  Flex,
-  Image,
-  Text,
-  Avatar,
-  Center,
-  Link,
-  Grid,
-  GridItem,
-} from "@chakra-ui/react";
+import { Box, Flex, Image, Text, Avatar, Center, Link } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
@@ -101,6 +91,7 @@ export const ListPost = ({ user }) => {
             style={{ backgroundColor: "black" }}
             className="aas"
           >
+            {console.log(post?.likes)}
             <Flex
               direction="column"
               align="start"
