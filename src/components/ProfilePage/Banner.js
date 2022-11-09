@@ -157,6 +157,8 @@ export const Banner = ({ user }) => {
                     </span>
                   </h1>
                   <Text as="bold">Gender: {user?.gender}</Text>
+                  <br></br>
+                  <Text as="bold">Major: {user?.major}</Text>
                   <Text onClick={onOpen} cursor="pointer">
                     {user?.friends.length + " "}
                     Friends{" "}

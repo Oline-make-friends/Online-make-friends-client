@@ -249,6 +249,17 @@ const Header = () => {
           </div>
           <div class="dropdown">
             <Flex alignItems="center" justifyContent="center">
+              Learning <RiArrowDropDownLine size={30} />
+            </Flex>
+            <div class="dropdown-content">
+              <Link href="/AllCourse">All course</Link>
+              <br></br>
+              <Link href="/yourCourse">Your course</Link>
+            </div>
+          </div>
+
+          <div class="dropdown">
+            <Flex alignItems="center" justifyContent="center">
               Pages <RiArrowDropDownLine size={30} />
             </Flex>
             <div class="dropdown-content">

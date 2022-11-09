@@ -8,6 +8,7 @@ import {
   Spinner,
   Button,
   Select,
+  Input,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -19,8 +20,8 @@ const UploadPost = () => {
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
-  const [type, setType] = useState("");
-  const [course, setCourse] = useState("Coding");
+  const [type, setType] = useState("Question");
+  const [hashtag, setHashtag] = useState("");
   const uploadImage = () => {
     if (image) {
       // Tạo một form data chứa dữ liệu gửi lên
@@ -58,7 +59,7 @@ const UploadPost = () => {
         content: description,
         imageUrl: url,
         type: type,
-        course: course,
+        hashtag: hashtag,
       });
       setDescription("");
       toast.success("Upload success");
@@ -95,19 +96,17 @@ const UploadPost = () => {
           <option value="Source">Source</option>
         </Select>
 
-        <Text>Course:</Text>
-        <Select
+        <Text>Hashtag:</Text>
+        <Input
           border="1px"
-          value={course}
+          value={hashtag}
           onChange={(e) => {
-            setCourse(e.target.value);
+            setHashtag(e.target.value);
           }}
           w="80%"
           my="4"
-        >
-          <option value="Coding">Coding</option>
-          <option value="Soft skills">Soft skills</option>
-        </Select>
+        />
+
         {image && (
           <div style={styles.preview}>
             <img
@@ -129,7 +128,7 @@ const UploadPost = () => {
             }}
           />
         </Box>
-
+        <Text>Description:</Text>
         <Textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}

@@ -127,6 +127,7 @@ const Post = () => {
           setLoading(false);
           setComment("");
           handleComment(response.data._id);
+          handleSendNotiComment(post?.created_by?._id);
         })
         .catch((err) => {
           console.error(err);
@@ -141,6 +142,18 @@ const Post = () => {
       await axios.post("http://localhost:8000/noti/add", {
         title: user.fullname,
         content: "like your post",
+        user_id: userPostId,
+      });
+      socketRef.current.emit("sendNotification");
+    } catch (error) {
+      toast.error("Send noti fail!");
+    }
+  };
+  const handleSendNotiComment = async (userPostId) => {
+    try {
+      await axios.post("http://localhost:8000/noti/add", {
+        title: user.fullname,
+        content: "Comment in your post",
         user_id: userPostId,
       });
       socketRef.current.emit("sendNotification");

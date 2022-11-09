@@ -329,7 +329,7 @@ const AllPost = () => {
                 </Box>
                 <Box mx="2" display="flex" flexDirection="column">
                   <Text as="u">Type : {post?.type}</Text>
-                  <Text as="u">Course : {post?.course}</Text>
+                  <Text as="u">Hashtag:{post?.hashtag}</Text>
                   <Text my="2">
                     <ReactHashtag
                       onHashtagClick={(val) => {

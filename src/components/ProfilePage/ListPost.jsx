@@ -31,7 +31,8 @@ export const ListPost = ({ user }) => {
       const res = await axios.post(
         `http://localhost:8000/post/get/` + user._id
       );
-      setPosts(res.data);
+      setPosts(res.data?.reverse());
+      console.log(res.data);
     } catch (error) {
       toast.error("get post user fail!");
     }
@@ -91,7 +92,6 @@ export const ListPost = ({ user }) => {
             style={{ backgroundColor: "black" }}
             className="aas"
           >
-            {console.log(post?.likes)}
             <Flex
               direction="column"
               align="start"
@@ -99,7 +99,7 @@ export const ListPost = ({ user }) => {
               borderColor="black"
               borderRadius="10px"
               key={post?._id}
-              h="500px"
+              h="650px"
               m="0"
               className="card"
             >
@@ -116,9 +116,12 @@ export const ListPost = ({ user }) => {
                   </Center>
                 </Flex>
               </Box>
-              <Box mx="2">
-                <Text color={"gray.500"}>{post?.content}</Text>
+              <Box mx="2" display="flex" flexDirection="column">
+                <Text as="u">Type : {post?.type}</Text>
+                <Text as="u">Hashtag:{post?.hashtag}</Text>
+                <Text color={"black"}>{post?.content}</Text>
               </Box>
+
               <Box h="70%" w="100%">
                 <Image
                   src={`${post?.imageUrl}`}

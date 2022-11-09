@@ -34,6 +34,7 @@ import CheckUser from "./pages/CheckUser";
 import Course from "./pages/Post/Course";
 import AllCourse from "./pages/Post/AllCourse";
 import CreateCourse from "./pages/Post/CreateCourse";
+import YourCourse from "./pages/Post/YourCourse";
 
 function App() {
   /////////////////////////////////////////////////
@@ -94,6 +95,7 @@ function App() {
           <Route path="/uploadPostGroup" element={<UploadPostGroup />} />
           <Route path="/zego" element={<Zego />} />
           <Route path="/allCourse" element={<AllCourse />} />
+          <Route path="/yourCourse" element={<YourCourse />} />
           <Route path="/createCourse" element={<CreateCourse />} />
           <Route path="/course" element={<Course />} />
         </Route>

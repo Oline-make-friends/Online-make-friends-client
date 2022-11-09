@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-const AllCourse = () => {
+const YourCourse = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth?.login.currentUser);
   const [courses, setCourse] = useState([]);
@@ -27,7 +27,9 @@ const AllCourse = () => {
 
   const handleGetAllCourse = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/course/getAll`);
+      const res = await axios.get(
+        `http://localhost:8000/course/getUser/${user._id}`
+      );
       console.log(res.data);
       setCourse(res.data?.reverse());
     } catch (error) {
@@ -154,4 +156,4 @@ const AllCourse = () => {
   );
 };
 
-export default AllCourse;
+export default YourCourse;

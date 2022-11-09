@@ -10,31 +10,59 @@ import {
   Button,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import AvatarUser from "../../components/AvatarUser";
 const Course = () => {
   const { state } = useLocation();
   const id = state.course._id;
+  const createdBy = state.course.created_by;
+  const currentUser = useSelector((state) => state.auth?.login?.currentUser);
+  const [course, setCourse] = useState();
   const [quizs, setQuizs] = useState([]);
+
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [option1, setOption1] = useState("");
   const [option2, setOption2] = useState("");
   const [option3, setOption3] = useState("");
   const [option4, setOption4] = useState("");
+  const navigate = useNavigate();
 
   const handleGetCourse = async () => {
     try {
       const res = await axios.get(`http://localhost:8000/course/get/${id}`);
       toast.success("get course success");
+      setCourse(res.data);
       setQuizs(res.data?.quizs?.reverse());
-      console.log(res.data);
     } catch (error) {
       console.log(error.message);
       toast.error("check connection");
     }
   };
+  const deleteCourse = async () => {
+    try {
+      await axios.get(`http://localhost:8000/course/delete/${id}`);
+      toast.success("deleted course");
+      navigate("/allCourse");
+    } catch (error) {
+      console.log(error.message);
+      toast.error("check connection");
+    }
+  };
+  const deleteQuiz = async (quizid) => {
+    try {
+      await axios.get(`http://localhost:8000/quiz/delete/${quizid}`);
+      toast.success("deleted that");
+      handleGetCourse();
+    } catch (error) {
+      console.log(error.message);
+      toast.error("check connection");
+    }
+  };
+
   const addQuiz = async () => {
     try {
       if (
@@ -45,6 +73,10 @@ const Course = () => {
         option4 === ""
       ) {
         toast.error("check input");
+        return;
+      }
+      if (answer === "") {
+        toast.error("choice answer");
         return;
       }
       const options = [option1, option2, option3, option4];
@@ -81,6 +113,20 @@ const Course = () => {
         justifyContent="center"
         height="100%"
       >
+        {course?.created_by?._id === currentUser?._id ? (
+          <Button
+            bg="red"
+            onClick={() => {
+              deleteCourse();
+            }}
+          >
+            Delete this course
+          </Button>
+        ) : (
+          <Box color="white">
+            <AvatarUser user={createdBy} />
+          </Box>
+        )}
         <Text color="white" m="4" as="b" fontSize="2xl">
           {state?.course.name}
         </Text>
@@ -180,7 +226,7 @@ const Course = () => {
         >
           {quizs.map((quiz) => {
             return (
-              <Flex w="100%" bg="white" p="2" my="4" key={quiz.id}>
+              <Flex w="100%" bg="white" p="2" my="4" key={quiz?.id}>
                 <Box
                   w="30%"
                   borderRight="1px"
@@ -188,7 +234,7 @@ const Course = () => {
                   p="2"
                   className="question"
                 >
-                  {quiz.question}
+                  {quiz?.question}
                 </Box>
                 <Flex
                   w="70%"
@@ -198,13 +244,25 @@ const Course = () => {
                   overflowY="scroll"
                   direction="column"
                 >
-                  {quiz.options.map((option) => {
+                  {quiz?.options.map((option) => {
                     return (
-                      <Text color={quiz.answer === option ? "red" : ""}>
+                      <Text color={quiz?.answer === option ? "green" : ""}>
                         {option}
                       </Text>
                     );
                   })}
+                  {course?.created_by?._id === currentUser?._id ? (
+                    <Button
+                      bg="red"
+                      onClick={() => {
+                        deleteQuiz(quiz?._id);
+                      }}
+                    >
+                      Delete this
+                    </Button>
+                  ) : (
+                    <></>
+                  )}
                 </Flex>
               </Flex>
             );
