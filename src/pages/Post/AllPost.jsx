@@ -85,7 +85,7 @@ const AllPost = () => {
   const handleFindPost = async () => {
     try {
       const res = await axios.post("http://localhost:8000/post/searchTag", {
-        hashtag: `${find}`,
+        hashtag: find,
       });
       setPosts(res.data);
     } catch (error) {

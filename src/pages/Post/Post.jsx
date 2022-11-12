@@ -297,7 +297,27 @@ const Post = () => {
         <Box py="4" w="100%">
           <Flex>
             <Flex>
-              {liked ? (
+              {/* {liked ? (
+                <AiFillHeart
+                  style={{ color: "red" }}
+                  size={25}
+                  onClick={() => {
+                    handleLikePost(post?._id);
+                  }}
+                  cursor="pointer"
+                />
+              ) : (
+                <AiOutlineHeart
+                  size={25}
+                  onClick={() => {
+                    handleLikePost(post?._id);
+                    handleSendNoti(post?.created_by?._id);
+                  }}
+                  cursor="pointer"
+                />
+              )} */}
+
+              {post?.likes?.includes(user._id) ? (
                 <AiFillHeart
                   style={{ color: "red" }}
                   size={25}
