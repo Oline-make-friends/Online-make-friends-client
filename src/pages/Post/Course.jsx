@@ -115,7 +115,7 @@ const Course = () => {
       >
         {course?.created_by?._id === currentUser?._id ? (
           <Button
-            bg="red"
+            bg="red.400"
             onClick={() => {
               deleteCourse();
             }}
@@ -253,12 +253,12 @@ const Course = () => {
                   })}
                   {course?.created_by?._id === currentUser?._id ? (
                     <Button
-                      bg="red"
+                      bg="red.400"
                       onClick={() => {
                         deleteQuiz(quiz?._id);
                       }}
                     >
-                      Delete this
+                      Delete
                     </Button>
                   ) : (
                     <></>
