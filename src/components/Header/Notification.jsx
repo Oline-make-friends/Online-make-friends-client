@@ -41,7 +41,7 @@ export default function Notification({
         {listNotification.length === 0 ? <Text>Empty</Text> : <></>}
         {listNotification?.map((noti) => {
           return (
-            <MenuItem key={noti?._id} p="2">
+            <MenuItem key={noti?._id} p="2" _hover={{ bg: "gray.800" }}>
               <Flex direction="row">
                 <Text as="b">{noti?.title + " "}:</Text>
                 <Text mx="1"> {noti?.content}</Text>

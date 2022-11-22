@@ -84,6 +84,16 @@ const Group = () => {
     }
   };
 
+  const handleDeletePost = async (postId) => {
+    try {
+      await axios.post(`http://localhost:8000/post/delete/` + postId);
+      toast.success("delete post success");
+      handleGetGroup();
+    } catch (error) {
+      toast.error("delete post fail");
+    }
+  };
+
   const leaveGroup = async () => {
     try {
       await axios.post("http://localhost:8000/group/leave", {
@@ -264,89 +274,109 @@ const Group = () => {
         </Flex>
 
         {group?.posts?.map((post) => {
-          return (
-            <Flex
-              direction="column"
-              align="start"
-              border="1px"
-              borderColor="black"
-              borderRadius="10px"
-              my="4"
-              bg="white"
-              key={post?._id}
-            >
-              <Box my="2">
-                <AvatarUser m={[2, 2]} id={post?.created_by._id} />
+          if (post.is_deleted === false) {
+            return (
+              <Flex
+                direction="column"
+                align="start"
+                border="1px"
+                borderColor="black"
+                borderRadius="10px"
+                my="4"
+                bg="white"
+                key={post?._id}
+              >
+                <Box my="2">
+                  <AvatarUser m={[2, 2]} id={post?.created_by._id} />
 
-                <Flex ml="2" color="gray">
-                  <Center style={{ display: "flex", flexDirection: "column" }}>
-                    <Text>{post?.createdAt?.substring(0, 10)}</Text>
-                  </Center>
-                </Flex>
-              </Box>
-              <Box mx="2">
-                <Text>{`${post?.content}`}</Text>
-              </Box>
-              <Box w="100%">
-                {post?.imageUrl === undefined ? (
-                  <></>
-                ) : (
-                  <Image
-                    border="1px"
-                    borderColor="black"
-                    src={`${post?.imageUrl}`}
-                    alt="image"
-                    w="100%"
-                    height="650px"
-                  />
-                )}
-              </Box>
-              <Flex justifyContent="space-between" w="100%" m="2">
-                <Flex>
-                  <Flex>
-                    {post?.likes.includes(user._id) ? (
-                      <AiFillHeart
-                        style={{ color: "red" }}
-                        size={25}
-                        onClick={() => {
-                          handleLikePost(post?._id);
-                        }}
-                        cursor="pointer"
-                      />
-                    ) : (
-                      <AiOutlineHeart
-                        size={25}
-                        onClick={() => {
-                          handleLikePost(post?._id);
-                          handleSendNoti(post?.created_by?._id);
-                        }}
-                        cursor="pointer"
-                      />
-                    )}
-
-                    <Text mx="2">{post?.likes.length}</Text>
+                  <Flex ml="2" color="gray">
+                    <Center
+                      style={{ display: "flex", flexDirection: "column" }}
+                    >
+                      <Text>{post?.createdAt?.substring(0, 10)}</Text>
+                      {isAdmin ? (
+                        <>
+                          <Button
+                            onClick={() => {
+                              handleDeletePost(post?._id);
+                            }}
+                            bg="red.400"
+                            color="white"
+                          >
+                            Delete this post
+                          </Button>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </Center>
                   </Flex>
-                  <Flex>
-                    <FaRegComment size={25} />
-                    <Text mx="2">{post?.comments.length}</Text>
-                  </Flex>
-                </Flex>
+                </Box>
 
-                <Link
-                  mx="4"
-                  onClick={() => {
-                    navigate("/Post", {
-                      state: {
-                        post,
-                      },
-                    });
-                  }}
-                >
-                  <BsThreeDots size={25} />
-                </Link>
+                <Box mx="2">
+                  <Text>{`${post?.content}`}</Text>
+                </Box>
+                <Box w="100%">
+                  {post?.imageUrl === undefined ? (
+                    <></>
+                  ) : (
+                    <Image
+                      border="1px"
+                      borderColor="black"
+                      src={`${post?.imageUrl}`}
+                      alt="image"
+                      w="100%"
+                      height="650px"
+                    />
+                  )}
+                </Box>
+                <Flex justifyContent="space-between" w="100%" m="2">
+                  <Flex>
+                    <Flex>
+                      {post?.likes.includes(user._id) ? (
+                        <AiFillHeart
+                          style={{ color: "red" }}
+                          size={25}
+                          onClick={() => {
+                            handleLikePost(post?._id);
+                          }}
+                          cursor="pointer"
+                        />
+                      ) : (
+                        <AiOutlineHeart
+                          size={25}
+                          onClick={() => {
+                            handleLikePost(post?._id);
+                            handleSendNoti(post?.created_by?._id);
+                          }}
+                          cursor="pointer"
+                        />
+                      )}
+
+                      <Text mx="2">{post?.likes.length}</Text>
+                    </Flex>
+                    <Flex>
+                      <FaRegComment size={25} />
+                      <Text mx="2">{post?.comments.length}</Text>
+                    </Flex>
+                  </Flex>
+
+                  <Link
+                    mx="4"
+                    onClick={() => {
+                      navigate("/Post", {
+                        state: {
+                          post,
+                        },
+                      });
+                    }}
+                  >
+                    <BsThreeDots size={25} />
+                  </Link>
+                </Flex>
               </Flex>
-            </Flex>
-          );
+            );
+          }
         })}
       </Box>
     </Box>
