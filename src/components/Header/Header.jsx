@@ -144,7 +144,7 @@ const Header = () => {
       >
         <Flex h="100%" alignItems="center">
           <Link
-            href="/profile"
+            href="/allpost"
             onClick={() => {
               loginByGmail(user?.username, dispatch, null, null);
             }}
@@ -209,7 +209,13 @@ const Header = () => {
                   >
                     {/* <AvatarUser user={user} /> */}
 
-                    <Flex flexDirection="column">
+                    <Flex
+                      flexDirection="column"
+                      onClick={() => {
+                        setSearch("");
+                        setSearchResult([]);
+                      }}
+                    >
                       <AvatarUser user={user} />
                       <Text mx="4" fontSize="xs">
                         Email: {user?.username}
@@ -309,12 +315,14 @@ const Header = () => {
             }}
             mx="4"
           >
-            <Avatar
-              src={user?.avatar_url}
-              size="full"
-              position="absolute"
-              top={0}
-            />
+            <Link href="/profile" cursor="pointer">
+              <Avatar
+                src={user?.avatar_url}
+                size="full"
+                position="absolute"
+                top={0}
+              />
+            </Link>
           </Box>
           <Button
             onClick={() => logOut()}

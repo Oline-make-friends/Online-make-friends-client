@@ -68,15 +68,15 @@ const AllPost = () => {
 
   const handleGetAllPostFollowing = async () => {
     try {
-      const result = [];
+      const temp = [];
       for (var i = 0; i < user?.follows.length; i++) {
         const res = await axios.post(
-          `http://localhost:8000/post/get/${user?.follows[0]?._id}`
+          `http://localhost:8000/post/get/${user?.follows[i]?._id}`
         );
-        result.push(res.data);
+        temp.push(res.data);
       }
-      console.log(result);
-      setPosts(result[0]);
+      const result = temp.flat(1);
+      setPosts(result.reverse());
     } catch (error) {
       toast.error("get post fail!");
     }
@@ -84,8 +84,12 @@ const AllPost = () => {
 
   const handleFindPost = async () => {
     try {
+      if (find === "") {
+        handleGetAllPost();
+        return;
+      }
       const res = await axios.post("http://localhost:8000/post/searchTag", {
-        hashtag: `${find}`,
+        hashtag: find,
       });
       setPosts(res.data);
     } catch (error) {
@@ -176,7 +180,7 @@ const AllPost = () => {
                 w="100%"
                 bg="none"
                 onClick={() => {
-                  handleGetAllPost("Questions", undefined);
+                  handleGetAllPost("Question", undefined);
                 }}
                 border={selected === "Questions" ? "1px" : ""}
                 borderColor={selected === "Questions" ? "blue.500" : ""}
@@ -329,7 +333,7 @@ const AllPost = () => {
                 </Box>
                 <Box mx="2" display="flex" flexDirection="column">
                   <Text as="u">Type : {post?.type}</Text>
-                  <Text as="u">Hashtag:{post?.hashtag}</Text>
+                  <Text as="u">#{post?.hashtag}</Text>
                   <Text my="2">
                     <ReactHashtag
                       onHashtagClick={(val) => {

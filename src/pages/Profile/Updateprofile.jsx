@@ -18,7 +18,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { loginByGmail } from "../../redux/apiRequest";
-// import { format } from "date-fns";
 import { TiDeleteOutline } from "react-icons/ti";
 
 export default function Updateprofile() {
@@ -28,14 +27,13 @@ export default function Updateprofile() {
 
   const [image, setImage] = useState("");
   const [avatar, setAvatar] = useState(user?.avatar_url);
-
   const [fullname, setFullname] = useState(user?.fullname);
   const [about, setAbout] = useState(user?.about);
   const [gender, setGender] = useState(user?.gender);
   const [location, setLocation] = useState(user?.location);
   const [major, setMajor] = useState(user?.major);
   const [interest, setInterest] = useState("");
-  // const [dob, setDob] = useState(user?.date_of_birth);
+  const [dob, setDob] = useState(Date.parse(user?.date_of_birth));
   const [loading, setLoading] = useState(false);
 
   const updateAvatar = async (avatarURL) => {
@@ -91,6 +89,7 @@ export default function Updateprofile() {
         gender: gender,
         location: location,
         major: major,
+        date_of_birth: dob,
       });
       loginByGmail(user.username, dispatch, null, null);
       toast.success("Update profile success");
@@ -167,6 +166,9 @@ export default function Updateprofile() {
           ""
         )}
         <br></br>
+        <FormLabel>Email</FormLabel>
+        <Input value={user?.username} readOnly />
+
         <FormControl mt="2">
           <FormLabel>Full name</FormLabel>
           <Input
@@ -187,19 +189,17 @@ export default function Updateprofile() {
             onChange={(e) => setAbout(e.target.value)}
           />
         </FormControl>
-        {/* <FormControl>
+        <FormControl>
           <FormLabel>Date of birth</FormLabel>
           <Box border="1px" w="30%">
             <DatePicker
-              value={dob}
-              onChange={(date) => {
-                const dResult = new Date(date);
-                const result = format(dResult, "MM-dd-yyyy");
-                setDob(result);
+              selected={dob}
+              onChange={(date: Date) => {
+                setDob(date);
               }}
             />
           </Box>
-        </FormControl> */}
+        </FormControl>
 
         <FormControl>
           <FormLabel>Gender</FormLabel>

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Flex, Text, Textarea, Button, Input } from "@chakra-ui/react";
+import { Flex, Text, Textarea, Button, Input, Box } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const CreateEvent = () => {
   const navigate = useNavigate();
@@ -11,7 +13,7 @@ const CreateEvent = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date());
   const handleCreateEvent = async (e) => {
     e.preventDefault();
     try {
@@ -20,12 +22,13 @@ const CreateEvent = () => {
         title: title,
         description: description,
         type: type,
-        date_time: date,
+        date_time: date.toString().slice(0, 10),
       });
       toast.success("create success");
       navigate("/allEvent");
     } catch (error) {
-      toast.error("update comment fail!");
+      console.log(error.message);
+      toast.error("create fail!");
     }
   };
 
@@ -68,14 +71,16 @@ const CreateEvent = () => {
             required
           />
           <Text ml="4">Date</Text>
-          <Input
+          {/* <Input
             value={date}
             onChange={(e) => setDate(e.target.value)}
             m="4"
             p="4"
             required
-          />
-
+          /> */}
+          <Box border="1px" w="30%" ml="4" my="2">
+            <DatePicker selected={date} onChange={(date) => setDate(date)} />
+          </Box>
           <Button ml="4" type="submit">
             Create
           </Button>

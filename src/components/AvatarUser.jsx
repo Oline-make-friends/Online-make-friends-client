@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Link, Flex, Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const AvatarUser = (props) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const id = props.id;
   const [user, setUser] = useState(props.user);
 
@@ -29,6 +30,9 @@ const AvatarUser = (props) => {
   return (
     <Link
       onClick={() => {
+        if (location.pathname === "/otherProfile") {
+          window.location.reload();
+        }
         navigate("/otherProfile", {
           state: {
             user,
