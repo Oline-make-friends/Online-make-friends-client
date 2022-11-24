@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
+import { Box, Center, Text } from "@chakra-ui/react";
 
 function randomID(len) {
   let result = "";
@@ -57,10 +58,28 @@ export default function Zego() {
   };
 
   return (
-    <div
-      className="myCallContainer"
-      ref={myMeeting}
-      style={{ width: "100vw", height: "100vh" }}
-    ></div>
+    <Box w="100vw" h="90vh">
+      <Center w="100%" h="100%">
+        <Box
+          w="90%"
+          h="90%"
+          display="flex"
+          alignItems="center"
+          flexDirection="column"
+          justifyContent="center"
+          p="4"
+          borderRadius="15px"
+        >
+          <Text color="white" mt="100px">
+            Your room ID is: {roomID}
+          </Text>
+          <div
+            className="myCallContainer"
+            ref={myMeeting}
+            style={{ width: "100vw", height: "100vh" }}
+          ></div>
+        </Box>{" "}
+      </Center>
+    </Box>
   );
 }

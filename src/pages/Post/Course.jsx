@@ -105,7 +105,7 @@ const Course = () => {
     // eslint-disable-next-line
   }, []);
   return (
-    <Box h="90vh" w="100vw" bg="rgba(0,0,0,0.2)" py="4">
+    <Box minHeight="90vh" w="100vw" bg="rgba(0,0,0,0.2)" py="4" px="2">
       <Flex
         w="100%"
         direction="column"
@@ -130,24 +130,17 @@ const Course = () => {
         <Text color="white" m="4" as="b" fontSize="2xl">
           {state?.course.name}
         </Text>
-        <Flex w="100%" bg="white" p="2">
-          <Box w="30%" h="100%" borderRight="1px" borderColor="gray" p="2">
+        <Flex w="100%" bg="white" p="2" h="100%">
+          <Box w="30%" h="100%" borderColor="gray" p="2">
             Question
             <Textarea
-              h="80%"
+              h="200px"
               type="text"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
             />
           </Box>
-          <Flex
-            w="70%"
-            h="100%"
-            borderRight="1px"
-            p="2"
-            overflowY="scroll"
-            direction="column"
-          >
+          <Flex w="70%" h="100%" borderLeft="1px" p="2" direction="column">
             <Grid templateColumns="repeat(2, 1fr)" gap={6} color="black">
               <GridItem>
                 <Input
@@ -228,28 +221,31 @@ const Course = () => {
             return (
               <Flex w="100%" bg="white" p="2" my="4" key={quiz?.id}>
                 <Box
-                  w="30%"
+                  w="70%"
                   borderRight="1px"
                   borderColor="gray"
                   p="2"
                   className="question"
                 >
                   {quiz?.question}
+                  <br></br>
+                  <Box my="2">
+                    {quiz?.options.map((option) => {
+                      return <Text color={quiz?.answer}>{option}</Text>;
+                    })}
+                  </Box>
                 </Box>
-                <Flex
-                  w="70%"
-                  h="100%"
-                  borderRight="1px"
-                  p="2"
-                  overflowY="scroll"
-                  direction="column"
-                >
+                <Flex w="30%" h="100%" p="2" direction="column">
                   {quiz?.options.map((option) => {
-                    return (
-                      <Text color={quiz?.answer === option ? "green" : ""}>
-                        {option}
-                      </Text>
-                    );
+                    if (quiz?.answer === option) {
+                      return (
+                        <Text color={quiz?.answer === option ? "green" : ""}>
+                          {option}
+                        </Text>
+                      );
+                    } else {
+                      return <></>;
+                    }
                   })}
                   {course?.created_by?._id === currentUser?._id ? (
                     <Button

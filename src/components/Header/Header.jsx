@@ -271,7 +271,9 @@ const Header = () => {
             <div class="dropdown-content">
               <Link href="/CometChat">Chat page</Link>
               <br></br>
-              <Link href="/zego">Video meeting</Link>
+              <Link href="/zego">Create video meeting</Link>
+              <br></br>
+              <Link href="/joinCall">Join meeting</Link>
               <br></br>
               <Link href="/allpost">All post</Link>
               <br></br>

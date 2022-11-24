@@ -35,6 +35,7 @@ import Course from "./pages/Post/Course";
 import AllCourse from "./pages/Post/AllCourse";
 import CreateCourse from "./pages/Post/CreateCourse";
 import YourCourse from "./pages/Post/YourCourse";
+import JoinCall from "./pages/ZegoCloud/JoinCall";
 
 function App() {
   /////////////////////////////////////////////////
@@ -98,6 +99,7 @@ function App() {
           <Route path="/yourCourse" element={<YourCourse />} />
           <Route path="/createCourse" element={<CreateCourse />} />
           <Route path="/course" element={<Course />} />
+          <Route path="/joinCall" element={<JoinCall />} />
         </Route>
         <Route path="/" element={<Login />} />
         <Route path="/Login" element={<Login />} />
