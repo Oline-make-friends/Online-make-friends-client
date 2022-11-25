@@ -53,7 +53,7 @@ export const loginByGmail = async (email, dispatch, navigate, toast) => {
   }
 };
 
-export const logOutUser = (dispatch) => {
+export const logOutUser = (dispatch, navigate) => {
   try {
     CometChat.logout().then(
       () => {
@@ -64,6 +64,7 @@ export const logOutUser = (dispatch) => {
       }
     );
     dispatch(logOut());
+    navigate("/");
   } catch (error) {}
 };
 

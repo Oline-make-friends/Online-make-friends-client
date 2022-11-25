@@ -21,6 +21,7 @@ import axios from "axios";
 import FriendRequest from "./FriendRequest";
 import socketIOClient from "socket.io-client";
 import Notification from "./Notification";
+import { useNavigate } from "react-router";
 
 const Header = () => {
   const color = "teal";
@@ -41,10 +42,12 @@ const Header = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [friendRequest, setFriendRequest] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const logOut = () => {
-    logOutUser(dispatch);
+    logOutUser(dispatch, navigate);
+    toast.success("Log out success");
   };
   const handleSearch = async () => {
     if (!search) {

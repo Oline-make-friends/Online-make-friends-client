@@ -10,12 +10,14 @@ import {
 } from "@chakra-ui/react";
 import { MdNotifications } from "react-icons/md";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function Notification({
   listNotification,
   toast,
   getNotification,
 }) {
+  const user = useSelector((state) => state.auth?.login?.currentUser);
   const handleDeleteNoti = async (id) => {
     try {
       await axios.post("http://localhost:8000/noti/delete/" + id);
@@ -45,9 +47,13 @@ export default function Notification({
               <Flex direction="row">
                 <Text as="b">{noti?.title + " "}:</Text>
                 <Text mx="1"> {noti?.content}</Text>
-                <Button bg="blue" onClick={() => handleDeleteNoti(noti?._id)}>
-                  Mark as read
-                </Button>
+                {noti?.user_id?._id === user._id ? (
+                  <Button bg="blue" onClick={() => handleDeleteNoti(noti?._id)}>
+                    Mark as read
+                  </Button>
+                ) : (
+                  <></>
+                )}
               </Flex>
             </MenuItem>
           );

@@ -130,82 +130,87 @@ const Course = () => {
         <Text color="white" m="4" as="b" fontSize="2xl">
           {state?.course.name}
         </Text>
-        <Flex w="100%" bg="white" p="2" h="100%">
-          <Box w="30%" h="100%" borderColor="gray" p="2">
-            Question
-            <Textarea
-              h="200px"
-              type="text"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-            />
-          </Box>
-          <Flex w="70%" h="100%" borderLeft="1px" p="2" direction="column">
-            <Grid templateColumns="repeat(2, 1fr)" gap={6} color="black">
-              <GridItem>
-                <Input
-                  type="text"
-                  onChange={(e) => setOption1(e.target.value)}
-                  value={option1}
-                  isRequired
-                  w="100%"
-                />
-              </GridItem>
-              <GridItem>
-                <Input
-                  type="text"
-                  onChange={(e) => setOption2(e.target.value)}
-                  value={option2}
-                  isRequired
-                  w="100%"
-                />
-              </GridItem>
-              <GridItem>
-                <Input
-                  type="text"
-                  onChange={(e) => setOption3(e.target.value)}
-                  value={option3}
-                  isRequired
-                  w="100%"
-                />
-              </GridItem>
-              <GridItem>
-                <Input
-                  type="text"
-                  value={option4}
-                  onChange={(e) => setOption4(e.target.value)}
-                  isRequired
-                  w="100%"
-                />
-              </GridItem>
-            </Grid>
-            Answer
-            <Box>
-              <Select
-                border="1px"
-                value={answer}
-                onChange={(e) => {
-                  setAnswer(e.target.value);
-                }}
-              >
-                <option value={option1}>{option1}</option>
-                <option value={option2}>{option2}</option>
-                <option value={option3}>{option3}</option>
-                <option value={option4}>{option4}</option>
-              </Select>
+        {course?.created_by?._id === currentUser?._id ? (
+          <Flex w="100%" bg="white" p="2" h="100%">
+            <Box w="30%" h="100%" borderColor="gray" p="2">
+              Question
+              <Textarea
+                h="200px"
+                type="text"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+              />
             </Box>
-            <Button
-              m="4"
-              bg="green.400"
-              _hover={{
-                background: "green.500",
-              }}
-              onClick={() => addQuiz()}
-            >
-              Add
-            </Button>
+            <Flex w="70%" h="100%" borderLeft="1px" p="2" direction="column">
+              <Grid templateColumns="repeat(2, 1fr)" gap={6} color="black">
+                <GridItem>
+                  <Input
+                    type="text"
+                    onChange={(e) => setOption1(e.target.value)}
+                    value={option1}
+                    isRequired
+                    w="100%"
+                  />
+                </GridItem>
+                <GridItem>
+                  <Input
+                    type="text"
+                    onChange={(e) => setOption2(e.target.value)}
+                    value={option2}
+                    isRequired
+                    w="100%"
+                  />
+                </GridItem>
+                <GridItem>
+                  <Input
+                    type="text"
+                    onChange={(e) => setOption3(e.target.value)}
+                    value={option3}
+                    isRequired
+                    w="100%"
+                  />
+                </GridItem>
+                <GridItem>
+                  <Input
+                    type="text"
+                    value={option4}
+                    onChange={(e) => setOption4(e.target.value)}
+                    isRequired
+                    w="100%"
+                  />
+                </GridItem>
+              </Grid>
+              Answer
+              <Box>
+                <Select
+                  border="1px"
+                  value={answer}
+                  onChange={(e) => {
+                    setAnswer(e.target.value);
+                  }}
+                >
+                  <option value={option1}>{option1}</option>
+                  <option value={option2}>{option2}</option>
+                  <option value={option3}>{option3}</option>
+                  <option value={option4}>{option4}</option>
+                </Select>
+              </Box>
+              <Button
+                m="4"
+                bg="green.400"
+                _hover={{
+                  background: "green.500",
+                }}
+                onClick={() => addQuiz()}
+              >
+                Add
+              </Button>
+            </Flex>
           </Flex>
-        </Flex>
+        ) : (
+          <></>
+        )}
+
         <Box
           px="2"
           flexDirection="column"
