@@ -39,7 +39,13 @@ export default function Notification({
           )}
         </div>
       </MenuButton>
-      <MenuList bg="black" color="white" minHeight="50px">
+      <MenuList
+        bg="black"
+        color="white"
+        minHeight="50px"
+        maxHeight="250px"
+        overflowY="scroll"
+      >
         {listNotification.length === 0 ? <Text>Empty</Text> : <></>}
         {listNotification?.map((noti) => {
           return (

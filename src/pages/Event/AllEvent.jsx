@@ -22,7 +22,7 @@ const AllEvent = () => {
   const getAllEvent = async () => {
     try {
       const res = await axios.get(`http://localhost:8000/event/getAll`);
-      setEvents(res.data);
+      setEvents(res.data?.reverse());
       console.log(res.data);
     } catch (error) {
       toast.error("Can not get event list");

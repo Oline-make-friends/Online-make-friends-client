@@ -94,7 +94,7 @@ const Header = () => {
         }
       }
       //////
-      setNotifications(temp);
+      setNotifications(temp.reverse());
     } catch (error) {
       toast.error("get notification fail");
     }
