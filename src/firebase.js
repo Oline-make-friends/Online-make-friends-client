@@ -33,5 +33,7 @@ export const signInWithGoogle = (dispatch, navigate, toast) => {
     })
     .catch((error) => {
       toast.error("login with google fail");
+      console.log(error.message);
+      console.log(error);
     });
 };
