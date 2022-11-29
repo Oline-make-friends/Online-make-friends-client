@@ -17,6 +17,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import * as CONSTANT from "../../constants/constans";
 
 const AllCourse = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const AllCourse = () => {
 
   const handleGetAllCourse = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/course/getAll`);
+      const res = await axios.get(`${CONSTANT.SERVER}/course/getAll`);
       console.log(res.data);
       setCourse(res.data?.reverse());
     } catch (error) {
@@ -42,7 +43,7 @@ const AllCourse = () => {
         toast.error("check input");
         return;
       }
-      await axios.post(`http://localhost:8000/course/add`, {
+      await axios.post(`${CONSTANT.SERVER}/course/add`, {
         created_by: user?._id,
         name: name,
         description: description,

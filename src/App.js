@@ -39,7 +39,7 @@ import JoinCall from "./pages/ZegoCloud/JoinCall";
 
 function App() {
   /////////////////////////////////////////////////
-  const host = "http://localhost:8000";
+  const host = "https://social-media-api-moongo.herokuapp.com/";
 
   const socketRef = useRef();
 

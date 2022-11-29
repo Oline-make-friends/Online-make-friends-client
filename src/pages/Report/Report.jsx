@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import AvatarUser from "../../components/AvatarUser";
+import * as CONSTANT from "../../constants/constans";
 
 const Report = () => {
   const user = useSelector((state) => state.auth?.login?.currentUser);
@@ -26,7 +27,7 @@ const Report = () => {
   const [reports, setReports] = useState([]);
   const sendReport = async () => {
     try {
-      await axios.post("http://localhost:8000/report/add", {
+      await axios.post(`${CONSTANT.SERVER}/report/add`, {
         sent_by: user._id,
         content: description,
       });
@@ -41,7 +42,7 @@ const Report = () => {
   const handleGetAllReport = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8000/report/getUser/${user._id}`
+        `${CONSTANT.SERVER}/report/getUser/${user._id}`
       );
       setReports(res.data);
     } catch (error) {
@@ -50,7 +51,7 @@ const Report = () => {
   };
   const handleDeleteReport = async (id) => {
     try {
-      await axios.post("http://localhost:8000/report/delete/" + id);
+      await axios.post(`${CONSTANT.SERVER}/report/delete/` + id);
       handleGetAllReport();
       toast.success("Delete noti success!");
     } catch (error) {

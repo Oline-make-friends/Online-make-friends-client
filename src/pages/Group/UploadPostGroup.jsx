@@ -4,6 +4,7 @@ import { Box, Flex, Text, Textarea, Spinner, Button } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router";
+import * as CONSTANT from "../../constants/constans";
 
 const UploadPostGroup = () => {
   const { state } = useLocation();
@@ -45,7 +46,7 @@ const UploadPostGroup = () => {
   };
   const handleUploadPost = async (url) => {
     try {
-      await axios.post("http://localhost:8000/group/upload", {
+      await axios.post(`${CONSTANT.SERVER}/group/upload`, {
         created_by: user._id,
         content: description,
         imageUrl: url,

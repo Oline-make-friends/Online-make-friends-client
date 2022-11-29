@@ -41,7 +41,7 @@ export default function Register() {
         toast.error("Confirm password is wrong");
         return;
       }
-      const res = await axios.post("http://localhost:8000/auth/register", {
+      const res = await axios.post(`${CONSTANT.SERVER}/auth/register`, {
         username: email,
         password: password,
         fullname: fullname,

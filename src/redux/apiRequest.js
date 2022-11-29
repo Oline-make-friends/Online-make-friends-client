@@ -6,7 +6,7 @@ import * as CONSTANT from "../constants/constans";
 export const loginUser = async (user, dispatch, navigate, toast) => {
   dispatch(loginStart());
   try {
-    const res = await axios.post("http://localhost:8000/auth/login", user);
+    const res = await axios.post(`${CONSTANT.SERVER}/auth/login`, user);
     dispatch(loginSuccess(res.data));
     CometChat.login(`${res.data?._id}`, CONSTANT.AUTH_KEY)
       .then(console.log("Login success"))
@@ -31,7 +31,7 @@ export const loginByGmail = async (email, dispatch, navigate, toast) => {
   dispatch(loginStart());
   try {
     const res = await axios.post(
-      `http://localhost:8000/auth/loginByGmail/${email}`
+      `${CONSTANT.SERVER}/auth/loginByGmail/${email}`
     );
     CometChat.login(`${res.data?._id}`, CONSTANT.AUTH_KEY)
       .then(console.log("Login success"))

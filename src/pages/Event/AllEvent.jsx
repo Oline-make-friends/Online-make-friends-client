@@ -13,6 +13,7 @@ import axios from "axios";
 import "./AllEvent.css";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import * as CONSTANT from "../../constants/constans";
 
 SwiperCore.use([Virtual, Navigation, Pagination]);
 const AllEvent = () => {
@@ -21,7 +22,7 @@ const AllEvent = () => {
   const [events, setEvents] = useState([]);
   const getAllEvent = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/event/getAll`);
+      const res = await axios.get(`${CONSTANT.SERVER}/event/getAll`);
       setEvents(res.data?.reverse());
       console.log(res.data);
     } catch (error) {
@@ -49,7 +50,7 @@ const AllEvent = () => {
       >
         Create event
       </Button>
-      <Input w="50vw" bg="white" placeholder="Find event" />
+      {/* <Input w="50vw" bg="white" placeholder="Find event" /> */}
 
       <Text color="white" as="bold">
         ALL Event

@@ -11,6 +11,7 @@ import {
 import { MdNotifications } from "react-icons/md";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import * as CONSTANT from "../../constants/constans";
 
 export default function Notification({
   listNotification,
@@ -20,7 +21,7 @@ export default function Notification({
   const user = useSelector((state) => state.auth?.login?.currentUser);
   const handleDeleteNoti = async (id) => {
     try {
-      await axios.post("http://localhost:8000/noti/delete/" + id);
+      await axios.post(`${CONSTANT.SERVER}/noti/delete/` + id);
       getNotification();
     } catch (error) {
       console.log(error.message);

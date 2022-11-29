@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Avatar, Link, Flex, Text } from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import * as CONSTANT from "../constants/constans";
 
 const AvatarUser = (props) => {
   const navigate = useNavigate();
@@ -12,9 +13,7 @@ const AvatarUser = (props) => {
   const handleGetUser = async () => {
     try {
       if (id !== undefined) {
-        const res = await axios.post(
-          `http://localhost:8000/user/getUser/` + id
-        );
+        const res = await axios.post(`${CONSTANT.SERVER}/user/getUser/` + id);
         setUser(res.data);
       }
     } catch (error) {

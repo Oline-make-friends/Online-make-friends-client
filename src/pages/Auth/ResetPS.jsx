@@ -16,6 +16,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import * as CONSTANT from "../../constants/constans";
 
 const ResetPS = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const ResetPS = () => {
     e.preventDefault();
     setLoading(true);
     axios
-      .post(`http://localhost:8000/sendMail/sendEmailResetPassword/${email}`)
+      .post(`${CONSTANT.SERVER}/sendMail/sendEmailResetPassword/${email}`)
       .then(() => {
         setLoading(false);
         toast.success("send email success");

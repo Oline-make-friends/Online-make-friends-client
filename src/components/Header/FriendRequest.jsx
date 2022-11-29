@@ -8,6 +8,7 @@ import { FaUserFriends } from "react-icons/fa";
 import "./friendRequest.css";
 import { loginByGmail } from "../../redux/apiRequest";
 import { useDispatch } from "react-redux";
+import * as CONSTANT from "../../constants/constans";
 
 export default function FriendRequest({
   listRequest,
@@ -18,12 +19,12 @@ export default function FriendRequest({
   const dispatch = useDispatch();
   const accept = async (sender_id, receiver_id, request_id) => {
     try {
-      await axios.post("http://localhost:8000/user/addFriend", {
+      await axios.post(`${CONSTANT.SERVER}/user/addFriend`, {
         sender_id: sender_id,
         receiver_id: receiver_id,
       });
       await axios.delete(
-        "http://localhost:8000/friendRequest/deleteFrRq/" + request_id
+        `${CONSTANT.SERVER}/friendRequest/deleteFrRq/` + request_id
       );
 
       loginByGmail(user?.username, dispatch, null, null);
@@ -37,7 +38,7 @@ export default function FriendRequest({
   const decline = async (request_id) => {
     try {
       await axios.delete(
-        "http://localhost:8000/friendRequest/deleteFrRq/" + request_id
+        `${CONSTANT.SERVER}/friendRequest/deleteFrRq/` + request_id
       );
 
       toast.success("declined");

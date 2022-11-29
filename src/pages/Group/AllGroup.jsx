@@ -8,6 +8,7 @@ import { BsThreeDots } from "react-icons/bs";
 import SwiperCore, { Virtual, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useSelector } from "react-redux";
+import * as CONSTANT from "../../constants/constans";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
@@ -21,7 +22,7 @@ const AllGroup = () => {
   const [groups, setGroup] = useState([]);
   const handleGetAllGroup = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/group/getAll");
+      const res = await axios.get(`${CONSTANT.SERVER}/group/getAll`);
       setGroup(res.data);
       toast.success("get all group success!");
     } catch (error) {
@@ -79,7 +80,11 @@ const AllGroup = () => {
                   direction="column"
                   alignItems="start"
                   justify="start"
-                  bg={group?.avatar_url}
+                  bgImage={group?.avatar_url}
+                  style={{
+                    backgroundImage: `${group?.avatar_url}`,
+                    backgroundColor: `rgba(255, 0, 0, 0.4)`,
+                  }}
                 >
                   <Flex
                     justify="space-between"
@@ -149,7 +154,7 @@ const AllGroup = () => {
                     direction="column"
                     alignItems="start"
                     justify="start"
-                    bg={group?.avatar_url}
+                    bgImage={group?.avatar_url}
                   >
                     <Flex
                       justify="space-between"

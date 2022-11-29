@@ -22,11 +22,12 @@ import socketIOClient from "socket.io-client";
 import ReactHashtag from "react-hashtag";
 import { FcQuestions } from "react-icons/fc";
 import { MdSource } from "react-icons/md";
+import * as CONSTANT from "../../constants/constans";
 // import { GiSkills } from "react-icons/gi";
 
 const AllPost = () => {
   const user = useSelector((state) => state.auth?.login?.currentUser);
-  const host = "http://localhost:8000";
+  const host = `${CONSTANT.SERVER}`;
   const socketRef = useRef();
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
@@ -36,18 +37,15 @@ const AllPost = () => {
   const handleGetAllPost = async (type) => {
     try {
       if (type === undefined) {
-        const res = await axios.get("http://localhost:8000/post/getAll");
+        const res = await axios.get(`${CONSTANT.SERVER}/post/getAll`);
         setPosts(res.data);
         console.log(res.data);
         return;
       }
       if (type) {
-        const res = await axios.post(
-          "http://localhost:8000/post/getAllbyType",
-          {
-            type,
-          }
-        );
+        const res = await axios.post(`${CONSTANT.SERVER}/post/getAllbyType`, {
+          type,
+        });
         setPosts(res.data);
         setSelected(type);
       }
@@ -71,7 +69,7 @@ const AllPost = () => {
       const temp = [];
       for (var i = 0; i < user?.follows.length; i++) {
         const res = await axios.post(
-          `http://localhost:8000/post/get/${user?.follows[i]?._id}`
+          `${CONSTANT.SERVER}/post/get/${user?.follows[i]?._id}`
         );
         temp.push(res.data);
       }
@@ -88,7 +86,7 @@ const AllPost = () => {
         handleGetAllPost();
         return;
       }
-      const res = await axios.post("http://localhost:8000/post/searchTag", {
+      const res = await axios.post(`${CONSTANT.SERVER}/post/searchTag`, {
         hashtag: find,
       });
       setPosts(res.data);
@@ -98,7 +96,7 @@ const AllPost = () => {
   };
   const handleLikePost = async (postId) => {
     try {
-      await axios.post(`http://localhost:8000/post/like/`, {
+      await axios.post(`${CONSTANT.SERVER}/post/like/`, {
         _id: postId,
         userId: user?._id,
       });
@@ -110,7 +108,7 @@ const AllPost = () => {
 
   const handleSendNoti = async (userPostId) => {
     try {
-      await axios.post("http://localhost:8000/noti/add", {
+      await axios.post(`${CONSTANT.SERVER}/noti/add`, {
         title: user?.fullname,
         content: "like your post",
         user_id: userPostId,
@@ -122,7 +120,7 @@ const AllPost = () => {
   };
   const mayKnowUser = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/user/getAllUser");
+      const res = await axios.get(`${CONSTANT.SERVER}/user/getAllUser`);
       const result = [];
       for (var i = 0; i <= 5; i++) {
         var random = Math.floor(Math.random() * res.data.length);

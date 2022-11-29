@@ -8,6 +8,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import socketIOClient from "socket.io-client";
+import * as CONSTANT from "../../constants/constans";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
@@ -21,16 +22,14 @@ import axios from "axios";
 SwiperCore.use([Virtual, Navigation, Pagination]);
 
 export const ListPost = ({ user }) => {
-  const host = "http://localhost:8000";
+  const host = `${CONSTANT.SERVER}`;
   const socketRef = useRef();
   const currentUser = useSelector((state) => state.auth?.login?.currentUser);
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const handleGetAllPost = async () => {
     try {
-      const res = await axios.post(
-        `http://localhost:8000/post/get/` + user._id
-      );
+      const res = await axios.post(`${CONSTANT.SERVER}/post/get/` + user._id);
       setPosts(res.data?.reverse());
       console.log(res.data);
     } catch (error) {
@@ -39,7 +38,7 @@ export const ListPost = ({ user }) => {
   };
   const handleSendNoti = async (userPostId) => {
     try {
-      await axios.post("http://localhost:8000/noti/add", {
+      await axios.post(`${CONSTANT.SERVER}/noti/add`, {
         title: currentUser.fullname,
         content: "like your post",
         user_id: userPostId,
@@ -52,7 +51,7 @@ export const ListPost = ({ user }) => {
 
   const handleLikePost = async (postId) => {
     try {
-      await axios.post(`http://localhost:8000/post/like/`, {
+      await axios.post(`${CONSTANT.SERVER}/post/like/`, {
         _id: postId,
         userId: currentUser?._id,
       });

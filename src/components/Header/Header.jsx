@@ -22,6 +22,7 @@ import FriendRequest from "./FriendRequest";
 import socketIOClient from "socket.io-client";
 import Notification from "./Notification";
 import { useNavigate } from "react-router";
+import * as CONSTANT from "../../constants/constans";
 
 const Header = () => {
   const color = "teal";
@@ -55,7 +56,7 @@ const Header = () => {
       return;
     }
     try {
-      const res = await axios.get("http://localhost:8000/user/getAllUser");
+      const res = await axios.get(`${CONSTANT.SERVER}/user/getAllUser`);
       loginByGmail(user?.username, dispatch, null, null);
       const result = [];
       res.data.forEach((item) => {
@@ -70,7 +71,7 @@ const Header = () => {
 
   const getFriendRequest = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/user/getFrRq", {
+      const res = await axios.post(`${CONSTANT.SERVER}/user/getFrRq`, {
         receiver_id: user?._id,
       });
       setFriendRequest(res.data);
@@ -81,7 +82,7 @@ const Header = () => {
   };
   const getNotification = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/noti/getAll");
+      const res = await axios.get(`${CONSTANT.SERVER}/noti/getAll`);
       ///
       let temp = [];
 
@@ -104,7 +105,7 @@ const Header = () => {
     socketRef.current.emit("sendacceptFriendRequest");
     socketRef.current.emit("sendNotification");
   };
-  const host = "http://localhost:8000";
+  const host = `${CONSTANT.SERVER}`;
   const socketRef = useRef();
 
   useEffect(() => {

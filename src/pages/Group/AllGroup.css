@@ -10,7 +10,7 @@
 
 .hero::before {
   content: "";
-  background-image: url("https://www.anu.edu.au/files/guidance/Report%20writing%20in%20a%20group%20-%20smaller_0.jpg");
+  /* background-image: url("https://www.anu.edu.au/files/guidance/Report%20writing%20in%20a%20group%20-%20smaller_0.jpg"); */
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
@@ -19,7 +19,6 @@
   bottom: 0px;
   left: 0px;
   filter: brightness(70%);
-
 }
 
 .group_text {

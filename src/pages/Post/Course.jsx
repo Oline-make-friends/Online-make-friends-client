@@ -15,6 +15,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import AvatarUser from "../../components/AvatarUser";
+import * as CONSTANT from "../../constants/constans";
 const Course = () => {
   const { state } = useLocation();
   const id = state.course._id;
@@ -33,7 +34,7 @@ const Course = () => {
 
   const handleGetCourse = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/course/get/${id}`);
+      const res = await axios.get(`${CONSTANT.SERVER}/course/get/${id}`);
       toast.success("get course success");
       setCourse(res.data);
       setQuizs(res.data?.quizs?.reverse());
@@ -44,7 +45,7 @@ const Course = () => {
   };
   const deleteCourse = async () => {
     try {
-      await axios.get(`http://localhost:8000/course/delete/${id}`);
+      await axios.get(`${CONSTANT.SERVER}/course/delete/${id}`);
       toast.success("deleted course");
       navigate("/allCourse");
     } catch (error) {
@@ -54,7 +55,7 @@ const Course = () => {
   };
   const deleteQuiz = async (quizid) => {
     try {
-      await axios.get(`http://localhost:8000/quiz/delete/${quizid}`);
+      await axios.get(`${CONSTANT.SERVER}/quiz/delete/${quizid}`);
       toast.success("deleted that");
       handleGetCourse();
     } catch (error) {
@@ -81,7 +82,7 @@ const Course = () => {
       }
       const options = [option1, option2, option3, option4];
 
-      await axios.post(`http://localhost:8000/quiz/add`, {
+      await axios.post(`${CONSTANT.SERVER}/quiz/add`, {
         courseId: id,
         question: question,
         options: options,

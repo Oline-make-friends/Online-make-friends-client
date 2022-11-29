@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import * as CONSTANT from "../../constants/constans";
 
 const CreateCourse = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const CreateCourse = () => {
   const handleCreateEvent = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:8000/course/add`, {
+      await axios.post(`${CONSTANT.SERVER}/course/add`, {
         created_by: user?._id,
         name: name,
         description: description,

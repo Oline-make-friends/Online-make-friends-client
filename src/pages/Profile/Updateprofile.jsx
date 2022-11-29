@@ -19,6 +19,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { loginByGmail } from "../../redux/apiRequest";
 import { TiDeleteOutline } from "react-icons/ti";
+import * as CONSTANT from "../../constants/constans";
 
 export default function Updateprofile() {
   const user = useSelector((state) => state.auth?.login.currentUser);
@@ -38,7 +39,7 @@ export default function Updateprofile() {
 
   const updateAvatar = async (avatarURL) => {
     try {
-      await axios.post(`http://localhost:8000/user/update/${user._id}`, {
+      await axios.post(`${CONSTANT.SERVER}/user/update/${user._id}`, {
         avatar_url: avatarURL,
       });
       setAvatar(avatarURL);
@@ -83,7 +84,7 @@ export default function Updateprofile() {
 
   const updateProfile = async () => {
     try {
-      await axios.post(`http://localhost:8000/user/update/${user._id}`, {
+      await axios.post(`${CONSTANT.SERVER}/user/update/${user._id}`, {
         fullname: fullname,
         about: about,
         gender: gender,
@@ -100,12 +101,9 @@ export default function Updateprofile() {
 
   const removeInterest = async (value) => {
     try {
-      await axios.post(
-        `http://localhost:8000/user/removeInterest/${user._id}`,
-        {
-          interest: value,
-        }
-      );
+      await axios.post(`${CONSTANT.SERVER}/user/removeInterest/${user._id}`, {
+        interest: value,
+      });
       loginByGmail(user.username, dispatch, null, null);
       toast.success("Update profile success");
     } catch (error) {
@@ -115,7 +113,7 @@ export default function Updateprofile() {
 
   const addInterest = async (value) => {
     try {
-      await axios.post(`http://localhost:8000/user/addInterest/${user._id}`, {
+      await axios.post(`${CONSTANT.SERVER}/user/addInterest/${user._id}`, {
         interest: value,
       });
       loginByGmail(user.username, dispatch, null, null);

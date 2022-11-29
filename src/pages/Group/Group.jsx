@@ -26,6 +26,7 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
 import socketIOClient from "socket.io-client";
+import * as CONSTANT from "../../constants/constans";
 
 const Group = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const Group = () => {
   const [group, setGroup] = useState(state.group);
   const [isMemeber, setIsMemeber] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const host = "http://localhost:8000";
+  const host = `${CONSTANT.SERVER}`;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const socketRef = useRef();
@@ -43,7 +44,7 @@ const Group = () => {
 
   const handleGetGroup = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/group/get/${id}`);
+      const res = await axios.get(`${CONSTANT.SERVER}/group/get/${id}`);
 
       setGroup(res.data);
 
@@ -70,7 +71,7 @@ const Group = () => {
 
   const joinGroup = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/group/join", {
+      const res = await axios.post(`${CONSTANT.SERVER}/group/join`, {
         _id: id,
         idUser: user._id,
       });
@@ -86,7 +87,7 @@ const Group = () => {
 
   const handleDeletePost = async (postId) => {
     try {
-      await axios.post(`http://localhost:8000/post/delete/` + postId);
+      await axios.post(`${CONSTANT.SERVER}/post/delete/` + postId);
       toast.success("delete post success");
       handleGetGroup();
     } catch (error) {
@@ -96,7 +97,7 @@ const Group = () => {
 
   const leaveGroup = async () => {
     try {
-      await axios.post("http://localhost:8000/group/leave", {
+      await axios.post(`${CONSTANT.SERVER}/group/leave`, {
         _id: id,
         idUser: user._id,
       });
@@ -110,7 +111,7 @@ const Group = () => {
 
   const deleteGroup = async () => {
     try {
-      await axios.post("http://localhost:8000/group/delete", {
+      await axios.post(`${CONSTANT.SERVER}/group/delete`, {
         _id: id,
       });
       navigate("/allGroup");
@@ -121,7 +122,7 @@ const Group = () => {
 
   const handleLikePost = async (postId) => {
     try {
-      await axios.post(`http://localhost:8000/post/like/`, {
+      await axios.post(`${CONSTANT.SERVER}/post/like/`, {
         _id: postId,
         userId: user?._id,
       });
@@ -132,7 +133,7 @@ const Group = () => {
   };
   const handleSendNoti = async (userPostId) => {
     try {
-      await axios.post("http://localhost:8000/noti/add", {
+      await axios.post(`${CONSTANT.SERVER}/noti/add`, {
         title: user?.fullname,
         content: "like your post",
         user_id: userPostId,

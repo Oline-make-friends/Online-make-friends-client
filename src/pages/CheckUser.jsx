@@ -30,6 +30,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import * as CONSTANT from "../constants/constans";
 
 const CheckUser = () => {
   const navigate = useNavigate();
@@ -37,9 +38,7 @@ const CheckUser = () => {
 
   const handleGetUsers = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:8000/user/getAllProveAccount`
-      );
+      const res = await axios.get(`${CONSTANT.SERVER}/user/getAllProveAccount`);
       setUserList(res.data);
       console.log(res.data);
     } catch (error) {
@@ -53,8 +52,8 @@ const CheckUser = () => {
 
   const handleStatusUser = async (id) => {
     try {
-      await axios.post(`http://localhost:8000/user/blockUser/${id}`);
-      await axios.post(`http://localhost:8000/user/proveUser/${id}`);
+      await axios.post(`${CONSTANT.SERVER}/user/blockUser/${id}`);
+      await axios.post(`${CONSTANT.SERVER}/user/proveUser/${id}`);
       handleGetUsers();
     } catch (error) {
       toast("check user information");

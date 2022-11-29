@@ -52,9 +52,12 @@ const SideDrawer = (props) => {
 
   const accessChat = async (userId) => {
     try {
-      await axios.post("http://localhost:8000/api/chat", {
-        userId,
-      });
+      await axios.post(
+        "https://social-media-api-moongo.herokuapp.com/api/chat",
+        {
+          userId,
+        }
+      );
     } catch (error) {}
   };
 

@@ -13,6 +13,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { loginByGmail } from "../../redux/apiRequest";
 import { useNavigate } from "react-router-dom";
+import * as CONSTANT from "../../constants/constans";
 
 const UpdatePS = () => {
   const user = useSelector((state) => state.auth?.login?.currentUser);
@@ -33,7 +34,7 @@ const UpdatePS = () => {
         toast.error("Confirm password is wrong");
         return;
       }
-      await axios.post(`http://localhost:8000/user/update/${user._id}`, {
+      await axios.post(`${CONSTANT.SERVER}/user/update/${user._id}`, {
         password: newPS,
       });
       loginByGmail(user.username, dispatch, navigate, null);

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import * as CONSTANT from "../../constants/constans";
 
 const CreateEvent = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const CreateEvent = () => {
   const handleCreateEvent = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:8000/event/add`, {
+      await axios.post(`${CONSTANT.SERVER}/event/add`, {
         created_by: user?._id,
         title: title,
         description: description,

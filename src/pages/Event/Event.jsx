@@ -27,6 +27,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
+import * as CONSTANT from "../../constants/constans";
 
 const Event = () => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const Event = () => {
   const handleGetEvent = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8000/event/getEvent/${event?._id}`
+        `${CONSTANT.SERVER}/event/getEvent/${event?._id}`
       );
       setEvent(res.data);
       console.log(res.data);
@@ -55,7 +56,7 @@ const Event = () => {
 
   const handleUpdateEvent = async () => {
     try {
-      await axios.post(`http://localhost:8000/event/update`, {
+      await axios.post(`${CONSTANT.SERVER}/event/update`, {
         id: event?._id,
         title: title,
         description: description,
@@ -71,7 +72,7 @@ const Event = () => {
   };
   const deleteEvent = async () => {
     try {
-      await axios.post(`http://localhost:8000/event/delete`, {
+      await axios.post(`${CONSTANT.SERVER}/event/delete`, {
         id: event?._id,
       });
       toast.success("Deleted");
@@ -82,7 +83,7 @@ const Event = () => {
   };
   const joinEvent = async () => {
     try {
-      const res = await axios.post(`http://localhost:8000/event/joinEvent`, {
+      const res = await axios.post(`${CONSTANT.SERVER}/event/joinEvent`, {
         eventId: event?._id,
         userId: user?._id,
       });
@@ -98,7 +99,7 @@ const Event = () => {
   };
   const unJoinEvent = async () => {
     try {
-      await axios.post(`http://localhost:8000/event/unJoinEvent`, {
+      await axios.post(`${CONSTANT.SERVER}/event/unJoinEvent`, {
         eventId: event?._id,
         userId: user?._id,
       });

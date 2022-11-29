@@ -4,6 +4,7 @@ import { Box, Flex, Text, Textarea, Spinner, Button } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import * as CONSTANT from "../../constants/constans";
 
 const CreateGroup = () => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const CreateGroup = () => {
   };
   const handleCreateGroup = async (url) => {
     try {
-      await axios.post("http://localhost:8000/group/add", {
+      await axios.post(`${CONSTANT.SERVER}/group/add`, {
         userid: user._id,
         name: name,
         content: description,

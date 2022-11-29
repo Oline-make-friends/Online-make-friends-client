@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
+import * as CONSTANT from "../../constants/constans";
 
 const LinkResetPS = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const LinkResetPS = () => {
         toast.error("Confirm password is wrong!!");
         return;
       }
-      await axios.post(`http://localhost:8000/user/update/${id}`, {
+      await axios.post(`${CONSTANT.SERVER}/user/update/${id}`, {
         password: newPS,
       });
       toast.success("Update password success");

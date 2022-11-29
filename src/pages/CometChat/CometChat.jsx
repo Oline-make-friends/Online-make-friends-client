@@ -5,7 +5,7 @@ import { CometChatUI } from "../../cometchat-pro-react-ui-kit-master/cometchat-p
 // import { CometChatUI } from "../../cometchat-pro-react-ui-kit/";
 const CometChat = () => {
   return (
-    <Box style={{ width: "98vw", height: "95vh", backgroundColor: "white" }}>
+    <Box style={{ width: "98vw", height: "90vh", backgroundColor: "white" }}>
       <CometChatUI />
     </Box>
   );

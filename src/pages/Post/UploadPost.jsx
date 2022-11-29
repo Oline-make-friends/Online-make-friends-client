@@ -13,6 +13,7 @@ import {
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import * as CONSTANT from "../../constants/constans";
 
 const UploadPost = () => {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ const UploadPost = () => {
   };
   const handleUploadPost = async (url) => {
     try {
-      await axios.post("http://localhost:8000/post/add", {
+      await axios.post(`${CONSTANT.SERVER}/post/add`, {
         created_by: user._id,
         content: description,
         imageUrl: url,

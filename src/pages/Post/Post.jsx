@@ -32,9 +32,10 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import socketIOClient from "socket.io-client";
 import { useNavigate } from "react-router-dom";
+import * as CONSTANT from "../../constants/constans";
 
 const Post = () => {
-  const host = "http://localhost:8000";
+  const host = `${CONSTANT.SERVER}`;
   const socketRef = useRef();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -53,7 +54,7 @@ const Post = () => {
 
   const handleLikePost = async (postId) => {
     try {
-      await axios.post(`http://localhost:8000/post/like/`, {
+      await axios.post(`${CONSTANT.SERVER}/post/like/`, {
         _id: postId,
         userId: user?._id,
       });
@@ -64,7 +65,7 @@ const Post = () => {
   };
   const handleGetPost = async () => {
     try {
-      const res = await axios.post(`http://localhost:8000/post/getPost/` + id);
+      const res = await axios.post(`${CONSTANT.SERVER}/post/getPost/` + id);
       var likee = false;
       res.data?.likes.forEach((like) => {
         if (like._id === user?._id) {
@@ -79,7 +80,7 @@ const Post = () => {
   };
   const handleComment = async (postId) => {
     try {
-      await axios.post(`http://localhost:8000/post/comment/`, {
+      await axios.post(`${CONSTANT.SERVER}/post/comment/`, {
         id: post?._id,
         postid: postId,
       });
@@ -91,7 +92,7 @@ const Post = () => {
 
   const deleteComment = async (commentId) => {
     try {
-      await axios.post(`http://localhost:8000/comment/delete/`, {
+      await axios.post(`${CONSTANT.SERVER}/comment/delete/`, {
         postId: post?._id,
         commentId: commentId,
       });
@@ -103,7 +104,7 @@ const Post = () => {
 
   const updateComment = async (commentId) => {
     try {
-      await axios.post(`http://localhost:8000/comment/update/${commentId}`, {
+      await axios.post(`${CONSTANT.SERVER}/comment/update/${commentId}`, {
         content: content,
       });
       setUpdate(false);
@@ -119,7 +120,7 @@ const Post = () => {
       e.preventDefault();
       setLoading(true);
       await axios
-        .post(`http://localhost:8000/comment/add/`, {
+        .post(`${CONSTANT.SERVER}/comment/add/`, {
           user_id: user._id,
           content: comment,
         })
@@ -139,7 +140,7 @@ const Post = () => {
 
   const handleSendNoti = async (userPostId) => {
     try {
-      await axios.post("http://localhost:8000/noti/add", {
+      await axios.post(`${CONSTANT.SERVER}/noti/add`, {
         title: user.fullname,
         content: "like your post",
         user_id: userPostId,
@@ -151,7 +152,7 @@ const Post = () => {
   };
   const handleSendNotiComment = async (userPostId) => {
     try {
-      await axios.post("http://localhost:8000/noti/add", {
+      await axios.post(`${CONSTANT.SERVER}/noti/add`, {
         title: user.fullname,
         content: "Comment in your post",
         user_id: userPostId,
@@ -164,7 +165,7 @@ const Post = () => {
 
   const handleDeletePost = async () => {
     try {
-      await axios.post(`http://localhost:8000/post/delete/` + id);
+      await axios.post(`${CONSTANT.SERVER}/post/delete/` + id);
       toast.success("delete post success");
       navigate("/profile");
     } catch (error) {
@@ -174,7 +175,7 @@ const Post = () => {
 
   const handleUpdatePost = async () => {
     try {
-      await axios.post(`http://localhost:8000/post/update/`, {
+      await axios.post(`${CONSTANT.SERVER}/post/update/`, {
         id: id,
         content: contentPost,
       });
