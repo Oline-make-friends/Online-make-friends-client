@@ -36,6 +36,7 @@ import AllCourse from "./pages/Post/AllCourse";
 import CreateCourse from "./pages/Post/CreateCourse";
 import YourCourse from "./pages/Post/YourCourse";
 import JoinCall from "./pages/ZegoCloud/JoinCall";
+import ChatAdmin from "./pages/CometChat/ChatAdmin";
 
 function App() {
   /////////////////////////////////////////////////
@@ -56,6 +57,7 @@ function App() {
       path === "/ResetPS" ||
       path === "/Login" ||
       path === "/RegisterOldStudent" ||
+      path === "/chatAdmin" ||
       path.includes("LinkResetPS")
     ) {
       return "";
@@ -106,7 +108,7 @@ function App() {
         <Route path="/Register" element={<Register />} />
         <Route path="/RegisterOldStudent" element={<RegisterOldStudent />} />
         <Route path="/CheckUser" element={<CheckUser />} />
-
+        <Route path="/ChatAdmin" element={<ChatAdmin />} />
         <Route path="/ResetPS" element={<ResetPS />} />
         <Route path="/LinkResetPS/:id/:random" element={<LinkResetPS />} />
       </Routes>
