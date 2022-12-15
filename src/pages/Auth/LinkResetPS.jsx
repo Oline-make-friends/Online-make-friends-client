@@ -9,16 +9,21 @@ import {
   Button,
   Heading,
   useColorModeValue,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import * as CONSTANT from "../../constants/constans";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 const LinkResetPS = () => {
   const navigate = useNavigate();
   const [newPS, setNewPS] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const handleShowClick = () => setShowPassword(!showPassword);
   let { id } = useParams();
 
   const updatePassword = async (e) => {
@@ -61,21 +66,35 @@ const LinkResetPS = () => {
             <form onSubmit={updatePassword}>
               <FormControl>
                 <FormLabel>New password</FormLabel>
-                <Input
-                  type="password"
-                  required
-                  onChange={(e) => setNewPS(e.target.value)}
-                  value={newPS}
-                />
+                <InputGroup id="password">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    onChange={(e) => setNewPS(e.target.value)}
+                    value={newPS}
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={handleShowClick}>
+                      {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
               </FormControl>
               <FormControl>
                 <FormLabel>Confirm new password</FormLabel>
-                <Input
-                  type="password"
-                  required
-                  onChange={(e) => setConfirm(e.target.value)}
-                  value={confirm}
-                />
+                <InputGroup>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    onChange={(e) => setConfirm(e.target.value)}
+                    value={confirm}
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={handleShowClick}>
+                      {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
               </FormControl>
               <Button my="4" type="submit">
                 Reset password

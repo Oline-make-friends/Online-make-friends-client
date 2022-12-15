@@ -24,6 +24,7 @@ import { AiOutlineSearch, AiFillBell } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { loginByGmail } from "../../redux/apiRequest";
 import { useDispatch } from "react-redux";
+import * as CONSTANT from "../../constants/constans";
 
 const SideDrawer = (props) => {
   const user = props.user;
@@ -52,12 +53,9 @@ const SideDrawer = (props) => {
 
   const accessChat = async (userId) => {
     try {
-      await axios.post(
-        "https://social-media-api-moongo.herokuapp.com/api/chat",
-        {
-          userId,
-        }
-      );
+      await axios.post(`${CONSTANT.SERVER}`, {
+        userId,
+      });
     } catch (error) {}
   };
 

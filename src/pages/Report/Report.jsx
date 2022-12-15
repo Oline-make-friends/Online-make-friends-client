@@ -73,7 +73,7 @@ const Report = () => {
       {" "}
       <Box bg="white" p="40px" borderRadius="15px">
         <Text fontSize="2xl" as="b">
-          Rerport to admin
+          Report to admin
         </Text>
         <Textarea
           value={description}
@@ -118,36 +118,39 @@ const Report = () => {
                     "-" +
                     d.getFullYear() +
                     " ";
-                  return (
-                    <Tr key={report?._id}>
-                      <Td>{datestring}</Td>
-                      <Td>
-                        <AvatarUser user={report?.sent_by} />
-                      </Td>
-                      <Td>{report.content}</Td>
-                      {/* <Td>{report.status === true ? "Done" : "Pending"}</Td> */}
-                      {report.status === true ? (
-                        <Td bg="green">Done</Td>
-                      ) : (
-                        <Td bg="yellow">Pending</Td>
-                      )}
-                      <Td>
-                        <Flex>
-                          <RiDeleteBin5Fill
-                            onClick={() => {
-                              handleDeleteReport(report._id);
-                            }}
-                            size={40}
-                            style={{
-                              background: "#dc3545",
-                              padding: "10px",
-                              borderRadius: "5px",
-                            }}
-                          />
-                        </Flex>
-                      </Td>
-                    </Tr>
-                  );
+                  console.log(report);
+                  if (report?.sent_by?._id === user?._id) {
+                    return (
+                      <Tr key={report?._id}>
+                        <Td>{datestring}</Td>
+                        <Td>
+                          <AvatarUser user={report?.sent_by} />
+                        </Td>
+                        <Td>{report.content}</Td>
+                        {/* <Td>{report.status === true ? "Done" : "Pending"}</Td> */}
+                        {report.status === true ? (
+                          <Td bg="green">Done</Td>
+                        ) : (
+                          <Td bg="yellow">Pending</Td>
+                        )}
+                        <Td>
+                          <Flex>
+                            <RiDeleteBin5Fill
+                              onClick={() => {
+                                handleDeleteReport(report._id);
+                              }}
+                              size={40}
+                              style={{
+                                background: "#dc3545",
+                                padding: "10px",
+                                borderRadius: "5px",
+                              }}
+                            />
+                          </Flex>
+                        </Td>
+                      </Tr>
+                    );
+                  }
                 })}
               </Tbody>
             </Table>

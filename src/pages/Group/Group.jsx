@@ -190,7 +190,7 @@ const Group = () => {
           <Text color="gray.500">Description : {" " + group?.content}</Text>
           <ModalList
             users={group?.members}
-            listContent={"Group memeber : " + group?.members?.length}
+            listContent={"Group member : " + group?.members?.length}
           />
           <ModalList users={group?.admins} listContent={"Admin"} />
           {isAdmin ? (

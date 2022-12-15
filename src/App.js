@@ -37,10 +37,12 @@ import CreateCourse from "./pages/Post/CreateCourse";
 import YourCourse from "./pages/Post/YourCourse";
 import JoinCall from "./pages/ZegoCloud/JoinCall";
 import ChatAdmin from "./pages/CometChat/ChatAdmin";
+import * as CONSTANTS from "./constants/constans";
 
 function App() {
   /////////////////////////////////////////////////
-  const host = "https://social-media-api-moongo.herokuapp.com/";
+  // const host = "https://social-media-api-moongo.herokuapp.com/";
+  const host = CONSTANTS.SERVER;
 
   const socketRef = useRef();
 
