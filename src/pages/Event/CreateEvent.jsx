@@ -18,6 +18,11 @@ const CreateEvent = () => {
   const handleCreateEvent = async (e) => {
     e.preventDefault();
     try {
+      var d1 = new Date();
+      if (d1 > date) {
+        toast.error("date is wrong");
+        return;
+      }
       await axios.post(`${CONSTANT.SERVER}/event/add`, {
         created_by: user?._id,
         title: title,
@@ -80,7 +85,16 @@ const CreateEvent = () => {
             required
           /> */}
           <Box border="1px" w="30%" ml="4" my="2">
-            <DatePicker selected={date} onChange={(date) => setDate(date)} />
+            <DatePicker
+              selected={date}
+              onChange={(date) => {
+                var d1 = new Date();
+                if (d1 > date) {
+                  toast.error("date is wrong");
+                }
+                setDate(date);
+              }}
+            />
           </Box>
           <Button ml="4" type="submit">
             Create

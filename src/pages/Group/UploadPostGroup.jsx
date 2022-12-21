@@ -98,6 +98,7 @@ const UploadPostGroup = () => {
             }}
           />
         </Box>
+        <Text>Description</Text>
         <Textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}

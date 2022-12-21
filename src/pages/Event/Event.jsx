@@ -28,6 +28,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import * as CONSTANT from "../../constants/constans";
+import DatePicker from "react-datepicker";
 
 const Event = () => {
   const navigate = useNavigate();
@@ -40,7 +41,8 @@ const Event = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date());
+  const [datepicker, setDatepicker] = useState(new Date());
 
   const handleGetEvent = async () => {
     try {
@@ -83,6 +85,11 @@ const Event = () => {
   };
   const joinEvent = async () => {
     try {
+      var d1 = new Date();
+      if (d1 > date) {
+        toast.error("This event has expored");
+        return;
+      }
       const res = await axios.post(`${CONSTANT.SERVER}/event/joinEvent`, {
         eventId: event?._id,
         userId: user?._id,
@@ -221,12 +228,15 @@ const Event = () => {
           </Text>
         )}
         {updateEvent ? (
-          <Input
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            w="50%"
-            color="white"
-          />
+          // <Input
+          //   value={date}
+          //   onChange={(e) => setDate(e.target.value)}
+          //   w="50%"
+          //   color="white"
+          // />
+          <Box border="1px" w="30%" ml="4" my="2">
+            <DatePicker selected={datepicker} />
+          </Box>
         ) : (
           <Text fontSize="lg" color="white" my="2">
             {event?.date_time}
